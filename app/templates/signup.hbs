@@ -1,0 +1,24 @@
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-lg-push-3 col-md-8 col-md-push-2 col-xs-12 text-center">
+        <div class="row text-center">
+          {{#link-to 'index'}}
+            <img src="img/logo-white.svg" alt="MetaDisk" class="logo">
+          {{/link-to}}
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="content">
+              <h1 class="title text-center">Sign Up</h1>
+              <input type="email" name="email" placeholder="Email Address">
+              <input type="password" name="password" placeholder="Password">
+              <a href="" class="btn btn-block btn-green">Sign Up</a>
+            </div>
+            <p>Already have an account? {{#link-to 'login'}}Log In{{/link-to}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
