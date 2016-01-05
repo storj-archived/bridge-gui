@@ -1,6 +1,6 @@
 <section class="header">
 
-  <div class="header-bg"></div>
+  {{#header-background}}{{/header-background}}
 
   <nav class="navbar navbar-default menu">
     <div class="container">
@@ -19,11 +19,21 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="navbar-menu">
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#features" class="link page-scroll">Features</a></li>
-          <li><a href="#pricing" class="link page-scroll">Pricing</a></li>
-          <li><a href="http://slack.storj.io/" class="link">Community</a></li>
-          <li><a href="#" class="link">Help</a></li>
-          <li>{{#link-to 'login' classNames='link'}}Login{{/link-to}}</li>
+          <li>
+            <a href="#features" class="link" {{action 'scroll' '#features'}}>Features</a>
+          </li>
+          <li>
+            <a href="#pricing" class="link" {{action 'scroll' '#pricing'}}>Pricing</a>
+          </li>
+          <li>
+            <a href="http://slack.storj.io/" class="link">Community</a>
+          </li>
+          <li>
+            <a href="#" class="link">Help</a>
+          </li>
+          <li>
+            {{#link-to 'login' classNames='link'}}Login{{/link-to}}
+          </li>
         </ul>
       </div>
     </div>
@@ -108,7 +118,7 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
-        <button class="btn subscribe" id="getStarted">Get Started</button>
+        <button class="btn subscribe" id="getStarted" {{action 'getStarted' '#getStartedForm' '#getStarted'}}>Get Started</button>
         <div class="get-started-form" id="getStartedForm">
           <form action="http://storj.us8.list-manage.com/subscribe/post?u=edba9fc4ce8b9095a31859cba&amp;id=7384dee0b2" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
             <input type="email" value="" name="EMAIL" class="email" id="getStartedEmail" placeholder="Enter your email here" spellcheck="false" required>
@@ -159,7 +169,7 @@
     </div>
     <div class="row text-center">
       <div class="col-xs-12">
-        <button class="btn subscribe" id="getStarted2">Sign Up Now</button>
+        <button class="btn subscribe" id="getStarted2" {{action 'getStarted' '#getStartedForm2' '#getStarted2'}}>Sign Up Now</button>
         <div class="get-started-form" id="getStartedForm2">
           <form action="http://storj.us8.list-manage.com/subscribe/post?u=edba9fc4ce8b9095a31859cba&amp;id=7384dee0b2" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
             <input type="email" value="" name="EMAIL" class="email" id="getStartedEmail2" placeholder="Enter your email here" spellcheck="false" required>
@@ -222,11 +232,11 @@
     <div class="row">
       <div class="col-sm-6">
         <img src="img/icon-capacity.svg" alt="">
-        <h2><span id="storage-count" class="storage-count"></span><span class="storage-tb"> TB</span> Storage Online</h2>
+        <h2><span id="storage-count" class="storage-count">{{storage}} TB</span> Storage Online</h2>
       </div>
       <div class="col-sm-6">
         <img src="img/icon-users.svg" alt="">
-        <h2><span id="user-count" class="user-count"></span> Users Online</h2>
+        <h2><span id="user-count" class="user-count">{{farmers}}</span> Users Online</h2>
       </div>
     </div>
   </div>

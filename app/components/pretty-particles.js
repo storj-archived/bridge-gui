@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  didInsertElement: function() {
+  didInsertElement() {
     window.particlesJS('particles-js', {
       particles: {
         number: {

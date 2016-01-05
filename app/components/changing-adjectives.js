@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  didInsertElement: function() {
+  didInsertElement() {
   	var animationDelay = 2500;
 		var barAnimationDelay = 3800;
 		var barWaiting = barAnimationDelay - 3000;
