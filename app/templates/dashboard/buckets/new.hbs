@@ -1,0 +1,51 @@
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <h1 class="title">New Bucket</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-6">
+        <div class="content bucket-pricing">
+          <p class="">Storage Price</p>
+          <h2 class="">$0.015<span> GB / month</span></h2>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6">
+        <div class="content bucket-pricing">
+          <p class="">Bandwidth Price</p>
+          <h2 class="">$0.05<span> GB / month</span></h2>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="content">
+          <label for="name">Bucket Name</label>
+          {{input type='text' name='name' placeholder='Enter a name for your bucket' value=model.name}}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="content" id="publicKeys">
+          <label for="public-key">Add Public Key</label>
+          <a href="" class="pull-right" {{action 'addPublicKey'}}>+ Add More Keys</a>
+          {{#if model.pubkeys.length}}
+            {{#each model.pubkeys as |pubkey|}}
+              {{input type='text' name='public-key' value=pubkey placeholder='Enter your public key'}}
+            {{/each}}
+          {{else}}
+            {{input type='text' name='public-key' placeholder='Enter your public key'}}
+          {{/if}}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        {{#link-to 'dashboard.buckets' classNames='btn btn-green btn-block btn-create-bucket'}}Create Bucket{{/link-to}}
+      </div>
+    </div>
+  </div>
+</section>

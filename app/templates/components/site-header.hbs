@@ -1,0 +1,45 @@
+<section class="header">
+
+  {{#header-background}}{{/header-background}}
+
+  <nav class="navbar navbar-default menu">
+    <div class="container">
+
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-menu" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        {{#link-to 'index' classNames="navbar-brand"}}
+          <img src="img/logo-white.svg" alt="MetaDisk" class="logo">
+        {{/link-to}}
+      </div>
+
+      <div class="collapse navbar-collapse" id="navbar-menu">
+        <ul class="nav navbar-nav navbar-right">
+          <li {{action 'scroll' '#features'}}>
+            {{#link-to 'index' classNames='link'}}Features{{/link-to}}
+          </li>
+          <li {{action 'scroll' '#pricing'}}>
+            {{#link-to 'index' classNames='link'}}Pricing{{/link-to}}
+          </li>
+          <li>
+            <a href="http://slack.storj.io/" class="link">Community</a>
+          </li>
+          <li>
+            <a href="#" class="link">Help</a>
+          </li>
+          <li>
+            {{#link-to 'login' classNames='link'}}Login{{/link-to}}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  {{#pretty-particles}}{{/pretty-particles}}
+
+  {{yield}}
+</section>
