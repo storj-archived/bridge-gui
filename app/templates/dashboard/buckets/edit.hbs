@@ -14,7 +14,7 @@
           <div class="col-sm-12">
             <div class="content">
               <label for="name">Bucket Name</label>
-              {{input type='text' name='name' placeholder='Bucket Name' value=bucket.name}}
+              {{input type='text' name='name' placeholder='Bucket Name' value=model.bucket.name}}
             </div>
           </div>
         </div>
@@ -23,8 +23,14 @@
           <div class="col-sm-12">
             <div class="content" id="publicKeys">
               <label for="public-key">Add Public Key</label>
-              <a href="" class="pull-right" id="newKey">+ Add More Keys</a>
-              <input type="text" name="public-key" placeholder="Enter your public key">
+              <a href="" class="pull-right" {{action 'addPublicKey'}}>+ Add More Keys</a>
+              {{#if model.pubkeys.length}}
+                {{#each model.pubkeys as |pubkey|}}
+                  {{input type='text' name='public-key' value=pubkey placeholder='Enter your public key'}}
+                {{/each}}
+              {{else}}
+                {{input type='text' name='public-key' placeholder='Enter your public key'}}
+              {{/if}}
             </div>
           </div>
         </div>
