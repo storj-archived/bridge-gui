@@ -20,8 +20,8 @@ Router.map(function() {
         path: ':bucket_id'
       });
     });
+    this.route('api');
   });
-  this.route('api');
 });
 
 export default Router;

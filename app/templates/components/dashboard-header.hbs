@@ -15,12 +15,12 @@
     <div class="collapse navbar-collapse" id="navbar-menu">
       <ul class="nav navbar-nav navbar-left">
         <li>{{#link-to 'dashboard.buckets'}}Buckets{{/link-to}}</li>
-        <li>{{#link-to 'api'}}API{{/link-to}}</li>
+        <li>{{#link-to 'dashboard.api'}}API{{/link-to}}</li>
         <li>{{#link-to 'dashboard.billing'}}Billing{{/link-to}}</li>
         <li><a href="">Support</a></li>
       </ul>
       <div class="navbar-right">
-        {{#link-to 'dashboard.buckets.new' classNames='btn btn-green btn-menu'}}Create Bucket{{/link-to}}
+        {{yield}}
         {{#link-to 'index' classNames='btn btn-menu btn-transparent'}}Logout{{/link-to}}
       </div>
     </div>

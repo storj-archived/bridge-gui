@@ -40,7 +40,7 @@
             {{#link-to 'dashboard.buckets' classNames='btn btn-block btn-transparent'}}Go Back{{/link-to}}
           </div>
           <div class="col-xs-6">
-            {{#link-to 'dashboard.buckets' classNames='btn btn-block btn-green btn-create-bucket'}}Save Bucket{{/link-to}}
+            <a href="" class="btn btn-block btn-green btn-create-bucket" {{action 'updateBucket'}}>Save Bucket</a>
           </div>
         </div>
 
@@ -65,7 +65,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn">Delete</button>
+        <button type="button" class="btn" data-dismiss="modal" {{action 'removeBucket'}}>Delete</button>
       </div>
     </div>
   </div>
