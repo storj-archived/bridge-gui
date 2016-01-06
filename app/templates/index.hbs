@@ -1,46 +1,4 @@
-<section class="header">
-
-  {{#header-background}}{{/header-background}}
-
-  <nav class="navbar navbar-default menu">
-    <div class="container">
-
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-menu" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        {{#link-to 'index' classNames="navbar-brand"}}
-          <img src="img/logo-white.svg" alt="MetaDisk" class="logo">
-        {{/link-to}}
-      </div>
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="navbar-menu">
-        <ul class="nav navbar-nav navbar-right">
-          <li>
-            <a href="#features" class="link" {{action 'scroll' '#features'}}>Features</a>
-          </li>
-          <li>
-            <a href="#pricing" class="link" {{action 'scroll' '#pricing'}}>Pricing</a>
-          </li>
-          <li>
-            <a href="http://slack.storj.io/" class="link">Community</a>
-          </li>
-          <li>
-            <a href="#" class="link">Help</a>
-          </li>
-          <li>
-            {{#link-to 'login' classNames='link'}}Login{{/link-to}}
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  {{#pretty-particles}}{{/pretty-particles}}
-
+{{#site-header}}
   <div class="container">
     <div class="header-content">
       <div class="row headlines text-center">
@@ -54,7 +12,7 @@
       </div>
     </div>
   </div>
-</section>
+{{/site-header}}
 
 <section class="value text-center" id="features">
   <div class="container">
@@ -258,43 +216,4 @@
   </div>
 </section>
 
-<footer>
-   <div class="container">
-      <div class="row">
-      <div class="col-xs-12 col-sm-6 col-md-3">
-        <a href="" class="footer-logo">
-          <img src="img/logo-blue.svg" alt="MetaDisk">
-        </a>
-        <ul class="list-unstyled">
-          <li><p>Copyright © 2015</p></li>
-          <li><p>Storj Labs Inc.</p></li>
-          <li><a href="https://angel.co/storj/jobs/">We're Hiring!</a></li>
-        </ul>
-      </div>
-        <div class="col-xs-12 col-sm-6 col-md-3">
-          <h5>Company</h5>
-          <ul class="list-unstyled">
-            <li><a href="http://storj.io/team.html">About Us</a></li>
-            <li><a href="http://blog.storj.io/">Blog</a></li>
-            <li><a href="http://storj.io/careers.html">Careers</a></li>
-          </ul>
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-3">
-          <h5>Product</h5>
-          <ul class="list-unstyled">
-            <li><a href="">API Docs</a></li>
-            <li><a href="http://storj.io/faq.html">FAQ</a></li>
-            <li><a href="http://slack.storj.io">Join Slack</a></li>
-          </ul>
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-3">
-          <h5>Connect</h5>
-          <ul class="list-unstyled">
-            <li><a href="https://twitter.com/storjproject" target="_blank"><img class="social-link" src="img/social-twitter.svg" alt="">Twitter</a></li>
-            <li><a href="https://github.com/Storj/" target="_blank"><img class="social-link" src="img/social-github.svg" alt="">GitHub</a></li>
-            <li><a href="" target="_blank"><img class="social-link" src="img/social-reddit.svg" alt="">Reddit</a></li>
-          </ul>
-        </div>
-    </div>
-  </div>
-</footer>
+{{#site-footer}}{{/site-footer}}

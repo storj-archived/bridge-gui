@@ -13,7 +13,7 @@
               <h1 class="title text-center">Login</h1>
               <input type="email" name="email" placeholder="Email Address">
               <input type="password" name="password" placeholder="Password">
-              <a href="" class="btn btn-block btn-green">Login</a>
+              {{#link-to 'dashboard' classNames='btn btn-block btn-green'}}Login{{/link-to}}
               <div class="row">
                 <div class="col-sm-6 text-left">
                   <div class="checkbox">
@@ -28,7 +28,7 @@
             <p>Don't have an account? {{#link-to 'signup' classNames='login'}}Sign Up{{/link-to}}</p>
           </div>
         </div>
-          </div>
-        </div>
+      </div>
+    </div>
   </div>
 </section>

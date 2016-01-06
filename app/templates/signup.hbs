@@ -13,7 +13,7 @@
               <h1 class="title text-center">Sign Up</h1>
               <input type="email" name="email" placeholder="Email Address">
               <input type="password" name="password" placeholder="Password">
-              <a href="" class="btn btn-block btn-green">Sign Up</a>
+              {{#link-to 'confirm' classNames='btn btn-block btn-green'}}Sign Up{{/link-to}}
             </div>
             <p>Already have an account? {{#link-to 'login' classNames='login'}}Log In{{/link-to}}</p>
           </div>
