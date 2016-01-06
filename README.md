@@ -30,4 +30,5 @@ ember server
 
 ---
 
-Documentation coming soon...
+More documentation coming soon. For now see the [Ember](http://emberjs.com/)
+and [Ember CLI](http://ember-cli.com/) documentation.
