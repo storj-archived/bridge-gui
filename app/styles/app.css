@@ -309,22 +309,33 @@ input {
   padding: 12px 18px 10px;
   margin: 25px auto;
   width: 100%;
-  max-width: 320px;
-    font-size: 16px;
-    -webkit-transition: all 0.15s ease-in-out;
-    -moz-transition: all 0.15s ease-in-out;
-    -ms-transition: all 0.15s ease-in-out;
-    transition: all 0.15s ease-in-out;
+  font-size: 16px;
+  -webkit-transition: all 0.15s ease-in-out;
+  -moz-transition: all 0.15s ease-in-out;
+  -ms-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
 }
 input:focus{
-    outline: 0;
-    border-color: #2D86fb;
+  outline: 0;
+  border-color: #2D86fb;
 }
+
+.signup input[type="checkbox"] {
+  position: static;
+  float: left;
+  width: auto;
+  min-width: 0;
+}
+
+.get-started-form input[type="email"] {
+  max-width: 320px;
+}
+
 .page input {
   margin: 10px 0;
-    border-radius: 3px;
-    border-width: 1px;
-    max-width: 100%;
+  border-radius: 3px;
+  border-width: 1px;
+  max-width: 100%;
 }
 #publicKeys input {
   margin-top: 20px;
@@ -336,28 +347,28 @@ input:focus{
 }
 
 ::-webkit-input-placeholder {
-    color: #444;
+  color: #444;
 }
 :focus::-webkit-input-placeholder {
-    color: #BAD7FE;
+  color: #BAD7FE;
 }
 :-moz-placeholder {
-    color: #444;
+  color: #444;
 }
 :focus:-moz-placeholder {
-    color: #BAD7FE;
+  color: #BAD7FE;
 }
 ::-moz-placeholder {
-    color: #444;
+  color: #444;
 }
 :focus::-moz-placeholder {
-    color: #BAD7FE;
+  color: #BAD7FE;
 }
 :-ms-input-placeholder {
-    color: #444;
+  color: #444;
 }
 :focus:-ms-input-placeholder {
-    color: #BAD7FE;
+  color: #BAD7FE;
 }
 
 
@@ -533,12 +544,6 @@ canvas {
   background-position: 50% 50%;
 }
 
-/*@keyframes animatedBackground {
-  0% { background-position: 0 0; }
-  50% { background-position: 0 100%; }
-  100% { background-position: 0 0; }
-}*/
-
 .header {
   min-height: 600px;
   background-color: #144EBC;
@@ -555,6 +560,11 @@ canvas {
   height: 100vh;
   overflow: hidden;
 }
+
+.header-content input {
+  max-width: 320px;
+}
+
 .thankyou .header {
   max-height: 520px;
   min-height: 520px;
