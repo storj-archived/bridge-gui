@@ -25,6 +25,11 @@ module.exports = function(environment) {
     // ENV.APP.LOG_TRANSITIONS = true;
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     // ENV.APP.LOG_VIEW_LOOKUPS = true;
+    ENV.APP.api = {
+      protocol: 'http:',
+      host: '127.0.0.1',
+      port: 6500
+    };
   }
 
   if (environment === 'test') {
@@ -37,10 +42,20 @@ module.exports = function(environment) {
     ENV.APP.LOG_VIEW_LOOKUPS = false;
 
     ENV.APP.rootElement = '#ember-testing';
+
+    ENV.APP.api = {
+      protocol: 'http:',
+      host: 'localhost',
+      port: 6382
+    };
   }
 
   if (environment === 'production') {
-
+    ENV.APP.api = {
+      protocol: 'https:',
+      host: 'api.metadisk.org',
+      port: 443
+    };
   }
 
   return ENV;
