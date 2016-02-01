@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Helmet from 'react-helmet';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
-import BucketList from './bucketList.js';
+import BucketList from 'components';
 
 export default class Buckets extends Component {
   state = {
@@ -10,38 +10,50 @@ export default class Buckets extends Component {
   };
 
   render() {
-    var contextualActions = renderContainerActions();
-
     return (
-      <section>
-        <div className="container">
+      <div>
+        <section>
+          <div className="container">
 
-          <div className="row">
-            <div className="col-xs-12">
-              <h1 className="title pull-left">Buckets</h1>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-xs-12">
-              <div className="table-responsive content">
-                <BucketList {...this.state.buckets}></BucketList>
+            <div className="row">
+              <div className="col-xs-12">
+                <h1 className="title pull-left">Buckets</h1>
               </div>
             </div>
+
+            <div className="row">
+              <div className="col-xs-12">
+                <div className="table-responsive content">
+                  <BucketList {...this.state.buckets}></BucketList>
+                </div>
+              </div>
+            </div>
+
           </div>
-
-        </div>
-      </section>
-
-      <Navbar fixedBottom>
-        <Nav pullRight>
-          {contextualActions}
-        </Nav>
-      </Navbar>
+        </section>
+        {renderContainerActions()}
+      </div>
     );
   }
 
   renderContainerActions() {
+    if(this.state.itemSelected) {
+      return(
+        <Navbar fixedBottom>
+          <NavItem className="btn btn-green btn-menu" eventKey={1}>New</NavItem>
+          <NavItem eventKey={2}>Save</NavItem>
+          <NavItem eventKey={3}>Delete</NavItem>
+        </Navbar>
+      );
+    }
+    else {
+      return (
+        <Navbar fixedBottom>
+          <NavItem className="btn btn-green btn-menu" eventKey={1}>New</NavItem>
+        </Navbar>
+      );
+    }
+    /*
     var contextualItems = <NavItem className="btn btn-green btn-menu" eventKey={1}>New</NavItem>;
     if(this.state.itemSelected) {
       contextualItems +=
@@ -49,5 +61,6 @@ export default class Buckets extends Component {
         <NavItem eventKey={3}>Delete</NavItem>;
     }
     return contextualItems;
+    */
   }
 }

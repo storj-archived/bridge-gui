@@ -30,7 +30,7 @@ const proxy = httpProxy.createProxyServer({
 });
 
 app.use(compression());
-app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, '..', 'static/img/favicon', 'favicon.ico')));
 
 app.use(Express.static(path.join(__dirname, '..', 'static')));
 
