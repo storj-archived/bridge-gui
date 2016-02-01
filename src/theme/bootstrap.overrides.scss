@@ -13,19 +13,19 @@ Fonts
   font-family: 'Avenir Next LT Pro Regular';
   font-style: normal;
   font-weight: normal;
-  src: local('Avenir Next LT Pro Regular'), url('../fonts/AvenirNextLTPro-Regular.woff') format('woff');
+  src: local('Avenir Next LT Pro Regular'), url('../../static/fonts/AvenirNextLTPro-Regular.woff') format('woff');
 }
 @font-face {
   font-family: 'Avenir Next LT Pro Demi';
   font-style: normal;
   font-weight: normal;
-  src: local('Avenir Next LT Pro Demi'), url('../fonts/AvenirNextLTPro-Demi.woff') format('woff');
+  src: local('Avenir Next LT Pro Demi'), url('../../static/fonts/AvenirNextLTPro-Demi.woff') format('woff');
 }
 @font-face {
   font-family: 'Avenir Next LT Pro Bold';
   font-style: normal;
   font-weight: normal;
-  src: local('Avenir Next LT Pro Bold'), url('../fonts/AvenirNextLTPro-Bold.woff') format('woff');
+  src: local('Avenir Next LT Pro Bold'), url('../../static/fonts/AvenirNextLTPro-Bold.woff') format('woff');
 }
 
 /* --------------------------------
@@ -543,7 +543,6 @@ canvas {
   height: 600px;
   height: 100vh;
   top: 0;
-  background-image: url("");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 50% 50%;
@@ -590,7 +589,7 @@ canvas {
   left: 0;
   right: 0;
   bottom: 0;
-  background: url("../img/bg.jpg") top center no-repeat;
+  background: url("../../static/img/bg.jpg") top center no-repeat;
   background-size: cover;
 }
 .header-content {
@@ -881,7 +880,7 @@ C2A
 
 .c2a {
   background-color: #144EBC;
-  background: url("../img/bg.jpg") center center no-repeat;
+  background: url("../../static/img/bg.jpg") center center no-repeat;
   background-size: cover;
   padding: 8em 0;
 }

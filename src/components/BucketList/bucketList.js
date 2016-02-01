@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import BucketItem from './bucketItem';
 
 const BucketList = (props) => {
-  const styles = require('./BucketList');
+  const styles = require('./BucketList.scss');
   return (
     <table className="table table-hover">
       <thead>

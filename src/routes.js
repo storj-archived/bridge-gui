@@ -35,22 +35,20 @@ export default (store) => {
     <Route path="/dashboard" component={App}>
       { /* Home (main) route */ }
       <IndexRoute component={Home}/>
-  
       { /* Routes requiring login */ }
       <Route onEnter={requireLogin}>
+        <Route path="loginSuccess" component={LoginSuccess}/>
         <Route path="api" component={ApiKeys}/>
         <Route path="billing" component={Billing}/>
         <Route path="buckets" component={Buckets}/>
         <Route path="support" component={Support}/>
       </Route>
       <Route path="login" component={Login}/>
-  
       {/*
       <Route path="about" component={About}/>
       <Route path="survey" component={Survey}/>
       <Route path="widgets" component={Widgets}/>
       */}
-  
       { /* Catch all route */ }
       <Route path="*" component={NotFound} status={404} />
     </Route>

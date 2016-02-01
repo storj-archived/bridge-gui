@@ -1,7 +1,4 @@
 import React, {Component} from 'react';
-import Helmet from 'react-helmet';
-import { LinkContainer } from 'react-router-bootstrap';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import BucketList from 'components';
 
 export default class Buckets extends Component {

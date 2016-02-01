@@ -1,7 +1,3 @@
-const LOADLIST = 'metadisk-gui/buckets/LOADLIST';
-const LOADLIST_SUCCESS = 'metadisk-gui/buckets/LOADLIST_SUCCESS';
-const LOADLIST_FAIL = 'metadisk-gui/buckets/LOADLIST_FAIL';
-
 const LOAD = 'metadisk-gui/buckets/LOAD';
 const LOAD_SUCCESS = 'metadisk-gui/buckets/LOAD_SUCCESS';
 const LOAD_FAIL = 'metadisk-gui/buckets/LOAD_FAIL';
@@ -21,7 +17,7 @@ const DEL_FAIL = 'metadisk-gui/buckets/DELETE_FAIL';
 const initialState = {
   loaded: false,
   saveError: {},
-  id:0,
+  id: 0,
   storage: 10,
   transfer: 30,
   status: 'Active',
