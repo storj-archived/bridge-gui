@@ -1,0 +1,72 @@
+/* --------------------------------
+
+Buckets
+
+-------------------------------- */
+
+body.page {
+  background: #f9f9f9;
+  padding-bottom: 3em;
+}
+.content {
+  border: 1px solid #eee;
+    background: #fff;
+    border-radius: 5px;
+    padding: 2em;
+    margin-bottom: 2em;
+}
+label {
+  margin-bottom: 0.8em;
+}
+.table {
+  margin-bottom: 0;
+}
+.table-responsive.content {
+  padding: 0;
+}
+tr {
+  -webkit-transition: all 0.15s ease-in-out;
+    -moz-transition: all 0.15s ease-in-out;
+    -ms-transition: all 0.15s ease-in-out;
+    transition: all 0.15s ease-in-out;
+}
+th, td {
+  padding: 1.8em !important;
+}
+.table>thead>tr>th {
+    border-bottom: 1px solid #eee;
+}
+.bucket-plan a {
+  font-family: 'Avenir Next LT Pro Demi';
+}
+.bucket-icon {
+  padding: 22px 0 0 26px !important;
+    margin: 0;
+    width: 70px;
+}
+.bucket-icon img {
+  width: 42px;
+    padding: 0;
+    margin: 0;
+}
+.bucket-pricing {
+  background: #f9f9f9;
+}
+.bucket-pricing p {
+}
+.bucket-pricing h2 {
+  color: #003366;
+  margin-bottom: 0px;
+}
+.clickable-row {
+  cursor: pointer;
+}
+.btn-create-bucket {
+  margin-bottom: 2em;
+}
+
+.page .btn-block {
+    font-size: 16px;
+    margin: 0.5em auto;
+    padding: 0.9em 0 0.8em;
+}

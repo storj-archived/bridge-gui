@@ -3,32 +3,24 @@ MetaDisk GUI
 
 Client application for interacting with the MetaDisk service.
 
-Quick Start
------------
-
-Install NVM, Node.js, NPM, and Ember CLI tools:
-
-```bash
-wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.30.1/install.sh | bash
-nvm install 4.2.3
-npm install -g ember-cli
-```
-
-Clone the repository, install dependencies:
+## Installation
+Install Node.js, NPM. Clone the repository, install dependencies:
 
 ```bash
 git clone https://github.com/Storj/metadisk-gui.git
 cd metadisk-gui
 npm install
 ```
-
-Start the local server:
+## Running Dev Server
+Start the local server ([Redux Devtools](https://github.com/gaearon/redux-devtools) are enabled by default in development):
 
 ```bash
-ember server
+npm run dev
 ```
-
 ---
 
-More documentation coming soon. For now see the [Ember](http://emberjs.com/)
-and [Ember CLI](http://ember-cli.com/) documentation.
+## Building and Running Production Server
+```bash
+npm run build
+npm run start
+```
