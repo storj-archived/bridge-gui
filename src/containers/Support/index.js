@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import { LinkContainer } from 'react-router-bootstrap';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
 
 export default class Support extends Component {
   state = {

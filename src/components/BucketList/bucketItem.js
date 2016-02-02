@@ -1,7 +1,7 @@
 import React from 'react';
 
 const BucketItem = (props) => {
-  const {storage, transfer, status} = props;
+  const {storage, transfer, status, label} = props;
   return (
     <tr>
       <td className="bucket-icon hidden-xs">

@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
-import multireducer from 'multireducer';
+// import multireducer from 'multireducer';
 import { routerStateReducer } from 'redux-router';
 
 import auth from './auth';
 import {reducer as form} from 'redux-form';
 import buckets from './buckets';
-import apiKeys from './api-keys'
+import apiKeys from './api-keys';
 
 export default combineReducers({
   router: routerStateReducer,

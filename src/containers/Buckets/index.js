@@ -1,5 +1,30 @@
 import React, {Component} from 'react';
 import BucketList from 'components';
+import {Navbar, NavItem} from 'react-bootstrap';
+
+const BucketActions = class bucketActions extends Component {
+  render() {
+    if (this.props.itemSelected) {
+      return (
+        <Navbar fixedBottom>
+          <NavItem className="btn btn-green btn-menu" eventKey={1}>New</NavItem>
+          <NavItem eventKey={2}>Save</NavItem>
+          <NavItem eventKey={3}>Delete</NavItem>
+        </Navbar>
+      );
+    }
+
+    return (
+      <Navbar fixedBottom>
+        <NavItem className="btn btn-green btn-menu" eventKey={1}>New</NavItem>
+      </Navbar>
+    );
+  }
+};
+
+BucketActions.propTypes = {
+  itemSelected  : React.PropTypes.bool.isRequired,
+};
 
 export default class Buckets extends Component {
   state = {
@@ -21,43 +46,19 @@ export default class Buckets extends Component {
             <div className="row">
               <div className="col-xs-12">
                 <div className="table-responsive content">
-                  <BucketList {...this.state.buckets}></BucketList>
+                  <BucketList {...this.state.buckets}/>
                 </div>
               </div>
             </div>
 
           </div>
         </section>
-        {renderContainerActions()}
+        <BucketActions itemSelected={this.state.itemSelected}/>
       </div>
     );
   }
-
-  renderContainerActions() {
-    if(this.state.itemSelected) {
-      return(
-        <Navbar fixedBottom>
-          <NavItem className="btn btn-green btn-menu" eventKey={1}>New</NavItem>
-          <NavItem eventKey={2}>Save</NavItem>
-          <NavItem eventKey={3}>Delete</NavItem>
-        </Navbar>
-      );
-    }
-    else {
-      return (
-        <Navbar fixedBottom>
-          <NavItem className="btn btn-green btn-menu" eventKey={1}>New</NavItem>
-        </Navbar>
-      );
-    }
-    /*
-    var contextualItems = <NavItem className="btn btn-green btn-menu" eventKey={1}>New</NavItem>;
-    if(this.state.itemSelected) {
-      contextualItems +=
-        <NavItem eventKey={2}>Save</NavItem> +
-        <NavItem eventKey={3}>Delete</NavItem>;
-    }
-    return contextualItems;
-    */
-  }
 }
+
+Buckets.propTypes = {
+  buckets  : React.PropTypes.object.isRequired,
+};
