@@ -11,14 +11,15 @@ const environment = {
 
 module.exports = Object.assign({
   host: process.env.HOST || 'localhost',
-  port: process.env.PORT,
+  port: process.env.PORT || 3000,
   apiHost: process.env.APIHOST || 'localhost',
-  apiPort: process.env.APIPORT,
+  apiPort: process.env.APIPORT || 6500,
+  apiProtocol: (process.env.NODE_ENV === 'development') ? 'http://' : 'https://',
   app: {
     title: 'MetaDisk',
-    description: 'All the modern best practices in one example.',
+    description: 'MetaDisk provides developers and IT teams with high performance, durable object storage.',
     head: {
-      titleTemplate: 'React Redux Example: %s',
+      titleTemplate: 'MetaDisk: %s',
       meta: [
         {name: 'description', content: 'MetaDisk provides developers and IT teams with high performance, durable object storage.'},
         {charset: 'utf-8'},

@@ -1,16 +1,17 @@
 import React from 'react';
-import BucketItem from './bucketItem';
+import BucketListItem from './BucketListItem';
 
 const BucketList = (props) => {
   // const styles = require('./BucketList.scss');
 
-  function renderBucketList(buckets) {
+  function renderBucketListItems(buckets) {
     buckets.map((bucket) => {
       return (
-        <BucketItem
+        <BucketListItem
           key     = {bucket.id}
           onClick = {() => buckets.onBucketClick(bucket.id)}
-          {...bucket}/>
+          {...bucket}
+        />
       );
     });
   }
@@ -28,7 +29,7 @@ const BucketList = (props) => {
       </thead>
       <tbody>
         <tr>
-          {renderBucketList(props.buckets)}
+          {renderBucketListItems(props.buckets)}
         </tr>
       </tbody>
     </table>

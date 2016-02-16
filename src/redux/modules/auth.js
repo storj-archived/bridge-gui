@@ -1,37 +1,37 @@
-const LOAD = 'redux-example/auth/LOAD';
-const LOAD_SUCCESS = 'redux-example/auth/LOAD_SUCCESS';
-const LOAD_FAIL = 'redux-example/auth/LOAD_FAIL';
-const LOGIN = 'redux-example/auth/LOGIN';
-const LOGIN_SUCCESS = 'redux-example/auth/LOGIN_SUCCESS';
-const LOGIN_FAIL = 'redux-example/auth/LOGIN_FAIL';
-const LOGOUT = 'redux-example/auth/LOGOUT';
-const LOGOUT_SUCCESS = 'redux-example/auth/LOGOUT_SUCCESS';
-const LOGOUT_FAIL = 'redux-example/auth/LOGOUT_FAIL';
+const SIGNUP = 'metadisk-gui/auth/LOAD';
+const SIGNUP_SUCCESS = 'metadisk-gui/auth/LOAD_SUCCESS';
+const SIGNUP_FAIL = 'metadisk-gui/auth/LOAD_FAIL';
+const LOGIN = 'metadisk-gui/auth/LOGIN';
+const LOGIN_SUCCESS = 'metadisk-gui/auth/LOGIN_SUCCESS';
+const LOGIN_FAIL = 'metadisk-gui/auth/LOGIN_FAIL';
+const LOGOUT = 'metadisk-gui/auth/LOGOUT';
+const LOGOUT_SUCCESS = 'metadisk-gui/auth/LOGOUT_SUCCESS';
+const LOGOUT_FAIL = 'metadisk-gui/auth/LOGOUT_FAIL';
 
 const initialState = {
-  loaded: false
+  loadedSignup: false
 };
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
-    case LOAD:
+    case SIGNUP:
       return {
         ...state,
-        loading: true
+        loadingSignup: true
       };
-    case LOAD_SUCCESS:
+    case SIGNUP_SUCCESS:
       return {
         ...state,
-        loading: false,
-        loaded: true,
-        user: action.result
+        loadingSignup: false,
+        loadedSignup: true,
+        signupSuccessMessage: action.result
       };
-    case LOAD_FAIL:
+    case SIGNUP_FAIL:
       return {
         ...state,
-        loading: false,
-        loaded: false,
-        error: action.error
+        loadingSignup: false,
+        loadedSignup: false,
+        signupError: action.error
       };
     case LOGIN:
       return {
@@ -74,16 +74,16 @@ export default function reducer(state = initialState, action = {}) {
 }
 
 export function isLoaded(globalState) {
-  return globalState.auth && globalState.auth.loaded;
+  return globalState.auth && globalState.auth.user;
 }
-
+/* Endpoint to simply check that a user is authenticated
 export function load() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
     promise: (client) => client.get('/loadAuth')
   };
 }
-
+*/
 export function login(name) {
   return {
     types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],

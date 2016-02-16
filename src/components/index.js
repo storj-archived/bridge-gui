@@ -6,3 +6,4 @@
  */
 export BucketItem from './BucketList/bucketItem';
 export BucketList from './BucketList/bucketList';
+export ErrorViews from './ErrorViews'

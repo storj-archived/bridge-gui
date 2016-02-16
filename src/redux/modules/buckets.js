@@ -1,6 +1,10 @@
-const LOAD = 'metadisk-gui/buckets/LOAD';
-const LOAD_SUCCESS = 'metadisk-gui/buckets/LOAD_SUCCESS';
-const LOAD_FAIL = 'metadisk-gui/buckets/LOAD_FAIL';
+const LOAD_BY_ID = 'metadisk-gui/buckets/LOAD_BY_ID';
+const LOAD_BY_ID_SUCCESS = 'metadisk-gui/buckets/LOAD_BY_ID_SUCCESS';
+const LOAD_BY_ID_FAIL = 'metadisk-gui/buckets/LOAD_BY_ID_FAIL';
+
+const LOAD_BY_USER = 'metadisk-gui/buckets/LOAD_BY_USER';
+const LOAD_BY_USER_SUCCESS = 'metadisk-gui/buckets/LOAD_BY_USER_SUCCESS';
+const LOAD_BY_USER_FAIL = 'metadisk-gui/buckets/LOAD_BY_USER_FAIL';
 
 const SAVE = 'metadisk-gui/buckets/SAVE';
 const SAVE_SUCCESS = 'metadisk-gui/buckets/SAVE_SUCCESS';
@@ -15,16 +19,20 @@ const DEL_SUCCESS = 'metadisk-gui/buckets/DELETE_SUCCESS';
 const DEL_FAIL = 'metadisk-gui/buckets/DELETE_FAIL';
 
 const initialState = {
+  /* Keys for reference, no default state for a list of buckets
   loaded: false,
   saveError: {},
   id: 0,
   storage: 10,
   transfer: 30,
   status: 'Active',
-  name: 'Free Bucket'
+  name: 'Free Bucket',
+  user: 0,
+  pubkeys: 0
+  */
 };
 
-export default function reducer(state = initialState, action = {}) {
+export default function BucketList(state = initialState, action = {}) {
   switch (action.type) {
     case LOAD:
       return {
@@ -172,16 +180,57 @@ export default function reducer(state = initialState, action = {}) {
   }
 }
 
+function Bucket(state = {}, action = {}) {
+  switch(action.type) {
+    case ADD_BUCKET:
+      return {
+        ...state,
+        loading: true,
+        loaded: false,
+      }
+    case ADD_BUCKET_FAIL:
+      return {
+        ...state,
+        loading: false,
+        loaded: false,
+        error: action.error
+      };
+    case ADD_BUCKET_SUCCESS:
+      return {
+        ...state,
+        loaded: true,
+        loading: false,
+        id: action.data.id,
+        storage: action.data.storage,
+        transfer: action.data.transfer,
+        status: action.data.status,
+        name: action.data.name,
+        user: action.data.user,
+        pubkeys: action.data.pubkeys
+      };
+    default:
+      return state;
+  }
+}
+
 export function isLoaded(globalState) {
   return globalState.buckets && globalState.buckets.loaded;
 }
 
-export function load() {
+export function loadById() {
   return {
-    types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
+    types: [LOAD_BY_ID, LOAD_BY_ID_SUCCESS, LOAD_BY_ID_FAIL],
     promise: (client) => client.get('/bucket/load/param1/param2') // params not used, just shown as demonstration
   };
 }
+
+export function loadByUser() {
+  return {
+    types: [LOAD_BY_USER, LOAD_BY_USER_SUCCESS, LOAD_BY_USER_FAIL],
+    promise: (client) => client.get('/bucket/load/param1/param2') // params not used, just shown as demonstration
+  };
+}
+
 
 export function save(bucket) {
   return {

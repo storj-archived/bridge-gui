@@ -1,6 +1,6 @@
 import React from 'react';
 
-const BucketItem = (props) => {
+const BucketListItem = (props) => {
   const {storage, transfer, status, label} = props;
   return (
     <tr>

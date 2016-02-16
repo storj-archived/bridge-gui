@@ -2,30 +2,6 @@ import React, {Component} from 'react';
 import BucketList from 'components';
 import {Navbar, NavItem} from 'react-bootstrap';
 
-const BucketActions = class bucketActions extends Component {
-  render() {
-    if (this.props.itemSelected) {
-      return (
-        <Navbar fixedBottom>
-          <NavItem className="btn btn-green btn-menu" eventKey={1}>New</NavItem>
-          <NavItem eventKey={2}>Save</NavItem>
-          <NavItem eventKey={3}>Delete</NavItem>
-        </Navbar>
-      );
-    }
-
-    return (
-      <Navbar fixedBottom>
-        <NavItem className="btn btn-green btn-menu" eventKey={1}>New</NavItem>
-      </Navbar>
-    );
-  }
-};
-
-BucketActions.propTypes = {
-  itemSelected  : React.PropTypes.bool.isRequired,
-};
-
 export default class Buckets extends Component {
   state = {
     prop: null
@@ -53,7 +29,9 @@ export default class Buckets extends Component {
 
           </div>
         </section>
-        <BucketActions itemSelected={this.state.itemSelected}/>
+        <Navbar fixedBottom>
+          <NavItem className="btn btn-green btn-menu" eventKey={1}>New</NavItem>
+        </Navbar>
       </div>
     );
   }

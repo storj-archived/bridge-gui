@@ -1,5 +1,25 @@
 import superagent from 'superagent';
 import config from '../config';
+import MetaDiskClient from 'metadisk-client';
+
+const ApiClient = new MetaDiskClient({
+  baseURI: apiProtocol + config.apiHost + ':' + config.apiPort + adjustedPath'
+});
+/* Will need to provide auth info to MetaDiskClient at first req, or redirect
+  privkey: fs.readFileSync('path/to/priv.key'), // optional
+  email: 'gordon@storj.io', // optional
+  password: 'super secret passphrase' // optional
+*/
+
+export default ApiClient;
+
+
+
+
+
+
+
+
 
 const methods = ['get', 'post', 'put', 'patch', 'del'];
 

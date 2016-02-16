@@ -1,9 +1,11 @@
 import { createStore as _createStore, applyMiddleware, compose } from 'redux';
 import createMiddleware from './middleware/clientMiddleware';
-import transitionMiddleware from './middleware/transitionMiddleware';
+import { syncHistory } from 'react-router-redux';
 
-export default function createStore(reduxReactRouter, getRoutes, createHistory, client, data) {
-  const middleware = [createMiddleware(client), transitionMiddleware];
+export default function createStore(getRoutes, history, client, data) {
+  // Sync dispatched route actions to history
+  const routerHistoryMiddleware = syncHistory(history);
+  const middleware = [createMiddleware(client), routerHistoryMiddleware];
 
   let finalCreateStore;
   if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {
@@ -22,6 +24,8 @@ export default function createStore(reduxReactRouter, getRoutes, createHistory, 
 
   const reducer = require('./modules/reducer');
   const store = finalCreateStore(reducer, data);
+
+  routerHistoryMiddleware.listenForReplays(store);
 
   if (__DEVELOPMENT__ && module.hot) {
     module.hot.accept('./modules/reducer', () => {
