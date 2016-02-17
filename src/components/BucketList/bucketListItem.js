@@ -23,11 +23,11 @@ const BucketListItem = (props) => {
   );
 };
 
-BucketItem.propTypes = {
+BucketListItem.propTypes = {
   storage  : React.PropTypes.number.isRequired,
   transfer : React.PropTypes.number.isRequired,
   label    : React.PropTypes.string.isRequired,
   status   : React.PropTypes.string.isRequired
 };
 
-export default BucketItem;
+export default BucketListItem;

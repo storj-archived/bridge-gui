@@ -27,11 +27,13 @@ export default function createStore(getRoutes, history, client, data) {
 
   routerHistoryMiddleware.listenForReplays(store);
 
+/* no hot module replacement now, but here's how
   if (__DEVELOPMENT__ && module.hot) {
     module.hot.accept('./modules/reducer', () => {
       store.replaceReducer(require('./modules/reducer'));
     });
   }
+  */
 
   return store;
 }

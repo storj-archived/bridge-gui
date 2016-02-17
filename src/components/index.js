@@ -4,6 +4,6 @@
  *  ie: import { CounterButton, InfoBar } from 'components';
  *
  */
-export BucketItem from './BucketList/bucketItem';
+export BucketListItem from './BucketList/bucketListItem';
 export BucketList from './BucketList/bucketList';
 export ErrorViews from './ErrorViews'

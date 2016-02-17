@@ -10,6 +10,10 @@ const UPDATE = 'metadisk-gui/bucket/UPDATE';
 const UPDATE_SUCCESS = 'metadisk-gui/bucket/UPDATE_SUCCESS';
 const UPDATE_FAIL = 'metadisk-gui/bucket/UPDATE_FAIL';
 
+const DEL = 'metadisk-gui/bucket/DELETE';
+const DEL_SUCCESS = 'metadisk-gui/bucket/DELETE_SUCCESS';
+const DEL_FAIL = 'metadisk-gui/bucket/DELETE_FAIL';
+
 function Bucket(state = {}, action = {}) {
   switch(action.type) {
     case LOAD:
@@ -42,21 +46,21 @@ function Bucket(state = {}, action = {}) {
     case CREATE:
       return {
         ...state,
-        loading: true,
-        loaded: false,
+        saving: true,
+        saved: false,
       }
     case CREATE_FAIL:
       return {
         ...state,
-        loading: false,
-        loaded: false,
+        saving: false,
+        saved: false,
         error: action.error
       };
     case CREATE_SUCCESS:
       return {
         ...state,
-        loaded: true,
-        loading: false,
+        saving: false,
+        saved: true,
         id: action.data.id,
         storage: action.data.storage,
         transfer: action.data.transfer,
@@ -69,21 +73,21 @@ function Bucket(state = {}, action = {}) {
     case UPDATE:
       return {
         ...state,
-        loading: true,
-        loaded: false,
+        saving: true,
+        saved: false,
       }
     case UPDATE_FAIL:
       return {
         ...state,
-        loading: false,
-        loaded: false,
+        saving: false,
+        saved: false,
         error: action.error
       };
     case UPDATE_SUCCESS:
       return {
         ...state,
-        loaded: true,
-        loading: false,
+        saving: false,
+        saved: true,
         id: action.data.id,
         storage: action.data.storage,
         transfer: action.data.transfer,
@@ -91,6 +95,25 @@ function Bucket(state = {}, action = {}) {
         name: action.data.name,
         user: action.data.user,
         pubkeys: action.data.pubkeys
+      };
+
+    case DEL:
+      return {
+        ...state,
+        destroying: true,
+        destroyed: false,
+      }
+    case DEL_FAIL:
+      return {
+        ...state,
+        destroying: false,
+        destroyed: false,
+        error: action.error
+      };
+    case DEL_SUCCESS:
+      return {
+        destroying: false,
+        destroyed: true,
       };
 
     default:
@@ -121,5 +144,12 @@ export function update(bucket) {
       name     : bucket.name,
       pubkeys  : bucket.pubkeys
     })
+  };
+}
+
+export function destroy(bucketId) {
+  return {
+    types: [DEL, DEL_SUCCESS, DEL_FAIL],
+    promise: (client) => client.destroyBucketById(bucketId)
   };
 }

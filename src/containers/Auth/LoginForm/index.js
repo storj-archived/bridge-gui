@@ -1,8 +1,10 @@
 import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
 import * as authActions from 'redux/modules/auth';
 import {Link} from 'react-router';
 import {ErrorViews} from 'components';
 import {reduxForm} from 'redux-form';
+import loginValidation from './loginValidation'
 
 @connect(
   state => ({
@@ -28,7 +30,7 @@ export default class LoginForm extends Component {
 
   render() {
     const {fields: {email, password, rememberUser}} = this.props;
-    const styles = require('./Login.scss');
+    const styles = require('./LoginForm.scss');
 
     return(
       <div className="row">

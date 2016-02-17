@@ -4,6 +4,7 @@ import Helmet from 'react-helmet';
 import * as authActions from 'redux/modules/auth';
 import {reduxForm} from 'redux-form';
 import {ErrorViews} from 'components';
+import signupValidation from './signupValidation';
 
 @connect(
   state => ({user: state.auth.user}),
@@ -27,7 +28,7 @@ export default class SignUpForm extends Component {
 
   render() {
     const {fields: {email, password}} = this.props;
-    const styles = require('./Login.scss');
+    const styles = require('./SignupForm.scss');
 
     return(
       <div class="row">

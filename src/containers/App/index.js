@@ -29,6 +29,16 @@ export default class App extends Component {
     store: PropTypes.object.isRequired
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.user && nextProps.user) {
+      // login
+      this.props.pushState('/loginSuccess');
+    } else if (this.props.user && !nextProps.user) {
+      // logout
+      this.props.pushState('/');
+    }
+  }
+
   static reduxAsyncConnect(params, store) {
     const {dispatch, getState} = store;
     const promises = [];
@@ -42,16 +52,6 @@ export default class App extends Component {
     }
 
     return Promise.all(promises);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.user && nextProps.user) {
-      // login
-      this.props.pushState('/loginSuccess');
-    } else if (this.props.user && !nextProps.user) {
-      // logout
-      this.props.pushState('/');
-    }
   }
 
   handleLogout = (event) => {

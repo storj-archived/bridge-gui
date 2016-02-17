@@ -1,5 +1,5 @@
 import React from 'react';
-import BucketListItem from './BucketListItem';
+import BucketListItem from './bucketListItem';
 
 const BucketList = (props) => {
   // const styles = require('./BucketList.scss');

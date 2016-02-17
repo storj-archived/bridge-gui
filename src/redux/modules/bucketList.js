@@ -1,12 +1,6 @@
-const { Bucket } from './bucketList'
-
 const LOAD = 'metadisk-gui/bucketList/LOAD';
 const LOAD_SUCCESS = 'metadisk-gui/bucketList/LOAD_SUCCESS';
 const LOAD_FAIL = 'metadisk-gui/bucketList/LOAD_FAIL';
-
-const DEL = 'metadisk-gui/bucketList/DELETE';
-const DEL_SUCCESS = 'metadisk-gui/bucketList/DELETE_SUCCESS';
-const DEL_FAIL = 'metadisk-gui/bucketList/DELETE_FAIL';
 
 export default function BucketList(state = {}, action = {}) {
   switch (action.type) {
@@ -48,12 +42,5 @@ export function load() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
     promise: (client) => client.getBuckets()
-  };
-}
-
-export function del(bucketId) {
-  return {
-    types: [DEL, DEL_SUCCESS, DEL_FAIL],
-    promise: (client) => client.destroyBucketById(bucketId)
   };
 }
