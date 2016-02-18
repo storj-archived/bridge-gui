@@ -1,73 +1,42 @@
 require('babel/polyfill');
 
-// Webpack config for development
-var fs = require('fs');
+// Webpack config for creating the production bundle.
 var path = require('path');
 var webpack = require('webpack');
-var WebpackIsomorphicTools = require('webpack-isomorphic-tools');
-var assetsPath = path.resolve(__dirname, '../static/dist');
-var host = (process.env.HOST || 'localhost');
-var port = parseInt(process.env.PORT) + 1 || 3001;
+var CleanPlugin = require('clean-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var strip = require('strip-loader');
+
+var relativeAssetsPath = '../static/dist';
+var assetsPath = path.join(__dirname, relativeAssetsPath);
 
 // https://github.com/halt-hammerzeit/webpack-isomorphic-tools
 var WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
 var webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(require('./webpack-isomorphic-tools'));
 
-var babelrc = fs.readFileSync('./.babelrc');
-var babelrcObject = {};
-
-try {
-  babelrcObject = JSON.parse(babelrc);
-} catch (err) {
-  console.error('==>     ERROR: Error parsing your .babelrc.');
-  console.error(err);
-}
-
-var babelrcObjectDevelopment = babelrcObject.env && babelrcObject.env.development || {};
-var babelLoaderQuery = Object.assign({}, babelrcObject, babelrcObjectDevelopment);
-delete babelLoaderQuery.env;
-
-babelLoaderQuery.plugins = babelLoaderQuery.plugins || [];
-if (babelLoaderQuery.plugins.indexOf('react-transform') < 0) {
-  babelLoaderQuery.plugins.push('react-transform');
-}
-
-babelLoaderQuery.extra = babelLoaderQuery.extra || {};
-if (!babelLoaderQuery.extra['react-transform']) {
-  babelLoaderQuery.extra['react-transform'] = {};
-}
-if (!babelLoaderQuery.extra['react-transform'].transforms) {
-  babelLoaderQuery.extra['react-transform'].transforms = [];
-}
-babelLoaderQuery.extra['react-transform'].transforms.push({
-  transform: 'react-transform-hmr',
-  imports: ['react'],
-  locals: ['module']
-});
-
 module.exports = {
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   context: path.resolve(__dirname, '..'),
   entry: {
     'main': [
-      'webpack-hot-middleware/client?path=http://' + host + ':' + port + '/__webpack_hmr',
-      'bootstrap-sass!./src/theme/bootstrap.config.js',
-      'font-awesome-webpack!./src/theme/font-awesome.config.js',
+      'bootstrap-sass!./src/theme/bootstrap.config.prod.js',
+      'font-awesome-webpack!./src/theme/font-awesome.config.prod.js',
       './src/client.js'
     ]
   },
   output: {
     path: assetsPath,
-    filename: '[name]-[hash].js',
+    filename: '[name]-[chunkhash].js',
     chunkFilename: '[name]-[chunkhash].js',
-    publicPath: 'http://' + host + ':' + port + '/dist/'
+    publicPath: '/dist/'
   },
   module: {
+    noParse: /node_modules\/json-schema\/lib\/validate\.js/,
     loaders: [
-      { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel?' + JSON.stringify(babelLoaderQuery), 'eslint-loader']},
+      { test: /\.jsx?$/, exclude: /node_modules/, loaders: [strip.loader('debug'), 'babel']},
       { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.less$/, loader: 'style!css?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!autoprefixer?browsers=last 2 version!less?outputStyle=expanded&sourceMap' },
-      { test: /\.scss$/, loader: 'style!css?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap' },
+      { test: /\.less$/, loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=2&sourceMap!autoprefixer?browsers=last 2 version!less?outputStyle=expanded&sourceMap=true&sourceMapContents=true') },
+      { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=2&sourceMap!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true') },
       { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
       { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
       { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },
@@ -84,16 +53,45 @@ module.exports = {
     ],
     extensions: ['', '.json', '.js', '.jsx']
   },
+  node: {
+    console: true,
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  },
   plugins: [
-    // hot reload
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.IgnorePlugin(/webpack-stats\.json$/),
+    new CleanPlugin([relativeAssetsPath]),
+
+    // css files from the extract-text-plugin loader
+    new ExtractTextPlugin('[name]-[chunkhash].css', {allChunks: true}),
     new webpack.DefinePlugin({
       __CLIENT__: true,
       __SERVER__: false,
-      __DEVELOPMENT__: true,
-      __DEVTOOLS__: true  // <-------- DISABLE redux-devtools HERE
+      __DEVELOPMENT__: false,
+      __DEVTOOLS__: false
     }),
-    webpackIsomorphicToolsPlugin.development()
+
+    // ignore dev config
+    new webpack.IgnorePlugin(/\.\/dev/, /\/config$/),
+
+    // set global vars
+    new webpack.DefinePlugin({
+      'process.env': {
+        // Useful to reduce the size of client-side libraries, e.g. react
+        NODE_ENV: JSON.stringify('development')
+      }
+    }),
+
+    // optimizations
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(),
+/*
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
+*/
+    webpackIsomorphicToolsPlugin
   ]
 };

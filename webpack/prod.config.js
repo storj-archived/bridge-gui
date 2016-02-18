@@ -31,6 +31,7 @@ module.exports = {
     publicPath: '/dist/'
   },
   module: {
+    noParse: /node_modules\/json-schema\/lib\/validate\.js/,
     loaders: [
       { test: /\.jsx?$/, exclude: /node_modules/, loaders: [strip.loader('debug'), 'babel']},
       { test: /\.json$/, loader: 'json-loader' },
@@ -52,6 +53,12 @@ module.exports = {
     ],
     extensions: ['', '.json', '.js', '.jsx']
   },
+  node: {
+    console: true,
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  },
   plugins: [
     new CleanPlugin([relativeAssetsPath]),
 
@@ -71,19 +78,21 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         // Useful to reduce the size of client-side libraries, e.g. react
-        NODE_ENV: JSON.stringify('production')
+        //NODE_ENV: JSON.stringify('production')
+        NODE_ENV: JSON.stringify('development')
       }
     }),
 
     // optimizations
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
+/*
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
       }
     }),
-
+*/
     webpackIsomorphicToolsPlugin
   ]
 };

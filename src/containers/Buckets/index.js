@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import BucketList from 'components';
-import {Navbar, NavItem} from 'react-bootstrap';
 
 export default class Buckets extends Component {
   state = {

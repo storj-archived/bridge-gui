@@ -1,5 +1,7 @@
 import React from 'react';
-import {IndexRoute, Route} from 'react-router';
+import {Router, IndexRoute, Route, hashHistory} from 'react-router';
+import LoginForm from './containers/Auth/LoginForm';
+import SignupForm from './containers/Auth/SignupForm';
 import {
     ApiKeys,
     App,
@@ -7,11 +9,7 @@ import {
     Billing,
     Buckets,
     Home,
-    Login,
-    LoginSuccess,
     NotFound,
-    SignUp,
-    SignUpSuccess,
     Support
   } from 'containers';
 
@@ -25,21 +23,23 @@ export default (store) => {
   };
 
   return (
-    <Route path="/" component={App}>
-      <Route path="/login" component={Auth}>
-        <IndexRoute component={LoginForm}/>
-        <Route path="/signup" component={SignUpForm}/>
+    <Router history={hashHistory}>
+      <Route path="/" component={App}>
+        <Route path="/login" component={Auth}>
+          <IndexRoute component={LoginForm}/>
+          <Route path="/signup" component={SignupForm}/>
+        </Route>
+        { /* Routes requiring login */ }
+        <Route path="/dashboard" onEnter={requireLogin}>
+          <IndexRoute component={Home}/>
+          <Route path="api" component={ApiKeys}/>
+          <Route path="billing" component={Billing}/>
+          <Route path="buckets" component={Buckets}/>
+          <Route path="support" component={Support}/>
+        </Route>
+        { /* Catch all malformed route */ }
+        <Route path="*" component={NotFound} status={404} />
       </Route>
-      { /* Routes requiring login */ }
-      <Route path="/dashboard" onEnter={requireLogin}>
-        <IndexRoute component={Home}/>
-        <Route path="api" component={ApiKeys}/>
-        <Route path="billing" component={Billing}/>
-        <Route path="buckets" component={Buckets}/>
-        <Route path="support" component={Support}/>
-      </Route>
-      { /* Catch all malformed route */ }
-      <Route path="*" component={NotFound} status={404} />
-    </Route>
+    </Router>
   );
 };

@@ -13,8 +13,6 @@ import PrettyError from 'pretty-error';
 import http from 'http';
 
 import { match } from 'react-router';
-import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
-import createHistory from 'history/lib/createMemoryHistory';
 import { Provider } from 'react-redux';
 import getRoutes from './routes';
 
@@ -70,7 +68,7 @@ app.use((req, res) => {
     baseURI: 'https://' + config.apiHost + ':' + config.apiPort
   });
 
-  const store = createStore(reduxReactRouter, getRoutes, createHistory, client);
+  const store = createStore(client);
 
   function hydrateOnClient() {
     res.send('<!doctype html>\n' +

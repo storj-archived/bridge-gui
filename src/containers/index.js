@@ -6,4 +6,4 @@ export Auth from './Auth';
 export LoginForm from './Auth/LoginForm';
 export SignupForm from './Auth/SignupForm';
 export NotFound from './NotFound';
-export Support from './Support';
+export Support from './Support/index';
