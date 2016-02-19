@@ -43,6 +43,7 @@ export default class App extends Component {
   };
 
   render() {
+    console.log(this.props)
     const {user} = this.props;
     const styles = require('./App.scss');
 

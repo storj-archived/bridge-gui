@@ -1,11 +1,12 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as authActions from 'redux/modules/auth';
 import {Link} from 'react-router';
-import {ErrorViews} from 'components';
+import FormLabelError from '../../../components/ErrorViews/FormLabelError';
 import {reduxForm} from 'redux-form';
 import loginValidation from './loginValidation'
-
+console.log(FormLabelError)
 @connect(
   state => ({
     user: state.auth.user
@@ -37,10 +38,10 @@ export default class LoginForm extends Component {
         <div className="col-sm-12">
           <div className="content">
             <h1 className="title text-center">Login</h1>
-            <form onSumbit={handleSubmit}>
-              {ErrorViews.FormLabelError(email)}
+            <form onSumbit={this.handleSubmit}>
+              {FormLabelError(email)}
               <input type="email" name="email" placeholder="Email Address" {...email}/>
-              {ErrorViews.FormLabelError(password)}
+              {FormLabelError(password)}
               <input type="password" name="password" placeholder="Password" {...password}/>
               <button type="submit" className='btn btn-block btn-green'></button>
             </form>
