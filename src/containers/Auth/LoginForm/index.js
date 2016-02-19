@@ -6,7 +6,7 @@ import {Link} from 'react-router';
 import FormLabelError from '../../../components/ErrorViews/FormLabelError';
 import {reduxForm} from 'redux-form';
 import loginValidation from './loginValidation'
-console.log(FormLabelError)
+
 @connect(
   state => ({
     user: state.auth.user
@@ -25,7 +25,7 @@ export default class LoginForm extends Component {
     fields: PropTypes.object.isRequired
   };
 
-  handleSubmit = (e) => {
+  handleSubmit(e) {
     e.preventDefault();
   }
 
@@ -43,7 +43,7 @@ export default class LoginForm extends Component {
               <input type="email" name="email" placeholder="Email Address" {...email}/>
               {FormLabelError(password)}
               <input type="password" name="password" placeholder="Password" {...password}/>
-              <button type="submit" className='btn btn-block btn-green'></button>
+              <button type="submit" className='btn btn-block btn-green'>Log In</button>
             </form>
             <div className="row">
               <div className="col-sm-6 text-left">

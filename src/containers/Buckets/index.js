@@ -28,9 +28,6 @@ export default class Buckets extends Component {
 
           </div>
         </section>
-        <Navbar fixedBottom>
-          <NavItem className="btn btn-green btn-menu" eventKey={1}>New</NavItem>
-        </Navbar>
       </div>
     );
   }

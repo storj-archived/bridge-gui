@@ -97,11 +97,6 @@ export default class Bucket extends Component {
 			     </div>
 			   </div>
 		    </div>
-        <Navbar fixedBottom>
-          <NavItem className="btn btn-green btn-menu" eventKey={1}>New</NavItem>
-          <NavItem eventKey={2}>Save</NavItem>
-          <NavItem eventKey={3}>Delete</NavItem>
-        </Navbar>
       </section>
     );
   }

@@ -4,6 +4,7 @@ import { IndexLink } from 'react-router';
 import Helmet from 'react-helmet';
 import { isLoaded as isAuthLoaded, load as loadAuth, logout } from 'redux/modules/auth';
 import config from '../../config';
+import Auth from '../Auth';
 
 const mapStateToProps = state => ({
   auth: {
@@ -43,7 +44,6 @@ export default class App extends Component {
   };
 
   render() {
-    console.log(this.props)
     const {user} = this.props;
     const styles = require('./App.scss');
 
