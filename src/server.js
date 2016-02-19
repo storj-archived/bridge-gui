@@ -68,11 +68,17 @@ app.use((req, res) => {
     baseURI: 'https://' + config.apiHost + ':' + config.apiPort
   });
 
-  const store = createStore(client);
-
+//  const store = createStore(client);
+/*
   function hydrateOnClient() {
     res.send('<!doctype html>\n' +
       ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} store={store}/>));
+  }
+*/
+
+  function hydrateOnClient() {
+    res.send('<!doctype html>\n' +
+      ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()}/>));
   }
 
   if (__DISABLE_SSR__) {

@@ -18,7 +18,7 @@ let client = new MetadiskClient({
 
 const dest = document.getElementById('content');
 const store = createStore(client, window.__data);
-
+/*
 ReactDOM.render(
   <Provider store={store} key="provider">
     {getRoutes(store)}
@@ -33,8 +33,8 @@ if (process.env.NODE_ENV !== 'production') {
     console.error('Server-side React render was discarded. Make sure that your initial render does not contain any client-side code.');
   }
 }
-
-if (__DEVTOOLS__ && !window.devToolsExtension) {
+*/
+//if (__DEVTOOLS__ && !window.devToolsExtension) {
   const DevTools = require('./containers/DevTools');
   ReactDOM.render(
     <Provider store={store} key="provider">
@@ -45,4 +45,4 @@ if (__DEVTOOLS__ && !window.devToolsExtension) {
     </Provider>,
     dest
   );
-}
+//}
