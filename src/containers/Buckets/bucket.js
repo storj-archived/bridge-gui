@@ -5,6 +5,7 @@ import {reduxForm} from 'redux-form';
 import * as bucketActions from 'redux/modules/bucket';
 import bucketFormValidation from './bucketFormValidation'
 import {Link, hashHistory} from 'react-router';
+var file;
 /*
 @connect(
   state => ({
@@ -16,13 +17,15 @@ import {Link, hashHistory} from 'react-router';
 
 @connect(
   state => ({
-    buckets: state.bucketList
+    bucket: state.bucket
   }),
   dispatch => ({
-    load: () => dispatch(bucketActions.load()),
+    load: (bucketId) => dispatch(bucketActions.load(bucketId)),
     update: (bucketId, updateObj) => dispatch(bucketActions.update(bucketId, updateObj)),
     create: (bucketObj) => dispatch(bucketActions.create(bucketObj)),
-    destroy: (bucketObj) => dispatch(bucketActions.destroy(bucketId))
+    destroy: (bucketObj) => dispatch(bucketActions.destroy(bucketId)),
+    genToken: (bucketId, operation) => dispatch(bucketActions.genToken(bucketId, operation)),
+    storeFile: (bucketId, token, file) => dispatch(bucketActions.storeFile(bucketId, token, file)),
   })
 )
 
@@ -31,7 +34,7 @@ import {Link, hashHistory} from 'react-router';
   fields: ['name', 'transfer', 'status', 'pubkeys[]', 'storage'],
   validate: bucketFormValidation
   },
-  state => ({
+  (state) => ({
     initialValues: state.bucket
   })
 )
@@ -42,15 +45,25 @@ export default class Bucket extends Component {
   static propTypes = {
     fields     : PropTypes.object.isRequired, // from redux-form
     submitting : PropTypes.bool.isRequired,
-    load       : PropTypes.func.isRequired, // from bucketActions
-    create     : PropTypes.func.isRequired,
-    update     : PropTypes.func.isRequired,
-    destroy    : PropTypes.func.isRequired,
+    load       : PropTypes.func.isRequired, client.getBucketById(bucketId),
     bucket     : PropTypes.object.isRequired, // from state.bucket
   };
 */
+  componentDidMount() {
+    if(this.props.params.bucketId) {
+      this.props.load(this.props.params.bucketId);
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if(nextProps.bucket.saved) {
+      hashHistory.push('/dashboard');
+    }
+    return true;
+  }
+
   renderPubKeys(pks) {
-    pks.map((pk, index) => {
+    return pks.map((pk, index) => {
       return(
         <input key={index} type="text" title={pk.error} placeholder="Enter your public key" {...pk}/>
       )
@@ -84,6 +97,22 @@ export default class Bucket extends Component {
     this.props.destroy(this.props.params.bucketId);
   }
 
+  addFile(e) {
+    e.preventDefault();
+    document.getElementById('filePicker').click();
+  }
+
+  inputFile(e) {
+    var self = this;
+    if(confirm('Would you like to upload ' + e.target.files[0].name + ' (' + e.target.files[0].size + 'b)?')) {
+      let reader = new FileReader();
+      reader.onload = function(ev) {
+        self.props.storeFile(self.props.params.bucketId, new Buffer(ev.target.result));
+      }
+      reader.readAsArrayBuffer(e.target.files[0])
+    }
+  }
+
   render() {
     let {query} = this.props.location
     return (
@@ -95,7 +124,9 @@ export default class Bucket extends Component {
 				      <div className="row">
 					     <div className="col-sm-12">
 						      <h1 className="title pull-left">Edit Bucket</h1>
-						      <a href="javascript:void(0)" onClick={this.destroy.bind(this)} className="btn btn-action pull-right btn-red">Delete Bucket</a>
+                  <a href="javascript:void(0)" onClick={this.destroy.bind(this)} className="btn btn-action pull-right btn-red">Delete Bucket</a>
+                  <a href="javascript:void(0)" onClick={this.addFile.bind(this)} style={{marginRight:'12px'}} className="btn btn-action pull-right btn-transparent">Add File</a>
+                  <input type="file" onChange={this.inputFile.bind(this)} style={{display:'none'}} id="filePicker"/>
 					     </div>
 				      </div>
               <form>
@@ -107,6 +138,7 @@ export default class Bucket extends Component {
 						        </div>
 					       </div>
 				        </div>
+
 {/*
 				        <div className="row">
 					       <div className="col-sm-12">

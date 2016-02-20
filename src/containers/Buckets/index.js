@@ -3,7 +3,7 @@ import BucketList from '../../components/BucketList/bucketList';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as bucketListActions from 'redux/modules/bucketList';
-import {Link} from 'react-router';
+import {Link, hashHistory} from 'react-router';
 
 /*
 @connect(
@@ -28,8 +28,11 @@ export default class Buckets extends Component {
     this.props.load();
   }
 
+  handleBucketClick(id) {
+    hashHistory.push('/bucket/' + id);
+  }
+
   render() {
-    console.log(this.props.buckets)
     return (
       <section>
         <div className="container">
@@ -44,7 +47,7 @@ export default class Buckets extends Component {
           <div className="row">
             <div className="col-xs-12">
               <div className="table-responsive content">
-                <BucketList {...this.props.buckets}/>
+                <BucketList onBucketClick={this.handleBucketClick} {...this.props.buckets}/>
               </div>
             </div>
           </div>

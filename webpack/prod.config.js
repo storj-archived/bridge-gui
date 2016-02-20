@@ -31,7 +31,9 @@ module.exports = {
     publicPath: '/dist/'
   },
   module: {
-    noParse: /node_modules\/json-schema\/lib\/validate\.js/,
+    noParse: [
+      /node_modules\/json-schema\/lib\/validate\.js/
+    ],
     loaders: [
       { test: /\.jsx?$/, exclude: /node_modules/, loaders: [strip.loader('debug'), 'babel']},
       { test: /\.json$/, loader: 'json-loader' },

@@ -4,13 +4,13 @@ import { combineReducers } from 'redux';
 import auth from './auth';
 import {reducer as form} from 'redux-form';
 import bucketList from './bucketList';
-import apiKeys from './api-keys';
+import bucket from './bucket';
 
 export default combineReducers({
   auth,
-  form,
+  bucket,
   bucketList,
-  apiKeys
+  form
 });
 
 /* multi-reducer example, for multiple same-schema reducers

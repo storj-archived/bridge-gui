@@ -14,13 +14,26 @@ const DEL = 'metadisk-gui/bucket/DELETE';
 const DEL_SUCCESS = 'metadisk-gui/bucket/DELETE_SUCCESS';
 const DEL_FAIL = 'metadisk-gui/bucket/DELETE_FAIL';
 
-function Bucket(state = {}, action = {}) {
+const GEN_TOKEN = 'metadisk-gui/bucket/GEN_TOKEN';
+const GEN_TOKEN_SUCCESS = 'metadisk-gui/bucket/GEN_TOKEN_SUCCESS';
+const GEN_TOKEN_FAIL = 'metadisk-gui/bucket/GEN_TOKEN_FAIL';
+
+const STORE = 'metadisk-gui/bucket/STORE';
+const STORE_SUCCESS = 'metadisk-gui/bucket/STORE_SUCCESS';
+const STORE_FAIL = 'metadisk-gui/bucket/STORE_FAIL';
+
+export default function Bucket(state = {}, action = {}) {
+  console.log(action)
   switch(action.type) {
     case LOAD:
       return {
         ...state,
         loading: true,
         loaded: false,
+        saving: false,
+        saved: false,
+        token: null,
+        fileHash: null
       }
     case LOAD_FAIL:
       return {
@@ -34,13 +47,7 @@ function Bucket(state = {}, action = {}) {
         ...state,
         loaded: true,
         loading: false,
-        id: action.data.id,
-        storage: action.data.storage,
-        transfer: action.data.transfer,
-        status: action.data.status,
-        name: action.data.name,
-        user: action.data.user,
-        pubkeys: action.data.pubkeys
+        ...action.result
       };
 
     case CREATE:
@@ -88,13 +95,7 @@ function Bucket(state = {}, action = {}) {
         ...state,
         saving: false,
         saved: true,
-        id: action.data.id,
-        storage: action.data.storage,
-        transfer: action.data.transfer,
-        status: action.data.status,
-        name: action.data.name,
-        user: action.data.user,
-        pubkeys: action.data.pubkeys
+        ...action.result
       };
 
     case DEL:
@@ -115,7 +116,34 @@ function Bucket(state = {}, action = {}) {
         destroying: false,
         destroyed: true,
       };
-
+    case GEN_TOKEN:
+      return {
+        ...state,
+      }
+    case GEN_TOKEN_FAIL:
+      return {
+        ...state,
+        error: action.error
+      };
+    case GEN_TOKEN_SUCCESS:
+      return {
+        ...state,
+        token: action.result.token
+      };
+    case STORE:
+      return {
+        ...state,
+      }
+    case STORE_FAIL:
+      return {
+        ...state,
+        error: action.error
+      };
+    case STORE_SUCCESS:
+      return {
+        ...state,
+        fileHash: action.result.hash
+      };
     default:
       return state;
   }
@@ -135,10 +163,10 @@ export function create(bucket) {
   };
 }
 
-export function update(bucket) {
+export function update(bucketId, bucket) {
   return {
     types: [UPDATE, UPDATE_SUCCESS, UPDATE_FAIL],
-    promise: (client) => client.updateBucketById(bucket.id, {
+    promise: (client) => client.updateBucketById(bucketId, {
       storage  : bucket.storage,
       transfer : bucket.transfer,
       name     : bucket.name,
@@ -153,3 +181,20 @@ export function destroy(bucketId) {
     promise: (client) => client.destroyBucketById(bucketId)
   };
 }
+
+export function storeFile(bucketId, file) {
+  return {
+    types: [STORE, STORE_SUCCESS, STORE_FAIL],
+    promise: (client) => client.createToken(bucketId, "PUSH").then(function(result) {
+      return client.storeFileInBucket(bucketId, result.token, file);
+    })
+  };
+}
+/*
+export function storeFile(bucketId, tokenStr, file) {
+  return {
+    types: [STORE, STORE_SUCCESS, STORE_FAIL],
+    promise: (client) => client.storeFileInBucket(bucketId, tokenStr, file)
+  };
+}
+*/

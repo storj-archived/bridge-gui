@@ -10,7 +10,7 @@ const BucketList = (props) => {
       return (
         <BucketListItem
           key     = {bucket.id}
-          onClick = {() => buckets.onBucketClick(bucket.id)}
+          onClick = {() => props.onBucketClick(bucket.id)}
           {...bucket}
         />
       );
