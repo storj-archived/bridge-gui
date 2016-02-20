@@ -14,13 +14,16 @@ const DEL = 'metadisk-gui/bucket/DELETE';
 const DEL_SUCCESS = 'metadisk-gui/bucket/DELETE_SUCCESS';
 const DEL_FAIL = 'metadisk-gui/bucket/DELETE_FAIL';
 
-const GEN_TOKEN = 'metadisk-gui/bucket/GEN_TOKEN';
-const GEN_TOKEN_SUCCESS = 'metadisk-gui/bucket/GEN_TOKEN_SUCCESS';
-const GEN_TOKEN_FAIL = 'metadisk-gui/bucket/GEN_TOKEN_FAIL';
+const GETFILE = 'metadisk-gui/bucket/GETFILE';
+const GETFILE_SUCCESS = 'metadisk-gui/bucket/GETFILE_SUCCESS';
+const GETFILE_FAIL = 'metadisk-gui/bucket/GETFILE_FAIL';
 
 const STORE = 'metadisk-gui/bucket/STORE';
 const STORE_SUCCESS = 'metadisk-gui/bucket/STORE_SUCCESS';
 const STORE_FAIL = 'metadisk-gui/bucket/STORE_FAIL';
+
+const bufferToArray = require('buffer-to-arraybuffer')
+
 
 export default function Bucket(state = {}, action = {}) {
   console.log(action)
@@ -33,7 +36,8 @@ export default function Bucket(state = {}, action = {}) {
         saving: false,
         saved: false,
         token: null,
-        fileHash: null
+        fileHash: null,
+        fileURI: null
       }
     case LOAD_FAIL:
       return {
@@ -68,13 +72,10 @@ export default function Bucket(state = {}, action = {}) {
         ...state,
         saving: false,
         saved: true,
-        id: action.data.id,
-        storage: action.data.storage,
-        transfer: action.data.transfer,
-        status: action.data.status,
-        name: action.data.name,
-        user: action.data.user,
-        pubkeys: action.data.pubkeys
+        id: action.result.id,
+        name: action.result.name,
+        user: action.result.user,
+        pubkeys: action.result.pubkeys
       };
 
     case UPDATE:
@@ -116,20 +117,7 @@ export default function Bucket(state = {}, action = {}) {
         destroying: false,
         destroyed: true,
       };
-    case GEN_TOKEN:
-      return {
-        ...state,
-      }
-    case GEN_TOKEN_FAIL:
-      return {
-        ...state,
-        error: action.error
-      };
-    case GEN_TOKEN_SUCCESS:
-      return {
-        ...state,
-        token: action.result.token
-      };
+
     case STORE:
       return {
         ...state,
@@ -144,6 +132,23 @@ export default function Bucket(state = {}, action = {}) {
         ...state,
         fileHash: action.result.hash
       };
+
+    case GETFILE:
+      return {
+        ...state,
+      }
+    case GETFILE_FAIL:
+      return {
+        ...state,
+        error: action.error
+      };
+    case GETFILE_SUCCESS:
+      return {
+        ...state,
+        fileURI: action.result
+      };
+
+
     default:
       return state;
   }
@@ -186,8 +191,47 @@ export function storeFile(bucketId, file) {
   return {
     types: [STORE, STORE_SUCCESS, STORE_FAIL],
     promise: (client) => client.createToken(bucketId, "PUSH").then(function(result) {
-      return client.storeFileInBucket(bucketId, result.token, file);
+      return new Promise(function(resolve, reject) {
+        var fileReq = new XMLHttpRequest();
+        var formData = new FormData();
+        formData.append('data', file)
+        fileReq.open('PUT', client._options.baseURI + '/buckets/' + bucketId);
+        fileReq.setRequestHeader('x-token', result.token)
+        fileReq.send(formData);
+        fileReq.addEventListener('load', function complete(ev) {
+          let response = JSON.parse(fileReq.responseText);
+          if(response.error) {
+            return reject(new Error(response.error));
+          }
+          return resolve(response);
+        });
+        //bucketId, result.token, file
+
+      });
+
     })
+  };
+}
+
+export function getFile(bucketId, filehash, type) {
+  return {
+    types: [GETFILE, GETFILE_SUCCESS, GETFILE_FAIL],
+    promise: (client) => client.createToken(bucketId, "PULL")
+      .then(function(result) {
+        return client.getFileFromBucket(bucketId, result.token, filehash);
+      })
+      .then(function(result) {
+        return client.resolveFileFromPointers(result);
+      })
+      .then(function(result) {
+        return new Promise(function(resolve, reject) {
+          let arrBuff = bufferToArray(result);
+          let blob = new Blob([arrBuff], {
+            type: type
+          });
+          resolve(URL.createObjectURL(blob));
+        });
+      })
   };
 }
 /*

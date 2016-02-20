@@ -5,7 +5,9 @@ import {reduxForm} from 'redux-form';
 import * as bucketActions from 'redux/modules/bucket';
 import bucketFormValidation from './bucketFormValidation'
 import {Link, hashHistory} from 'react-router';
+
 var file;
+var filetype;
 /*
 @connect(
   state => ({
@@ -26,12 +28,13 @@ var file;
     destroy: (bucketObj) => dispatch(bucketActions.destroy(bucketId)),
     genToken: (bucketId, operation) => dispatch(bucketActions.genToken(bucketId, operation)),
     storeFile: (bucketId, token, file) => dispatch(bucketActions.storeFile(bucketId, token, file)),
+    getFile: (bucketId, token, hash) => dispatch(bucketActions.getFile(bucketId, token, hash)),
   })
 )
 
 @reduxForm({
   form: 'Bucket',
-  fields: ['name', 'transfer', 'status', 'pubkeys[]', 'storage'],
+  fields: ['name', 'transfer', 'status', 'pubkeys[]', 'storage', 'fileHash'],
   validate: bucketFormValidation
   },
   (state) => ({
@@ -76,11 +79,9 @@ export default class Bucket extends Component {
   }
 
   createBucket(e) {
-    console.log(this.props.fields)
     e.preventDefault();
     this.props.create({
       name: this.props.fields.name.value
-      //pubkeys: this.props.fields.pubkeys.value
     });
   }
 
@@ -105,15 +106,17 @@ export default class Bucket extends Component {
   inputFile(e) {
     var self = this;
     if(confirm('Would you like to upload ' + e.target.files[0].name + ' (' + e.target.files[0].size + 'b)?')) {
-      let reader = new FileReader();
-      reader.onload = function(ev) {
-        self.props.storeFile(self.props.params.bucketId, new Buffer(ev.target.result));
-      }
-      reader.readAsArrayBuffer(e.target.files[0])
+      filetype = e.target.files[0].type;
+      self.props.storeFile(self.props.params.bucketId, e.target.files[0]);
     }
   }
 
+  previewHash(e) {
+    this.props.getFile(this.props.params.bucketId, this.props.fields.fileHash.value, filetype);
+  }
+
   render() {
+    console.log(this.props)
     let {query} = this.props.location
     return (
       <section>
@@ -123,10 +126,12 @@ export default class Bucket extends Component {
 
 				      <div className="row">
 					     <div className="col-sm-12">
-						      <h1 className="title pull-left">Edit Bucket</h1>
-                  <a href="javascript:void(0)" onClick={this.destroy.bind(this)} className="btn btn-action pull-right btn-red">Delete Bucket</a>
-                  <a href="javascript:void(0)" onClick={this.addFile.bind(this)} style={{marginRight:'12px'}} className="btn btn-action pull-right btn-transparent">Add File</a>
-                  <input type="file" onChange={this.inputFile.bind(this)} style={{display:'none'}} id="filePicker"/>
+						      { !query.new  && <h1 className="title pull-left">Edit Bucket</h1> }
+                  { query.new  && <h1 className="title pull-left">Create Bucket</h1> }
+                  { !query.new  && <a href="javascript:void(0)" onClick={this.destroy.bind(this)} className="btn btn-action pull-right btn-red">Delete Bucket</a> }
+                  { !query.new  && <a href="javascript:void(0)" onClick={this.addFile.bind(this)} style={{marginRight:'12px'}} className="btn btn-action pull-right btn-transparent">Add File</a> }
+                  { !query.new  && <input type="file" onChange={this.inputFile.bind(this)} style={{display:'none'}} id="filePicker"/> }
+
 					     </div>
 				      </div>
               <form>
@@ -138,7 +143,6 @@ export default class Bucket extends Component {
 						        </div>
 					       </div>
 				        </div>
-
 {/*
 				        <div className="row">
 					       <div className="col-sm-12">
@@ -164,6 +168,22 @@ export default class Bucket extends Component {
 					       </div> }
 				        </div>
               </form>
+
+              { !query.new && <div className="row">
+               <div className="col-sm-12">
+                  <div className="content" style={{overflow:'hidden'}}>
+                   <label>File Hash</label>
+                   <input type="text" name="filehash" placeholder="Paste a File Hash" {...this.props.fields.fileHash}/>
+                      <a href="javascript:void(0)" onClick={this.previewHash.bind(this)} style={{marginLeft:'12px'}} className="btn btn-action pull-left btn-transparent">Retrieve</a>
+                  </div>
+                  { this.props.bucket.fileURI &&
+                    <div className="content">
+                       <iframe style={{minHeight: '800px', width: '100%'}} src={this.props.bucket.fileURI}></iframe>
+                    </div>
+                  }
+               </div>
+              </div> }
+
 			     </div>
 			   </div>
 		    </div>
