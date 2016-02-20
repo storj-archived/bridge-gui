@@ -2,16 +2,20 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as authActions from 'redux/modules/auth';
-import {Link} from 'react-router';
+import {Link, hashHistory} from 'react-router';
 import FormLabelError from '../../../components/ErrorViews/FormLabelError';
 import {reduxForm} from 'redux-form';
 import loginValidation from './loginValidation'
 
 @connect(
   state => ({
-    user: state.auth.user
+    email: state.auth.email,
+    password: state.auth.password,
+    loggedIn: state.auth.loggedIn
   }),
-  dispatch => bindActionCreators(authActions, dispatch)
+  dispatch => ({
+    login: (email, password) => dispatch(authActions.login(email, password))
+  })
 )
 
 @reduxForm({
@@ -25,8 +29,16 @@ export default class LoginForm extends Component {
     fields: PropTypes.object.isRequired
   };
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if(nextProps.loggedIn) {
+      hashHistory.push('/dashboard');
+    }
+    return true;
+  }
+
   handleSubmit(e) {
     e.preventDefault();
+    this.props.login(this.props.fields.email.value, this.props.fields.password.value);
   }
 
   render() {
@@ -43,7 +55,7 @@ export default class LoginForm extends Component {
               <input type="email" name="email" placeholder="Email Address" {...email}/>
               {FormLabelError(password)}
               <input type="password" name="password" placeholder="Password" {...password}/>
-              <button type="submit" className='btn btn-block btn-green'>Log In</button>
+              <button type="submit" onClick={this.handleSubmit.bind(this)} className='btn btn-block btn-green'>Log In</button>
             </form>
             <div className="row">
               <div className="col-sm-6 text-left">

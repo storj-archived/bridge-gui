@@ -2,10 +2,11 @@ import React from 'react';
 import BucketListItem from './bucketListItem';
 
 const BucketList = (props) => {
+  console.log(props)
   // const styles = require('./BucketList.scss');
 
   function renderBucketListItems(buckets) {
-    buckets.map((bucket) => {
+    return buckets.map((bucket) => {
       return (
         <BucketListItem
           key     = {bucket.id}
@@ -28,16 +29,14 @@ const BucketList = (props) => {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          {renderBucketListItems(props.buckets)}
-        </tr>
+        {renderBucketListItems(props.buckets)}
       </tbody>
     </table>
   );
 };
 
 BucketList.propTypes = {
-  buckets  : React.PropTypes.object.isRequired,
+  buckets  : React.PropTypes.array.isRequired,
 };
 
 

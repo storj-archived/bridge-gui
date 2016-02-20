@@ -34,11 +34,12 @@ export default (store) => {
         { /* Routes requiring login */ }
         <Route path="/dashboard" component={Dashboard} >
           <IndexRoute component={Buckets}/>
-          <Route path="bucket/:bucketId" component={Bucket}/>
-          <Route path="api" component={ApiKeys}/>
-          <Route path="billing" component={Billing}/>
+          <Route path="/bucket" component={Bucket}/>
+          <Route path="/bucket/:bucketId" component={Bucket}/>
+          <Route path="/api" component={ApiKeys}/>
+          <Route path="/billing" component={Billing}/>
           {/* <Route path="buckets" component={Buckets}/> */}
-          <Route path="support" component={Support}/>
+          <Route path="/support" component={Support}/>
         </Route>
         { /* Catch all malformed route */ }
         <Route path="*" component={NotFound} status={404} />

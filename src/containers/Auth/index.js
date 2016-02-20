@@ -2,7 +2,6 @@ import React, {Component, PropTypes} from 'react';
 
 export default class Login extends Component {
   render() {
-    console.log(this.props.children)
     const styles = require('./Auth.scss');
 
     return(

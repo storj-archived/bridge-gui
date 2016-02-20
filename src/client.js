@@ -13,7 +13,7 @@ import config from './config';
 import getRoutes from './routes';
 
 let client = new MetadiskClient({
-  baseURI: 'https://' + config.apiHost + ':' + config.apiPort
+  baseURI: 'http://' + config.apiHost + ':' + config.apiPort
 });
 
 const dest = document.getElementById('content');

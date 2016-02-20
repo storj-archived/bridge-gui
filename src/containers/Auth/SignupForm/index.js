@@ -7,8 +7,14 @@ import FormLabelError from '../../../components/ErrorViews/FormLabelError';
 import {Link} from 'react-router';
 
 @connect(
-  state => ({user: state.auth.user}),
-  authActions)
+  state => ({
+    email: state.auth.email,
+    password: state.auth.password,
+  }),
+  dispatch => ({
+    signUp: (email, password) => dispatch(authActions.signup(email, password))
+  })
+)
 
 @reduxForm({
   form: 'Signup',
@@ -23,6 +29,7 @@ export default class SignUpForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    this.props.signUp(this.props.fields.email.value, this.props.fields.password.value);
   }
 
   render() {
@@ -39,7 +46,7 @@ export default class SignUpForm extends Component {
               <input type="email" name="email" placeholder="Email Address" {...email} />
               {FormLabelError(password)}
               <input type="password" name="password" placeholder="Password" {...password} />
-              <button type="submit" className='btn btn-block btn-green'>Sign Up</button>
+              <button type="submit" onClick={this.handleSubmit.bind(this)} className='btn btn-block btn-green'>Sign Up</button>
             </form>
           </div>
           <p>Already have an account? <Link to="/" className="login">Log In</Link></p>

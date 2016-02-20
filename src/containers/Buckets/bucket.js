@@ -4,12 +4,26 @@ import {bindActionCreators} from 'redux';
 import {reduxForm} from 'redux-form';
 import * as bucketActions from 'redux/modules/bucket';
 import bucketFormValidation from './bucketFormValidation'
-
+import {Link, hashHistory} from 'react-router';
+/*
 @connect(
   state => ({
     bucket: state.bucket
   }),
   dispatch => bindActionCreators(bucketActions, dispatch)
+)
+*/
+
+@connect(
+  state => ({
+    buckets: state.bucketList
+  }),
+  dispatch => ({
+    load: () => dispatch(bucketActions.load()),
+    update: (bucketId, updateObj) => dispatch(bucketActions.update(bucketId, updateObj)),
+    create: (bucketObj) => dispatch(bucketActions.create(bucketObj)),
+    destroy: (bucketObj) => dispatch(bucketActions.destroy(bucketId))
+  })
 )
 
 @reduxForm({
@@ -24,7 +38,7 @@ import bucketFormValidation from './bucketFormValidation'
 
 export default class Bucket extends Component {
   // const styles = require('./Bucket.scss');
-
+/*
   static propTypes = {
     fields     : PropTypes.object.isRequired, // from redux-form
     submitting : PropTypes.bool.isRequired,
@@ -34,7 +48,7 @@ export default class Bucket extends Component {
     destroy    : PropTypes.func.isRequired,
     bucket     : PropTypes.object.isRequired, // from state.bucket
   };
-
+*/
   renderPubKeys(pks) {
     pks.map((pk, index) => {
       return(
@@ -47,7 +61,31 @@ export default class Bucket extends Component {
     ev.preventDefault();
     this.props.fields.pubkeys.addField();
   }
+
+  createBucket(e) {
+    console.log(this.props.fields)
+    e.preventDefault();
+    this.props.create({
+      name: this.props.fields.name.value
+      //pubkeys: this.props.fields.pubkeys.value
+    });
+  }
+
+  updateBucket(e) {
+    e.preventDefault();
+    this.props.update(this.props.params.bucketId, {
+      name: this.props.fields.name.value
+      //pubkeys: this.props.fields.pubkeys.value
+    });
+  }
+
+  destroy(e) {
+    e.preventDefault();
+    this.props.destroy(this.props.params.bucketId);
+  }
+
   render() {
+    let {query} = this.props.location
     return (
       <section>
 		    <div className="container">
@@ -57,40 +95,40 @@ export default class Bucket extends Component {
 				      <div className="row">
 					     <div className="col-sm-12">
 						      <h1 className="title pull-left">Edit Bucket</h1>
-						      <a href="" onClick={this.props.destroy} className="btn btn-action pull-right btn-red">Delete Bucket</a>
+						      <a href="javascript:void(0)" onClick={this.destroy.bind(this)} className="btn btn-action pull-right btn-red">Delete Bucket</a>
 					     </div>
 				      </div>
-              <form onSubmit={handleSubmit}>
+              <form>
                 <div className="row">
 					       <div className="col-sm-12">
 						        <div className="content">
-						  	     <label for="name">Bucket Name</label>
-						  	     <input type="text" name="name" placeholder="Bucket Name" {...name}/>
+						  	     <label htmlFor="name">Bucket Name</label>
+						  	     <input type="text" name="name" placeholder="Bucket Name" {...this.props.fields.name}/>
 						        </div>
 					       </div>
 				        </div>
-
+{/*
 				        <div className="row">
 					       <div className="col-sm-12">
 						        <div className="content" id="publicKeys">
-						  	     <label for="public-key">Add Public Key</label>
+						  	     <label htmlFor="public-key">Add Public Key</label>
 						  	     <a href="" onClick={this.addPubKeyHandler} className="pull-right" id="newKey">+ Add More Keys</a>
                     {this.renderPubKeys(pubkeys)}
 						        </div>
 					       </div>
 				        </div>
-
+*/}
 				        <div className="row">
 					       <div className="col-xs-6">
-						        <a href="buckets.html" className="btn btn-block btn-transparent">Go Back</a>
+						        <Link to="/dashboard" className="btn btn-block btn-transparent">Go Back</Link>
 					       </div>
-                  { this.props.bucket.loaded === undefined &&
+                  { query.new &&
                   <div className="col-xs-6">
-						        <a href="" onClick={this.props.create} className="btn btn-block btn-green btn-create-bucket">Save Bucket</a>
+						        <a href="javascript:void(0)" onClick={this.createBucket.bind(this)} className="btn btn-block btn-green btn-create-bucket">Save Bucket</a>
 					       </div> }
-                  { this.props.bucket.loaded &&
+                  { this.props.params.bucketId &&
                   <div className="col-xs-6">
-						        <a href="" onClick={this.props.update} className="btn btn-block btn-green btn-create-bucket">Update Bucket</a>
+						        <a href="javascript:void(0)" onClick={this.updateBucket.bind(this)} className="btn btn-block btn-green btn-create-bucket">Update Bucket</a>
 					       </div> }
 				        </div>
               </form>

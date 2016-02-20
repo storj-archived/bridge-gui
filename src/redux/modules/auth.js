@@ -2,12 +2,15 @@ const SIGNUP = 'metadisk-gui/auth/LOAD';
 const SIGNUP_SUCCESS = 'metadisk-gui/auth/LOAD_SUCCESS';
 const SIGNUP_FAIL = 'metadisk-gui/auth/LOAD_FAIL';
 const LOGIN = 'metadisk-gui/auth/LOGIN';
+const LOGIN_SUCCESS = 'metadisk-gui/auth/LOGIN_SUCCESS';
+const LOGIN_FAIL = 'metadisk-gui/auth/LOGIN_FAIL';
 const LOGOUT = 'metadisk-gui/auth/LOGOUT';
 
 const initialState = {
   loadedSignup: false,
   email: '',
-  password: ''
+  password: '',
+  loggedIn: false,
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -35,16 +38,30 @@ export default function reducer(state = initialState, action = {}) {
     case LOGIN:
       return {
         ...state,
+        loggedIn: false,
+        email: action.email,
+        password: action.password
+      };
+    case LOGIN_SUCCESS:
+      return {
+        ...state,
         loggedIn: true,
         email: action.email,
-        pass: action.pass
+        password: action.password
+      };
+    case LOGIN_FAIL:
+      return {
+        ...state,
+        loggedIn: false,
+        email: action.email,
+        password: action.password
       };
     case LOGOUT:
       return {
         ...state,
         loggedIn: false,
         email: '',
-        pass: ''
+        password: ''
       };
     default:
       return state;
@@ -52,14 +69,15 @@ export default function reducer(state = initialState, action = {}) {
 }
 
 export function isAuthenticated(globalState) {
-  return globalState.auth && globalState.auth.email && globalState.auth.pass;
+  return globalState.auth && globalState.auth.email && globalState.auth.password;
 }
 
-export function login(email, pass) {
+export function login(email, password) {
   return {
-    type: LOGIN,
+    types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
     email: email,
-    pass: pass
+    password: password,
+    promise: (client) => client.getPublicKeys()
   };
 }
 
@@ -69,12 +87,12 @@ export function logout() {
   };
 }
 
-export function signup(email, pass) {
+export function signup(email, password) {
   return {
     types: [SIGNUP, SIGNUP_SUCCESS, SIGNUP_FAIL],
     promise: (client) => client.createUser({
       email: email,
-      pass: pass
+      password: password
     })
   }
 }
