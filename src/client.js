@@ -18,14 +18,14 @@ let client = new MetadiskClient({
 
 const dest = document.getElementById('content');
 const store = createStore(client, window.__data);
-/*
+
 ReactDOM.render(
   <Provider store={store} key="provider">
     {getRoutes(store)}
   </Provider>,
   dest
 );
-
+/*
 if (process.env.NODE_ENV !== 'production') {
   window.React = React; // enable debugger
 
@@ -34,6 +34,7 @@ if (process.env.NODE_ENV !== 'production') {
   }
 }
 */
+/*
 //if (__DEVTOOLS__ && !window.devToolsExtension) {
   const DevTools = require('./containers/DevTools');
   ReactDOM.render(
@@ -45,4 +46,5 @@ if (process.env.NODE_ENV !== 'production') {
     </Provider>,
     dest
   );
-//}
+}
+*/

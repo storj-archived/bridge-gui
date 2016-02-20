@@ -26,7 +26,6 @@ const bufferToArray = require('buffer-to-arraybuffer')
 
 
 export default function Bucket(state = {}, action = {}) {
-  console.log(action)
   switch(action.type) {
     case LOAD:
       return {

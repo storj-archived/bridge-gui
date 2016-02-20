@@ -116,7 +116,6 @@ export default class Bucket extends Component {
   }
 
   render() {
-    console.log(this.props)
     let {query} = this.props.location
     return (
       <section>

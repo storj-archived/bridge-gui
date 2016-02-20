@@ -2,7 +2,6 @@ import React from 'react';
 import BucketListItem from './bucketListItem';
 
 const BucketList = (props) => {
-  console.log(props)
   // const styles = require('./BucketList.scss');
 
   function renderBucketListItems(buckets) {

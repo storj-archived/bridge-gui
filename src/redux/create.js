@@ -5,7 +5,7 @@ export default function createStore(client, data) {
   const middleware = [createMiddleware(client)];
 
   let finalCreateStore;
-//  if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {
+/*  if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {
     const { persistState } = require('redux-devtools');
     const DevTools = require('../containers/DevTools/index');
     finalCreateStore = compose(
@@ -13,8 +13,8 @@ export default function createStore(client, data) {
       window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument(),
       persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
     )(_createStore);
-//  } else {
-//    finalCreateStore = applyMiddleware(...middleware)(_createStore);
+  } else { */
+    finalCreateStore = applyMiddleware(...middleware)(_createStore);
 //  }
 
   const reducer = require('./modules/reducer');

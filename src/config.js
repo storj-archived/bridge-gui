@@ -12,9 +12,9 @@ const environment = {
 module.exports = Object.assign({
   host: process.env.HOST || '127.0.0.1',
   port: process.env.PORT || 3000,
-  apiHost: process.env.APIHOST || '127.0.0.1',
+  apiHost: process.env.APIHOST || '162.243.118.98',
   apiPort: process.env.APIPORT || 6500,
-  apiProtocol: (process.env.NODE_ENV === 'development') ? 'http://' : 'https://',
+  apiProtocol: 'http://', //(process.env.NODE_ENV === 'development') ? 'http://' : 'https://',
   app: {
     title: 'MetaDisk',
     description: 'MetaDisk provides developers and IT teams with high performance, durable object storage.',

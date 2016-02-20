@@ -32,7 +32,6 @@ export default function BucketList(state = {buckets:[]}, action = {}) {
     default:
       return state;
   }
-  console.log(state)
 }
 
 export function isLoaded(globalState) {
