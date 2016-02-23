@@ -23,10 +23,6 @@ export default class App extends Component {
     logout: PropTypes.func.isRequired
   };
 
-  static contextTypes = {
-    store: PropTypes.object.isRequired
-  };
-
   componentWillReceiveProps(nextProps) {
 //TODO: Replace this method with react-router state change
     if (!this.props.user && nextProps.user) {
@@ -51,7 +47,8 @@ export default class App extends Component {
       <div className={styles.app}>
         <Helmet {...config.app.head}/>
         <div className={styles.appContent}>
-          {this.props.children}
+        	{ this.props.navComponent }
+        	{ this.props.mainComponent }
         </div>
       </div>
     );
