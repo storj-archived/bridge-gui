@@ -29,7 +29,7 @@ export default class Buckets extends Component {
   }
 
   handleBucketClick(id) {
-    hashHistory.push('/bucket/' + id);
+    hashHistory.push('/dashboard/bucket/' + id);
   }
 
   render() {

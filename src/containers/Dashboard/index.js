@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import {Link, hashHistory} from 'react-router';
+import {Link, IndexLink, hashHistory} from 'react-router';
 import { logout } from 'redux/modules/auth';
 
 @connect(
@@ -27,7 +27,6 @@ export default class Dashboard extends Component {
 
   render() {
     //const styles = require('./Dashboard.scss');
-    console.log('render nav')
     return (
       <nav className="navbar navbar-page">
         <div className="container">
@@ -46,10 +45,10 @@ export default class Dashboard extends Component {
 
           <div className="collapse navbar-collapse" id="navbar-menu">
             <ul className="nav navbar-nav navbar-left">
-              <li><Link to='/buckets'>Buckets</Link></li>
-              <li><Link to='/api'>API</Link></li>
-              <li><Link to='/billing'>Billing</Link></li>
-              <li><Link to='/support'>Support</Link></li>
+              <li><IndexLink to='/dashboard'>Buckets</IndexLink></li>
+              <li><Link to='/dashboard/api'>API</Link></li>
+              <li><Link to='/dashboard/billing'>Billing</Link></li>
+              <li><Link to='/dashboard/support'>Support</Link></li>
             </ul>
             <div className="navbar-right">
               <a href="javascript:void(0)" onClick={this.handleLogout.bind(this)} className="btn btn-menu btn-transparent">Logout</a>
