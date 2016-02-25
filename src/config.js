@@ -11,7 +11,7 @@ const environment = {
 
 module.exports = Object.assign({
   host: process.env.HOST || '127.0.0.1',
-  port: process.env.PORT || 3000,
+  port: process.env.PORT || 80,
   apiHost: process.env.APIHOST || '162.243.118.98',
   apiPort: process.env.APIPORT || 6500,
   apiProtocol: 'http://', //(process.env.NODE_ENV === 'development') ? 'http://' : 'https://',
