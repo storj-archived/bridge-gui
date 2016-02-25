@@ -1,13 +1,30 @@
-.loginPage {
-  input {
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  form {
-    margin: 30px 0;
-    :global(.btn) {
-      margin-left: 10px;
-    }
-  }
+.logo {
+	margin: 3em auto;
+	width: 200px;
+}
+.btn {
+	margin-bottom: 1.5em;
+	font-size: 16px;
+}
+.content {
+	padding: 2em 3em;
+}
+input {
+	min-width: 100%;
+}
+.forgot-password {
+	display: block;
+	margin-top: 8px;
+}
+.password .title {
+	margin-bottom: 0.6em;
+}
+.password .content p {
+	margin-bottom: 2.5em;
+}
+.checkbox label {
+    padding-left: 24px;
+}
+.checkbox input {
+    margin: 3px 0 0 -26px !important;
 }

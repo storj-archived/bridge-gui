@@ -46,31 +46,37 @@ export default class LoginForm extends Component {
     const styles = require('./LoginForm.scss');
 
     return(
-      <div className="row">
-        <div className="col-sm-12">
-          <div className="content">
-            <h1 className="title text-center">Login</h1>
-            <form onSumbit={this.handleSubmit}>
-              {FormLabelError(email)}
-              <input type="email" name="email" placeholder="Email Address" {...email}/>
-              {FormLabelError(password)}
-              <input type="password" name="password" placeholder="Password" {...password}/>
-              <button type="submit" onClick={this.handleSubmit.bind(this)} className='btn btn-block btn-green'>Log In</button>
-            </form>
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-6 col-lg-push-3 col-md-8 col-md-push-2 col-xs-12 text-center">
             <div className="row">
-              <div className="col-sm-6 text-left">
-                <div className="checkbox">
-                  <label><input type="checkbox" {...rememberUser}/> Remember Me</label>
+              <div className="col-sm-12">
+                <div className="content">
+                  <h1 className="title text-center">Login</h1>
+                  <form onSumbit={this.handleSubmit}>
+                    {FormLabelError(email)}
+                    <input type="email" name="email" placeholder="Email Address" {...email}/>
+                    {FormLabelError(password)}
+                    <input type="password" name="password" placeholder="Password" {...password}/>
+                    <button type="submit" onClick={this.handleSubmit.bind(this)} className='btn btn-block btn-green'>Log In</button>
+                  </form>
+                  <div className="row">
+                    <div className="col-sm-6 text-left">
+                      <div className="checkbox">
+                        <label><input type="checkbox" {...rememberUser}/> Remember Me</label>
+                      </div>
+                    </div>
+
+                    <div className="col-sm-6 text-right">
+                      <Link to="/password-reset">Forgot Password?</Link>
+                    </div>
+
+                  </div>
                 </div>
+                <p>Don't have an account? <Link to="/signup" className="login">Sign Up</Link></p>
               </div>
-
-              <div className="col-sm-6 text-right">
-                <Link to="/password-reset">Forgot Password?</Link>
-              </div>
-
             </div>
           </div>
-          <p>Don't have an account? <Link to="/signup" className="login">Sign Up</Link></p>
         </div>
       </div>
     );

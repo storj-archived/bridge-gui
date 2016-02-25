@@ -26,7 +26,7 @@ export default class Dashboard extends Component {
   };
 
   render() {
-    //const styles = require('./Dashboard.scss');
+    const styles = require('./Dashboard.scss');
     return (
       <nav className="navbar navbar-page">
         <div className="container">

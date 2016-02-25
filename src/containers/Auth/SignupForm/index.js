@@ -34,12 +34,12 @@ export default class SignUpForm extends Component {
 
   render() {
     const {fields: {email, password}} = this.props;
-    const styles = require('./SignupForm.scss');
+    const styles = require('../Auth.scss');
 
     return(
       <div className="row">
         <div className="col-sm-12">
-          <div className="content">
+          <div className="{styles.content}">
             <h1 className="title text-center">Sign Up</h1>
             <form onSumbit={this.handleSubmit}>
               {FormLabelError(email)}
