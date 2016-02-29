@@ -1,30 +1,25 @@
-.logo {
+.auth .logo {
 	margin: 3em auto;
 	width: 200px;
 }
-.btn {
-	margin-bottom: 1.5em;
-	font-size: 16px;
-}
-.content {
+
+.auth .content {
 	padding: 2em 3em;
 }
-input {
-	min-width: 100%;
-}
-.forgot-password {
+
+.auth .forgot-password {
 	display: block;
 	margin-top: 8px;
 }
-.password .title {
+
+.auth .password .title {
 	margin-bottom: 0.6em;
 }
-.password .content p {
+
+.auth .password .content p {
 	margin-bottom: 2.5em;
 }
-.checkbox label {
+
+.auth .checkbox label {
     padding-left: 24px;
-}
-.checkbox input {
-    margin: 3px 0 0 -26px !important;
 }

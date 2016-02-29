@@ -1,11 +1,15 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as authActions from 'redux/modules/auth';
 import {Link, hashHistory} from 'react-router';
+
+import './LoginForm.scss';
+
+import * as authActions from 'redux/modules/auth';
 import FormLabelError from '../../../components/ErrorViews/FormLabelError';
-import {reduxForm} from 'redux-form';
 import loginValidation from './loginValidation'
+
+import {reduxForm} from 'redux-form';
 
 @connect(
   state => ({
@@ -43,22 +47,27 @@ export default class LoginForm extends Component {
 
   render() {
     const {fields: {email, password, rememberUser}} = this.props;
-    const styles = require('./LoginForm.scss');
 
     return(
-      <div className="container">
+      <div className="container auth">
         <div className="row">
           <div className="col-lg-6 col-lg-push-3 col-md-8 col-md-push-2 col-xs-12 text-center">
             <div className="row">
               <div className="col-sm-12">
-                <div className="content">
+                <div className="content form-horizontal">
                   <h1 className="title text-center">Login</h1>
                   <form onSumbit={this.handleSubmit}>
-                    {FormLabelError(email)}
-                    <input type="email" name="email" placeholder="Email Address" {...email}/>
-                    {FormLabelError(password)}
-                    <input type="password" name="password" placeholder="Password" {...password}/>
-                    <button type="submit" onClick={this.handleSubmit.bind(this)} className='btn btn-block btn-green'>Log In</button>
+                    <div className="form-group">
+                      {FormLabelError(email)}
+                      <input type="email" className="form-control input-lg" name="email" placeholder="Email Address" {...email}/>
+                    </div>
+                    <div className="form-group">
+                      {FormLabelError(password)}
+                      <input type="password" className="form-control input-lg" name="password" placeholder="Password" {...password}/>
+                    </div>
+                    <div className="form-group">
+                      <button type="submit" onClick={this.handleSubmit.bind(this)} className='btn btn-block btn-green'>Login</button>
+                    </div>
                   </form>
                   <div className="row">
                     <div className="col-sm-6 text-left">
@@ -68,7 +77,7 @@ export default class LoginForm extends Component {
                     </div>
 
                     <div className="col-sm-6 text-right">
-                      <Link to="/password-reset">Forgot Password?</Link>
+                      <Link to="/password-reset" className="forgot-password">Forgot Password?</Link>
                     </div>
 
                   </div>

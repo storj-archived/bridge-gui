@@ -128,9 +128,9 @@ Buttons
 
 .btn {
 	font-family: 'Avenir Next LT Pro Demi';
-	font-size: 14px;
-	background: #2683FF;
-	color: #FFF;
+	//font-size: 14px;
+	//background: #2683FF;
+	//color: #FFF;
 	padding: 14px 60px 12px;
 	z-index: 2;
 	border: 2px solid #2683ff;
@@ -150,13 +150,13 @@ Buttons
 	outline: 0;
 }
 .btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn.active.focus {
-    outline: 0;
+  outline: 0;
 }
 
 .btn-transparent {
 	background: transparent;
-    border-color: #eee;
-    color: #555;
+  border-color: #eee;
+  color: #555;
 }
 .btn-transparent:hover {
 	background: #fff;
@@ -190,9 +190,9 @@ Buttons
   color: #fa6e50;
 }
 .btn-red:hover, .btn-red:focus {
-    background: #fa6e50;
-    border-color: #fa6e50;
-    color: #fff;
+  background: #fa6e50;
+  border-color: #fa6e50;
+  color: #fff;
 }
 
 .btn-menu {
@@ -203,11 +203,6 @@ Buttons
 .btn-action {
 	margin-top: 18px;
     padding: 12px 36px 10px;
-}
-
-.btn-block {
-	margin-top: 1.6em;
-	margin-bottom: 1.4em;
 }
 
 .subscribe {
@@ -334,21 +329,22 @@ Inputs
 -------------------------------- */
 
 input, select {
-	display: block;
+	//display: block;
 	background: #fbfbfb;
-	border: 1px solid #eee;
+	//border: 1px solid #eee;
 	border-radius: 3px;
 	color: #2683FF;
 	padding: 12px 18px 10px;
-	margin: 25px auto;
-	width: 100%;
-	max-width: 320px;
-    font-size: 16px;
-    -webkit-transition: all 0.15s ease-in-out;
-    -moz-transition: all 0.15s ease-in-out;
-    -ms-transition: all 0.15s ease-in-out;
-    transition: all 0.15s ease-in-out;
+	//margin: 25px auto;
+	//width: 100%;
+	//max-width: 320px;
+  font-size: 16px;
+  -webkit-transition: all 0.15s ease-in-out;
+  -moz-transition: all 0.15s ease-in-out;
+  -ms-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
 }
+
 input:focus, select:focus {
     outline: 0;
     border-color: #2D86fb;
@@ -1294,4 +1290,10 @@ Media Queries
 	.footer-logo img {
     	margin: 2em auto 0.3em;
 	}
+}
+/*
+Form Overrides
+*/
+.input-lg {
+
 }
