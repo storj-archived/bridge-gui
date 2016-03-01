@@ -2,3 +2,472 @@
  * The longer this file grows, the longer it will take to change styles.
  * Be kind and attempt to move these to components and themes.
  */
+
+@import 'variables';
+
+/* --------------------------------
+
+Navigation
+
+-------------------------------- */
+
+.navbar-brand {
+	padding: 0;
+}
+
+.logo {
+  display: inline-block;
+  margin: 12px 20px;
+  width: 150px;
+}
+
+.menu {
+	padding: 60px 0 40px;
+    z-index: 3;
+    background: none;
+    border: none;
+    margin: 0;
+}
+
+.navbar-default .navbar-toggle {
+    border: 2px solid #fff;
+}
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #FFF;
+    border-radius: 0;
+}
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+    border: 0;
+}
+.navbar-default .navbar-toggle:focus {
+	background: none;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:active {
+    background-color: #2683ff;
+}
+.navbar-default .navbar-collapse.in{
+    border-color: transparent;
+}
+.navbar-collapse.in li {
+	border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.navbar-nav {
+    margin: 0 -15px;
+}
+.navbar-nav>li>a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    line-height: 22px;
+    text-align: center;
+}
+.nav>li>a:hover, .nav>li>a:focus {
+    background: none;
+    box-shadow: 0 2px #2683ff;
+}
+
+.navbar-default .navbar-nav>li>a {
+	display: inline-block;
+	color: #fff !important;
+	padding: 16px;
+}
+.navbar-default .navbar-nav>li>a:hover {
+	color: #fff;
+}
+
+.navbar .dropdown {
+	display: inline-block;
+}
+
+.navbar-page {
+	border: 0;
+	border-bottom: 2px solid #eee;
+	border-radius: 0;
+	background: #fff;
+}
+.navbar-page .navbar-nav>li>a {
+	padding: 30px 16px;
+	width: 100%;
+  color: #8492a6;
+}
+.navbar-page .navbar-nav>li>a:hover {
+	color: #2683ff;
+}
+.navbar-page .navbar-nav>li>a.active {
+	font-family: 'Avenir Next LT Pro Demi';
+	color: #2683ff;
+	box-shadow: 0 2px #2683ff;
+}
+.navbar-page .navbar-brand {
+	margin: 15px 25px 15px 15px;
+}
+.navbar-page .logo {
+	margin-left: 15px;
+}
+.navbar-page .navbar-toggle {
+	margin-top: 22px;
+    margin-right: 22px;
+    border: 2px solid #2683ff;
+}
+.navbar-page .navbar-toggle .icon-bar {
+	background: #2683ff;
+}
+
+
+/* --------------------------------
+
+Inputs
+
+-------------------------------- */
+
+input, select {
+	//display: block;
+	background: #fbfbfb;
+	//border: 1px solid #eee;
+	border-radius: 3px;
+	color: #2683FF;
+	padding: 12px 18px 10px;
+	//margin: 25px auto;
+	//width: 100%;
+	//max-width: 320px;
+  font-size: 16px;
+  -webkit-transition: all 0.15s ease-in-out;
+  -moz-transition: all 0.15s ease-in-out;
+  -ms-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+}
+
+input:focus, select:focus {
+    outline: 0;
+    border-color: #2D86fb;
+}
+.page input, .page select {
+	margin: 10px 0;
+    border-width: 1px;
+    max-width: 100%;
+}
+#publicKeys input {
+	margin-top: 20px;
+}
+
+select {
+	height: 46px;
+	text-indent: 10px;
+	color: #444;
+}
+
+.email {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+::-webkit-input-placeholder {
+    color: #444;
+}
+:focus::-webkit-input-placeholder {
+    color: #BAD7FE;
+}
+:-moz-placeholder {
+    color: #444;
+}
+:focus:-moz-placeholder {
+    color: #BAD7FE;
+}
+::-moz-placeholder {
+    color: #444;
+}
+:focus::-moz-placeholder {
+    color: #BAD7FE;
+}
+:-ms-input-placeholder {
+    color: #444;
+}
+:focus:-ms-input-placeholder {
+    color: #BAD7FE;
+}
+
+/* --------------------------------
+
+Buckets
+
+-------------------------------- */
+
+body.page {
+	background: #f9f9f9;
+	padding-bottom: 3em;
+}
+.content {
+	border: 1px solid #eee;
+    background: #fff;
+    border-radius: 5px;
+    padding: 2em;
+    margin-bottom: 2em;
+}
+label {
+	margin-bottom: 0.8em;
+}
+.table {
+	margin-bottom: 0;
+}
+.table-responsive.content {
+	padding: 0;
+}
+tr {
+	-webkit-transition: all 0.15s ease-in-out;
+    -moz-transition: all 0.15s ease-in-out;
+    -ms-transition: all 0.15s ease-in-out;
+    transition: all 0.15s ease-in-out;
+}
+th, td {
+	padding: 1.8em !important;
+}
+
+.table>thead>tr>th {
+    border-bottom: 1px solid #eee;
+}
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+    border-top: 1px solid #eee;
+}
+.bucket-plan a {
+	font-family: 'Avenir Next LT Pro Demi';
+	text-decoration: none;
+}
+.bucket-icon {
+	padding: 22px 0 0 26px !important;
+    margin: 0;
+    width: 70px;
+}
+.bucket-icon img {
+	width: 42px;
+    padding: 0;
+    margin: 0;
+}
+.clickable-row {
+	cursor: pointer;
+}
+.btn-create-bucket {
+	margin-bottom: 2em;
+}
+.bucket-pricing-icon {
+	height: 50px;
+	width: 50px;
+	margin: 15px;
+}
+
+.page .btn-block {
+    font-size: 16px;
+    margin: 0.5em auto;
+    padding: 0.9em 0 0.8em;
+}
+
+input.parent-code {
+	margin: 1.2em auto;
+	line-height: 1.8em;
+}
+
+/* --------------------------------
+
+Media Queries
+
+-------------------------------- */
+
+
+
+@media (min-width: 1200px) {
+	body.page .container {
+    	width: 1020px;
+	}
+    .text-left-lg {
+      text-align: left;
+    }
+    .text-right-lg {
+      text-align: right;
+    }
+    .text-center-lg {
+      text-align: center;
+    }
+    .navbar-page {
+		padding-left: 30px;
+		padding-right: 30px;
+	}
+	.home .plan {
+		margin: 2em 1em;
+	}
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    .text-left-md {
+      text-align: left;
+    }
+    .text-right-md {
+      text-align: right;
+    }
+    .text-center-md {
+      text-align: center;
+    }
+    .value p {
+    	font-size: 14px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .text-left-sm {
+      text-align: left;
+    }
+    .text-right-sm {
+      text-align: right;
+    }
+    .text-center-sm {
+      text-align: center;
+    }
+    .upload {
+		padding: 0;
+		margin: 1em auto;
+    }
+    .upload-metadisk {
+    	margin-top: 1em;
+    }
+    .navbar-page .navbar-brand {
+		margin-right: 0;
+	}
+	.btn-menu {
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+	.value p {
+    	font-size: 15px;
+    }
+    .value h4 {
+    	font-size: 14px;
+    }
+}
+
+@media (max-width: 767px) {
+    .text-left-xs {
+      text-align: left;
+    }
+    .text-right-xs {
+      text-align: right;
+    }
+    .text-center-xs {
+      text-align: center;
+    }
+    .header {
+    	height: auto;
+    	padding-bottom: 5em;
+    }
+    .header-content {
+    	position: relative;
+    }
+    .navbar-page .logo {
+		margin-left: 0;
+	}
+	.navbar-right {
+		text-align: center;
+		padding-bottom: 1em;
+	}
+	.navbar-page .navbar-nav>li>a {
+		padding: 16px;
+	}
+	.btn-menu {
+		width: 100%;
+		margin: 0.5em 0;
+	}
+	.compare-product {
+		padding: 0;
+	}
+	.compare-pricing {
+		font-size: 24px;
+		margin-top: 1.2em;
+	}
+	.compare-pricing span {
+    	margin-left: 6px;
+	}
+	.compare-logo {
+		max-width: 150px;
+		height: auto;
+	}
+	.compare-metadisk .compare-logo {
+		height: 25px;
+		width: auto;
+		margin-top: 2.5em;
+	}
+	footer {
+		text-align: center;
+	}
+	.footer-logo img {
+		margin: 1em auto 0.1em;
+	}
+}
+
+@media (max-width: 480px) {
+	.section {
+		padding: 2em 0;
+	}
+	.logo {
+    	width: 160px;
+	}
+	.btn-action {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	.page .btn-block {
+		font-size: 16px;
+	}
+	.menu {
+		padding: 30px 0 20px;
+	}
+	.pricing {
+    	padding: 2em 0 4em;
+	}
+	.plans {
+    	margin: 0 auto 1em;
+	}
+	.traction img {
+	    margin-top: 0.6em;
+	    margin-bottom: 1.5em;
+	}
+	.traction h2 {
+    	font-size: 21px;
+	}
+	.c2a {
+		padding: 4em 1.5em;
+	}
+	.compare-pricing {
+		font-size: 18px;
+		margin-top: 1em;
+	}
+	.compare-pricing span {
+		font-size: 16px;
+		margin-left: 0;
+		display: block;
+	}
+	.compare-logo {
+		max-width: 130px;
+		height: auto;
+	}
+	.compare-metadisk .compare-logo {
+		height: 22px;
+		width: auto;
+		margin-top: 2.6em;
+	}
+	footer {
+		text-align: center;
+	}
+	footer h4 {
+    	margin-top: 2em;
+    	padding-bottom: 0;
+	}
+	.footer-logo p {
+	    display: block;
+	}
+	.footer-logo img {
+    	margin: 2em auto 0.3em;
+	}
+}
+/*
+Form Overrides
+*/
+.input-lg {
+
+}

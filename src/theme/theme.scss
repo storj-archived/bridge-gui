@@ -1,0 +1,66 @@
+/** The lovely, little knickknacks making up the theme that have nothing to do
+ * with Bootstrap styles
+ */
+@import 'variables';
+
+/* --------------------------------
+
+Buttons
+
+-------------------------------- */
+
+.btn-transparent {
+	background: transparent;
+  border-color: #eee;
+  color: #555;
+}
+
+.btn-transparent:hover {
+	background: #fff;
+	color: #333;
+	border-color: #555;
+}
+
+.btn-green {
+	border-color: #88C425;
+	color: #fff;
+	background: #88C425;
+}
+
+.btn-green:hover, .btn-green:focus {
+	background: #91D127;
+	border-color: #91D127;
+}
+
+.btn-orange {
+	background: #FF7F00;
+	border-color: #FF7F00;
+	color: #fff;
+}
+
+.btn-orange:hover, .btn-orange:focus {
+	background: #FF6600;
+	border-color: #FF6600;
+}
+
+.btn-red {
+  background: transparent;
+  border-color: #fa6e50;
+  color: #fa6e50;
+}
+
+.btn-red:hover, .btn-red:focus {
+  background: #fa6e50;
+  border-color: #fa6e50;
+  color: #fff;
+}
+
+.btn-menu {
+	margin: 18px 6px;
+	padding: 12px 32px 10px;
+}
+
+.btn-action {
+	margin-top: 18px;
+  padding: 12px 36px 10px;
+}
