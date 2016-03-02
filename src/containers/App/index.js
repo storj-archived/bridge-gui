@@ -44,9 +44,9 @@ export default class App extends Component {
     const styles = require('./App.scss');
 
     return (
-      <div className={styles.app}>
+      <div>
         <Helmet {...config.app.head}/>
-        <div className={styles.appContent}>
+        <div>
         	{ this.props.navComponent }
         	{ this.props.mainComponent }
         </div>

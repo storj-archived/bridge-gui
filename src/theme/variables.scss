@@ -16,7 +16,7 @@ $gray-base: #000;
 $gray-darker: lighten($gray-base, 13.5%);
 $gray-dark: lighten($gray-base, 20%);
 $gray: lighten($gray-base, 33.5%);
-$gray-light: lighten($gray-base, 46.7%);
+$gray-light: lighten($gray-base, 42.0%);
 $gray-lighter: lighten($gray-base, 93.5%);
 $brand-primary: #2683FF;
 $brand-success: #91D127;
@@ -150,17 +150,17 @@ $container-tablet: (720px + $grid-gutter-width);
 $container-sm: $container-tablet;
 $container-desktop: (940px + $grid-gutter-width);
 $container-md: $container-desktop;
-$container-large-desktop: (1140px + $grid-gutter-width);
+$container-large-desktop: (990px + $grid-gutter-width); //orig 1140px + gutter
 $container-lg: $container-large-desktop;
-$navbar-height: 50px;
+$navbar-height: 82px;
 $navbar-margin-bottom: $line-height-computed;
 $navbar-border-radius: $border-radius-base;
 $navbar-padding-horizontal: floor(($grid-gutter-width / 2));
 $navbar-padding-vertical: (($navbar-height - $line-height-computed) / 2);
 $navbar-collapse-max-height: 340px;
 
-$navbar-default-color: #777;
-$navbar-default-bg: #f8f8f8;
+$navbar-default-color: $gray-light;
+$navbar-default-bg: #ffffff;
 $navbar-default-border: darken($navbar-default-bg, 6.5%);
 
 $navbar-default-link-color: $gray-light;
@@ -175,9 +175,9 @@ $navbar-default-brand-color: $navbar-default-link-color;
 $navbar-default-brand-hover-color: darken($navbar-default-brand-color, 10%);
 $navbar-default-brand-hover-bg: transparent;
 
-$navbar-default-toggle-hover-bg: #ddd;
-$navbar-default-toggle-icon-bar-bg: #888;
-$navbar-default-toggle-border-color: #ddd;
+$navbar-default-toggle-hover-bg: #fff;
+$navbar-default-toggle-icon-bar-bg: $brand-primary;
+$navbar-default-toggle-border-color: $brand-primary;
 
 $navbar-inverse-color: lighten($gray-light, 15%);
 $navbar-inverse-bg: #222;
@@ -196,7 +196,7 @@ $navbar-inverse-toggle-hover-bg: #333;
 $navbar-inverse-toggle-icon-bar-bg: #fff;
 $navbar-inverse-toggle-border-color: #333;
 
-$nav-link-padding: 10px 15px;
+$nav-link-padding: 10px 16px;
 $nav-link-hover-bg: $gray-lighter;
 $nav-disabled-link-color: $gray-light;
 $nav-disabled-link-hover-color: $gray-light;
