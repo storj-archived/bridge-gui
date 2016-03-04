@@ -41,14 +41,26 @@ export default class SignUpForm extends Component {
           <div className="col-lg-6 col-lg-push-3 col-md-8 col-md-push-2 col-xs-12 text-center">
             <div className="row">
               <div className="col-sm-12">
-                <div className="content">
-                  <h1 className="title text-center">Sign Up</h1>
+                <div className="content form-horizontal">
+
+                  <h1 className="title text-center form-group">Sign Up</h1>
+
                   <form onSumbit={this.handleSubmit}>
-                    {FormLabelError(email)}
-                    <input type="email" name="email" placeholder="Email Address" {...email} />
-                    {FormLabelError(password)}
-                    <input type="password" name="password" placeholder="Password" {...password} />
-                    <button type="submit" onClick={this.handleSubmit.bind(this)} className='btn btn-block btn-green'>Sign Up</button>
+
+                    <div className="form-group">
+                      {FormLabelError(email)}
+                      <input type="email" className="form-control" name="email" placeholder="Email Address" {...email} />
+                    </div>
+
+                    <div className="form-group">
+                      {FormLabelError(password)}
+                      <input type="password" className="form-control" name="password" placeholder="Password" {...password} />
+                    </div>
+
+                    <div className="form-group">
+                      <button type="submit" onClick={this.handleSubmit.bind(this)} className='btn btn-block btn-green'>Sign Up</button>
+                    </div>
+
                   </form>
                 </div>
                 <p>Already have an account? <IndexLink to="/login" className="login">Log In</IndexLink></p>

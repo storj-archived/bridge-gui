@@ -55,19 +55,24 @@ export default class LoginForm extends Component {
             <div className="row">
               <div className="col-sm-12">
                 <div className="content form-horizontal">
-                  <h1 className="title text-center">Login</h1>
+
+                  <h1 className="title text-center form-group">Login</h1>
+
                   <form onSumbit={this.handleSubmit}>
                     <div className="form-group">
                       {FormLabelError(email)}
-                      <input type="email" className="form-control input-lg" name="email" placeholder="Email Address" {...email}/>
+                      <input type="email" className="form-control" name="email" placeholder="Email Address" {...email}/>
                     </div>
+
                     <div className="form-group">
                       {FormLabelError(password)}
-                      <input type="password" className="form-control input-lg" name="password" placeholder="Password" {...password}/>
+                      <input type="password" className="form-control" name="password" placeholder="Password" {...password}/>
                     </div>
+
                     <div className="form-group">
                       <button type="submit" onClick={this.handleSubmit.bind(this)} className='btn btn-block btn-green'>Login</button>
                     </div>
+
                   </form>
                   <div className="row">
                     <div className="col-sm-6 text-left">

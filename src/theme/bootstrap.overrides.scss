@@ -50,7 +50,51 @@ a {
 	-moz-transition: all 0.15s ease-in-out;
 	-ms-transition: all 0.15s ease-in-out;
 	transition: all 0.15s ease-in-out;
+	padding: 12px 36px 10px;
 }
+
+.btn-xs {
+	padding: 6px 12px 6px;
+}
+
+.btn-sm {
+	padding: 10px 24px 8px;
+}
+
+.btn-lg {
+	padding: 14px 60px 12px;
+}
+
+.navbar-btn {
+	padding: 6px 36px; //navbar-btn top-bottom margins based on $input-height-base variable, set @ 6px
+}
+
+input, select {
+	border-radius: 3px;
+  font-size: 16px;
+  -webkit-transition: all 0.15s ease-in-out;
+  -moz-transition: all 0.15s ease-in-out;
+  -ms-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+	padding: 12px 18px 10px;
+	color: $brand-primary;
+	background: #fbfbfb;
+}
+
+.input-sm {
+  font-size: 12px;
+	padding: 10px 12px 8px;
+}
+
+.input-lg {
+  font-size: 24px;
+	padding: 16px 28px 12px;
+}
+
+input:focus, select:focus {
+    border-color: #2D86fb;
+}
+
 
 .navbar-default .nav>li>a {
 	text-align: center;

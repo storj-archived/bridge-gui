@@ -39,6 +39,7 @@ Buttons
 .btn-green:hover, .btn-green:focus {
 	background: #91D127;
 	border-color: #91D127;
+  color: #fff;
 }
 
 .btn-orange {
@@ -62,4 +63,31 @@ Buttons
   background: #fa6e50;
   border-color: #fa6e50;
   color: #fff;
+}
+
+
+
+::-webkit-input-placeholder {
+    color: #444;
+}
+:focus::-webkit-input-placeholder {
+    color: #BAD7FE;
+}
+:-moz-placeholder {
+    color: #444;
+}
+:focus:-moz-placeholder {
+    color: #BAD7FE;
+}
+::-moz-placeholder {
+    color: #444;
+}
+:focus::-moz-placeholder {
+    color: #BAD7FE;
+}
+:-ms-input-placeholder {
+    color: #444;
+}
+:focus:-ms-input-placeholder {
+    color: #BAD7FE;
 }
