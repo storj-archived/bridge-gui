@@ -5,16 +5,14 @@ import 'babel/polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import createStore from './redux/create';
-import MetadiskClient from 'metadisk-client';
+import {Client as MetadiskClient} from 'metadisk-client';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import config from './config';
 
 import getRoutes from './routes';
 
-let client = new MetadiskClient({
-  baseURI: 'http://' + config.apiHost + ':' + config.apiPort
-});
+let client = new MetadiskClient();
 
 const dest = document.getElementById('content');
 const store = createStore(client, window.__data);

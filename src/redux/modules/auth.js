@@ -77,7 +77,9 @@ export function login(email, password) {
     types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
     email: email,
     password: password,
-    promise: (client) => client.getPublicKeys()
+    promise: (client) => {
+      return client.getPublicKeys();
+    }
   };
 }
 
@@ -90,9 +92,6 @@ export function logout() {
 export function signup(email, password) {
   return {
     types: [SIGNUP, SIGNUP_SUCCESS, SIGNUP_FAIL],
-    promise: (client) => client.createUser({
-      email: email,
-      password: password
-    })
+    promise: (client) => client.createUser(email, password)
   }
 }

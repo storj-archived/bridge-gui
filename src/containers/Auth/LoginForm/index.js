@@ -42,6 +42,7 @@ export default class LoginForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    console.log(this.props)
     this.props.login(this.props.fields.email.value, this.props.fields.password.value);
   }
 

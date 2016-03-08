@@ -2,6 +2,8 @@ const LOAD = 'metadisk-gui/bucket/LOAD';
 const LOAD_SUCCESS = 'metadisk-gui/bucket/LOAD_SUCCESS';
 const LOAD_FAIL = 'metadisk-gui/bucket/LOAD_FAIL';
 
+const CLEAR = 'metadisk-gui/bucket/CLEAR';
+
 const CREATE = 'metadisk-gui/bucket/CREATE';
 const CREATE_SUCCESS = 'metadisk-gui/bucket/CREATE_SUCCESS';
 const CREATE_FAIL = 'metadisk-gui/bucket/CREATE_FAIL';
@@ -32,8 +34,8 @@ export default function Bucket(state = {}, action = {}) {
         ...state,
         loading: true,
         loaded: false,
-        saving: false,
-        saved: false,
+        //saving: false,
+        //saved: false,
         token: null,
         fileHash: null,
         fileURI: null
@@ -52,6 +54,9 @@ export default function Bucket(state = {}, action = {}) {
         loading: false,
         ...action.result
       };
+
+    case CLEAR:
+      return {};
 
     case CREATE:
       return {
@@ -158,6 +163,12 @@ export function load(bucketId) {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
     promise: (client) => client.getBucketById(bucketId)
   };
+}
+
+export function clear() {
+  return {
+    type: CLEAR
+  }
 }
 
 export function create(bucket) {

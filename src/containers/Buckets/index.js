@@ -40,7 +40,7 @@ export default class Buckets extends Component {
           <div className="row">
             <div className="col-xs-12">
               <h1 className="title pull-left">Buckets</h1>
-              <Link to={{ pathname: '/bucket', query: { new: 'true' } }} className="btn btn-green btn-menu pull-right">Create Bucket</Link>
+              <Link to={{ pathname: 'dashboard/bucket/new'}} className="btn btn-green btn-menu pull-right">Create Bucket</Link>
             </div>
           </div>
 

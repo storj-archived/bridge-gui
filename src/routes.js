@@ -6,7 +6,8 @@ import {
     App,
     Auth,
     Billing,
-    Bucket,
+    BucketEdit,
+    BucketNew,
     Buckets,
     Dashboard,
     Home,
@@ -22,7 +23,7 @@ export default (store) => {
       }
       cb();
   };
-//onEnter={requireLogin}
+
   return (
     <Router history={hashHistory}>
       <Route path="/login" component={App}>
@@ -32,8 +33,9 @@ export default (store) => {
         { /* Routes requiring login */ }
       <Route path="/dashboard" component={App}>
         <IndexRoute components={{navComponent: Dashboard, mainComponent: Buckets}}/>
-        <Route path="bucket" components={{navComponent: Dashboard, mainComponent: Bucket}}/>
-        <Route path="bucket/:bucketId" components={{navComponent: Dashboard, mainComponent: Bucket}}/>
+
+        <Route path="bucket/new" components={{navComponent: Dashboard, mainComponent: BucketNew}}/>
+        <Route path="bucket/:bucketId" components={{navComponent: Dashboard, mainComponent: BucketEdit}}/>
         <Route path="billing" components={{navComponent: Dashboard, mainComponent: Billing}}/>
         <Route path="support" components={{navComponent: Dashboard, mainComponent: Support}}/>
       </Route>

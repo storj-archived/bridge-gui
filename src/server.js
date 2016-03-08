@@ -7,7 +7,7 @@ import compression from 'compression';
 import httpProxy from 'http-proxy';
 import path from 'path';
 import createStore from './redux/create';
-import MetadiskClient from 'metadisk-client';
+import { Client as MetadiskClient } from 'metadisk-client';
 import Html from './helpers/Html';
 import PrettyError from 'pretty-error';
 import http from 'http';
@@ -64,9 +64,7 @@ app.use((req, res) => {
     webpackIsomorphicTools.refresh();
   }
 
-  let client = new MetadiskClient({
-    baseURI: 'https://' + config.apiHost + ':' + config.apiPort
-  });
+  let client = new MetadiskClient();
 
 //  const store = createStore(client);
 /*

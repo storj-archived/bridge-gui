@@ -4,8 +4,9 @@ export default function clientMiddleware(client) {
       //TODO: find a better solution for API auth
       var authAction = action;
       if(typeof authAction === 'object' && authAction.types && authAction.types[0] && authAction.types[0] === 'metadisk-gui/auth/LOGIN') {
-        client._options.password = authAction.password;
-        client._options.email = authAction.email;
+        client._options.basicauth = client._options.basicauth || {};
+        client._options.basicauth.password = authAction.password;
+        client._options.basicauth.email = authAction.email;
       }
       if (typeof action === 'function') {
         return action(dispatch, getState);
@@ -21,7 +22,6 @@ export default function clientMiddleware(client) {
       next({...rest, type: REQUEST});
 
       const actionPromise = promise(client);
-
       actionPromise.then(
         (result) => {
           next({...rest, result, type: SUCCESS});

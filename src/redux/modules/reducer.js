@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 // import multireducer from 'multireducer';
 
 import auth from './auth';
-import {reducer as form} from 'redux-form';
+import {reducer as formReducer} from 'redux-form';
 import bucketList from './bucketList';
 import bucket from './bucket';
 
@@ -10,7 +10,7 @@ export default combineReducers({
   auth,
   bucket,
   bucketList,
-  form
+  form: formReducer
 });
 
 /* multi-reducer example, for multiple same-schema reducers
