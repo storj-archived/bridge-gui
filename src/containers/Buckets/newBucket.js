@@ -40,15 +40,12 @@ export default class NewBucket extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps');
-    console.log(nextProps);
-    if(this.props.bucket.saved === true) {
+    if(nextProps.bucket.saved === true) {
       hashHistory.push('/dashboard/bucket/' + nextProps.bucket.id);
     }
   }
 
   componentWillUnmount() {
-    console.log('clear')
     this.props.clear();
   }
 
@@ -70,8 +67,10 @@ export default class NewBucket extends Component {
                 <div className="row">
                   <div className="col-sm-12">
                     <div className="content">
-                      <label htmlFor="name">Bucket Name</label>
-                      <input type="text" name="name" placeholder="Bucket Name" {...this.props.fields.name}/>
+                      <div className="form-group">
+                        <label htmlFor="name">Bucket Name</label>
+                        <input type="text" className="form-control" name="name" placeholder="Bucket Name" {...this.props.fields.name}/>
+                      </div>
                     </div>
                   </div>
 				        </div>

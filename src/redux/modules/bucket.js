@@ -24,8 +24,11 @@ const STORE = 'metadisk-gui/bucket/STORE';
 const STORE_SUCCESS = 'metadisk-gui/bucket/STORE_SUCCESS';
 const STORE_FAIL = 'metadisk-gui/bucket/STORE_FAIL';
 
-const bufferToArray = require('buffer-to-arraybuffer')
+const LISTFILES = 'metadisk-gui/bucket/LISTFILES';
+const LISTFILES_SUCCESS = 'metadisk-gui/bucket/LISTFILES_SUCCESS';
+const LISTFILES_FAIL = 'metadisk-gui/bucket/LISTFILES_FAIL';
 
+const bufferToArray = require('buffer-to-arraybuffer')
 
 export default function Bucket(state = {}, action = {}) {
   switch(action.type) {
@@ -152,6 +155,26 @@ export default function Bucket(state = {}, action = {}) {
         fileURI: action.result
       };
 
+    case LISTFILES:
+      return {
+        ...state,
+        listFilePending: true,
+        listFileLoaded: false
+      }
+    case LISTFILES_FAIL:
+      return {
+        ...state,
+        listFilePending: false,
+        listFileLoaded: false,
+        error: action.error
+      };
+    case LISTFILES_SUCCESS:
+      return {
+        ...state,
+        listFilePending: false,
+        listFileLoaded: false,
+        files: action.result
+      };
 
     default:
       return state;
@@ -200,25 +223,24 @@ export function destroy(bucketId) {
 export function storeFile(bucketId, file) {
   return {
     types: [STORE, STORE_SUCCESS, STORE_FAIL],
-    promise: (client) => client.createToken(bucketId, "PUSH").then(function(result) {
-      return new Promise(function(resolve, reject) {
-        var fileReq = new XMLHttpRequest();
-        var formData = new FormData();
-        formData.append('data', file)
-        fileReq.open('PUT', client._options.baseURI + '/buckets/' + bucketId);
-        fileReq.setRequestHeader('x-token', result.token)
-        fileReq.send(formData);
-        fileReq.addEventListener('load', function complete(ev) {
-          let response = JSON.parse(fileReq.responseText);
-          if(response.error) {
-            return reject(new Error(response.error));
-          }
-          return resolve(response);
+    promise: (client) => client.createToken(bucketId, "PUSH")
+      .then(function(result) {
+        return new Promise(function(resolve, reject) {
+          var fileReq = new XMLHttpRequest();
+          var formData = new FormData();
+          formData.append('data', file)
+          fileReq.open('PUT', client._options.baseURI + '/buckets/' + bucketId + '/files');
+          fileReq.setRequestHeader('x-token', result.token)
+          fileReq.setRequestHeader('x-filesize', file.size)
+          fileReq.send(formData);
+          fileReq.addEventListener('load', function complete(ev) {
+            let response = JSON.parse(fileReq.responseText);
+            if(response.error) {
+              return reject(new Error(response.error));
+            }
+            return resolve(response);
+          });
         });
-        //bucketId, result.token, file
-
-      });
-
     })
   };
 }
@@ -242,6 +264,13 @@ export function getFile(bucketId, filehash, type) {
           resolve(URL.createObjectURL(blob));
         });
       })
+  };
+}
+
+export function listFiles(bucketId) {
+  return {
+    types: [LISTFILES, LISTFILES_SUCCESS, LISTFILES_FAIL],
+    promise: (client) => client.listFilesInBucket(bucketId)
   };
 }
 /*

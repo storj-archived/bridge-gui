@@ -5,6 +5,7 @@ import {reduxForm} from 'redux-form';
 import * as bucketActions from 'redux/modules/bucket';
 import bucketFormValidation from './bucketFormValidation'
 import {Link, hashHistory} from 'react-router';
+import { FileList } from '../../components';
 
 var file;
 var filetype;
@@ -23,8 +24,8 @@ var filetype;
   }),
   dispatch => ({
     load: (bucketId) => dispatch(bucketActions.load(bucketId)),
+    listFiles: (bucketId) => dispatch(bucketActions.listFiles(bucketId)),
     update: (bucketId, updateObj) => dispatch(bucketActions.update(bucketId, updateObj)),
-    create: (bucketObj) => dispatch(bucketActions.create(bucketObj)),
     destroy: (bucketObj) => dispatch(bucketActions.destroy(bucketId)),
     genToken: (bucketId, operation) => dispatch(bucketActions.genToken(bucketId, operation)),
     storeFile: (bucketId, token, file) => dispatch(bucketActions.storeFile(bucketId, token, file)),
@@ -53,9 +54,8 @@ export default class Bucket extends Component {
   };
 */
   componentDidMount() {
-    if(this.props.params.bucketId) {
-      this.props.load(this.props.params.bucketId);
-    }
+    this.props.load(this.props.params.bucketId);
+    this.props.listFiles(this.props.params.bucketId);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -63,6 +63,12 @@ export default class Bucket extends Component {
       hashHistory.push('/dashboard');
     }
     return true;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.bucket.fileHash) {
+      this.props.listFiles(this.props.params.bucketId);
+    }
   }
 
   renderPubKeys(pks) {
@@ -76,13 +82,6 @@ export default class Bucket extends Component {
   addPubKeyHandler(ev) {
     ev.preventDefault();
     this.props.fields.pubkeys.addField();
-  }
-
-  createBucket(e) {
-    e.preventDefault();
-    this.props.create({
-      name: this.props.fields.name.value
-    });
   }
 
   updateBucket(e) {
@@ -145,16 +144,6 @@ export default class Bucket extends Component {
 						        </div>
                   </div>
                 </div>
-
-				        <div className="row">
-                  <div className="col-xs-6">
-						        <Link to="/dashboard" className="btn btn-block btn-transparent">Go Back</Link>
-                  </div>
-
-                  <div className="col-xs-6">
-						        <a href="javascript:void(0)" onClick={this.updateBucket.bind(this)} className="btn btn-block btn-green btn-create-bucket">Update Bucket</a>
-                  </div>
-				        </div>
               </form>
 
               <div className="row">
@@ -162,19 +151,22 @@ export default class Bucket extends Component {
                   <div className="content" style={{overflow:'hidden'}}>
 
                     <div className="form-group">
-                      <label>File Hash</label>
-                      <input type="text" className="form-control" name="filehash" placeholder="Paste a File Hash" {...this.props.fields.fileHash}/>
-                      <a href="javascript:void(0)" onClick={this.previewHash.bind(this)} style={{marginLeft:'12px'}} className="btn btn-action pull-left btn-transparent">Retrieve</a>
+                      <h2>Files</h2>
+                      <FileList files={this.props.bucket.files}/>
                     </div>
 
                   </div>
 
-                  { this.props.bucket.fileURI &&
-                  <div className="content">
-                    <iframe style={{minHeight: '800px', width: '100%'}} src={this.props.bucket.fileURI}></iframe>
-                  </div>
-                  }
+                </div>
+              </div>
 
+              <div className="row">
+                <div className="col-xs-6">
+                  <Link to="/dashboard" className="btn btn-block btn-transparent">Go Back</Link>
+                </div>
+
+                <div className="col-xs-6">
+                  <a href="javascript:void(0)" onClick={this.updateBucket.bind(this)} className="btn btn-block btn-green btn-create-bucket">Update Bucket</a>
                 </div>
               </div>
 
@@ -186,15 +178,21 @@ export default class Bucket extends Component {
   }
 
 /*
-				        <div className="row">
-					       <div className="col-sm-12">
-						        <div className="content" id="publicKeys">
-						  	     <label htmlFor="public-key">Add Public Key</label>
-						  	     <a href="" onClick={this.addPubKeyHandler} className="pull-right" id="newKey">+ Add More Keys</a>
-                    {this.renderPubKeys(pubkeys)}
-						        </div>
-					       </div>
-				        </div>
+		<div className="row">
+		 <div className="col-sm-12">
+		    <div className="content" id="publicKeys">
+		     <label htmlFor="public-key">Add Public Key</label>
+		     <a href="" onClick={this.addPubKeyHandler} className="pull-right" id="newKey">+ Add More Keys</a>
+        {this.renderPubKeys(pubkeys)}
+		    </div>
+		 </div>
+		</div>
+
+    { this.props.bucket.fileURI &&
+    <div className="content">
+      <iframe style={{minHeight: '800px', width: '100%'}} src={this.props.bucket.fileURI}></iframe>
+    </div>
+    }
 */
 
 
