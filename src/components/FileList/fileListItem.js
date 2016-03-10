@@ -1,11 +1,12 @@
 import React from 'react';
+import FileIcon from './fileIcon'
 
 const FileListItem = (props) => {
   return (
     <tr>
 
       <td>
-        <i></i>
+        <FileIcon mimetype={props.mimetype}/>
         <span>{props.filename}</span>
       </td>
 
