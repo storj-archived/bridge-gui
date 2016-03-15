@@ -16,13 +16,15 @@ import {
   } from 'containers';
 
 export default (store) => {
-  const requireLogin = (nextState, replaceState, cb) => {
-      const { auth: { email, password }} = store.getState();
-      if (!auth.email || !auth.password) {
-        replaceState(null, '/login');
+
+  hashHistory.listen((ev) => {
+    if(/\/dashboard/.test(ev.pathname)) {
+      let privkey = window.localStorage.getItem('privkey');
+      if (!privkey) {
+        hashHistory.push('/login');
       }
-      cb();
-  };
+    }
+  });
 
   return (
     <Router history={hashHistory}>

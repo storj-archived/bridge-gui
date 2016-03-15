@@ -5,22 +5,11 @@ import {Link, hashHistory} from 'react-router';
 
 import './LoginForm.scss';
 
-import * as authActions from 'redux/modules/auth';
+import client from 'utils/apiClient';
 import FormLabelError from '../../../components/ErrorViews/FormLabelError';
 import loginValidation from './loginValidation'
 
 import {reduxForm} from 'redux-form';
-
-@connect(
-  state => ({
-    email: state.auth.email,
-    password: state.auth.password,
-    loggedIn: state.auth.loggedIn
-  }),
-  dispatch => ({
-    login: (email, password) => dispatch(authActions.login(email, password))
-  })
-)
 
 @reduxForm({
   form: 'primeLogin',
@@ -33,17 +22,34 @@ export default class LoginForm extends Component {
     fields: PropTypes.object.isRequired
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if(nextProps.loggedIn) {
+  componentWillMount() {
+    var privkey = window.localStorage.getItem('privkey');
+    if(privkey) {
+      client.api.getPublicKeys().then(function success() {
+
+      },
+  )
       hashHistory.push('/dashboard');
     }
-    return true;
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log(this.props)
-    this.props.login(this.props.fields.email.value, this.props.fields.password.value);
+    var keypair = client.createKeyPair();
+    client.useBasicAuth(this.props.fields.email.value, this.props.fields.password.value);
+
+    client.api.addPublicKey(keypair.getPublicKey()).then(
+      function success(result) {
+        client.removeBasicAuth();
+        if(window && window.localStorage) {
+          window.localStorage.setItem('privkey', keypair.getPrivateKey());
+        }
+        client.useKeyPair(keypair);
+        hashHistory.push('/dashboard');
+      },
+      function fail(err) {
+        //handle login error display
+      });
   }
 
   render() {

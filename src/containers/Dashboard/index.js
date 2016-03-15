@@ -1,29 +1,33 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import {Link, IndexLink, hashHistory} from 'react-router';
-import { logout } from 'redux/modules/auth';
+import client from 'utils/apiClient';
 import Navbar from 'react-bootstrap/lib/Navbar';
 
 @connect(
-  state => ({
-    email: state.auth.email,
-    password: state.auth.password,
-    loggedIn: state.auth.loggedIn
-  }),
+  null,
   dispatch => ({
-    logout: () => dispatch(authActions.logout())
+    logout: (pubkey) => dispatch(authActions.logout(pubkey))
   })
 )
 
 export default class Dashboard extends Component {
   static propTypes = {
-    auth: PropTypes.object,
     logout: PropTypes.func.isRequired
   };
 
   handleLogout(e) {
     e.preventDefault();
-    this.props.logout();
+    client.api.destroyPublicKey(client.api._options.keypair.getPublicKey())
+      .then(logout, logout)
+
+    function logout(){
+      if(window && window.localStorage) {
+        window.localStorage.removeItem('privkey');
+      }
+      client.removeKeyPair();
+      hashHistory.push('/login');
+    }
   };
 
   render() {

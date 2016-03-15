@@ -1,13 +1,6 @@
 export default function clientMiddleware(client) {
   return ({dispatch, getState}) => {
     return next => action => {
-      //TODO: find a better solution for API auth
-      var authAction = action;
-      if(typeof authAction === 'object' && authAction.types && authAction.types[0] && authAction.types[0] === 'metadisk-gui/auth/LOGIN') {
-        client._options.basicauth = client._options.basicauth || {};
-        client._options.basicauth.password = authAction.password;
-        client._options.basicauth.email = authAction.email;
-      }
       if (typeof action === 'function') {
         return action(dispatch, getState);
       }

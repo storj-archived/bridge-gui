@@ -5,24 +5,39 @@ import 'babel/polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import createStore from './redux/create';
-import {Client as MetadiskClient} from 'metadisk-client';
+import client from 'utils/apiClient';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import config from './config';
+import renderRoutes from './routes';
 
-import getRoutes from './routes';
-
-let client = new MetadiskClient();
+function bootstrapClient() {
+  let privkey = localStorage.getItem('privkey');
+  if(privkey !== null) {
+    client.useKeyPair(client.createKeyPair(privkey));
+  }
+  return client.api;
+}
 
 const dest = document.getElementById('content');
-const store = createStore(client, window.__data);
+const store = createStore(bootstrapClient(), window.__data);
 
 ReactDOM.render(
   <Provider store={store} key="provider">
-    {getRoutes(store)}
+    {renderRoutes(store)}
   </Provider>,
   dest
 );
+
+window.addEventListener('storage', function(e) {
+  //for cross-tab state updating
+  if(e.key === 'privkey') {
+    if(e.oldValue && !e.newValue) {
+      client.removeKeyPair();
+    }
+  }
+});
+
 /*
 if (process.env.NODE_ENV !== 'production') {
   window.React = React; // enable debugger
@@ -38,7 +53,7 @@ if (process.env.NODE_ENV !== 'production') {
   ReactDOM.render(
     <Provider store={store} key="provider">
       <div>
-        {getRoutes(store)}
+        {renderRoutes(store)}
         <DevTools />
       </div>
     </Provider>,

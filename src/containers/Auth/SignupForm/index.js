@@ -1,20 +1,12 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import * as authActions from 'redux/modules/auth';
+import client from 'utils/apiClient';
 import {reduxForm} from 'redux-form';
 import signupValidation from './signupValidation';
 import FormLabelError from '../../../components/ErrorViews/FormLabelError';
 import {IndexLink} from 'react-router';
+import {Link, hashHistory} from 'react-router';
 
-@connect(
-  state => ({
-    email: state.auth.email,
-    password: state.auth.password,
-  }),
-  dispatch => ({
-    signUp: (email, password) => dispatch(authActions.signup(email, password))
-  })
-)
 
 @reduxForm({
   form: 'Signup',
@@ -29,7 +21,13 @@ export default class SignUpForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.props.signUp(this.props.fields.email.value, this.props.fields.password.value);
+    client.api.createUser(this.props.fields.email.value, this.props.fields.password.value)
+      .then(function success() {
+        hashHistory.push('/login');
+      },
+      function fail() {
+        //handle signup errors
+      });
   }
 
   render() {

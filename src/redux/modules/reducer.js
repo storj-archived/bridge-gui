@@ -7,7 +7,6 @@ import bucketList from './bucketList';
 import bucket from './bucket';
 
 export default combineReducers({
-  auth,
   bucket,
   bucketList,
   form: formReducer
