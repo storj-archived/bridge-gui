@@ -127,8 +127,8 @@ export default class Bucket extends Component {
 					     <div className="col-sm-12">
 						      { !query.new  && <h1 className="title pull-left">Edit Bucket</h1> }
                   { query.new  && <h1 className="title pull-left">Create Bucket</h1> }
-                  { !query.new  && <a href="javascript:void(0)" onClick={this.destroy.bind(this)} className="btn btn-action pull-right btn-red">Delete Bucket</a> }
-                  { !query.new  && <a href="javascript:void(0)" onClick={this.addFile.bind(this)} style={{marginRight:'12px'}} className="btn btn-action pull-right btn-transparent">Add File</a> }
+                  { !query.new  && <a href="#noop" onClick={this.destroy.bind(this)} className="btn btn-action pull-right btn-red">Delete Bucket</a> }
+                  { !query.new  && <a href="#noop" onClick={this.addFile.bind(this)} style={{marginRight:'12px'}} className="btn btn-action pull-right btn-transparent">Add File</a> }
                   { !query.new  && <input type="file" onChange={this.inputFile.bind(this)} style={{display:'none'}} id="filePicker"/> }
 
 					     </div>
@@ -159,11 +159,11 @@ export default class Bucket extends Component {
 					       </div>
                   { query.new &&
                   <div className="col-xs-6">
-						        <a href="javascript:void(0)" onClick={this.createBucket.bind(this)} className="btn btn-block btn-green btn-create-bucket">Save Bucket</a>
+						        <a href="#noop" onClick={this.createBucket.bind(this)} className="btn btn-block btn-green btn-create-bucket">Save Bucket</a>
 					       </div> }
                   { this.props.params.bucketId &&
                   <div className="col-xs-6">
-						        <a href="javascript:void(0)" onClick={this.updateBucket.bind(this)} className="btn btn-block btn-green btn-create-bucket">Update Bucket</a>
+						        <a href="#noop" onClick={this.updateBucket.bind(this)} className="btn btn-block btn-green btn-create-bucket">Update Bucket</a>
 					       </div> }
 				        </div>
               </form>
@@ -173,7 +173,7 @@ export default class Bucket extends Component {
                   <div className="content" style={{overflow:'hidden'}}>
                    <label>File Hash</label>
                    <input type="text" name="filehash" placeholder="Paste a File Hash" {...this.props.fields.fileHash}/>
-                      <a href="javascript:void(0)" onClick={this.previewHash.bind(this)} style={{marginLeft:'12px'}} className="btn btn-action pull-left btn-transparent">Retrieve</a>
+                      <a href="#noop" onClick={this.previewHash.bind(this)} style={{marginLeft:'12px'}} className="btn btn-action pull-left btn-transparent">Retrieve</a>
                   </div>
                   { this.props.bucket.fileURI &&
                     <div className="content">

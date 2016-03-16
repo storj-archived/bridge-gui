@@ -126,8 +126,8 @@ export default class Bucket extends Component {
                 <div className="col-sm-12">
 						      <h1 className="title pull-left">Edit Bucket</h1>
 
-                  <a href="javascript:void(0)" onClick={this.destroy.bind(this)} className="btn btn-action pull-right btn-red">Delete Bucket</a>
-                  <a href="javascript:void(0)" onClick={this.addFile.bind(this)} style={{marginRight:'12px'}} className="btn btn-action pull-right btn-transparent">Add File</a>
+                  <a href="#noop" onClick={this.destroy.bind(this)} className="btn btn-action pull-right btn-red">Delete Bucket</a>
+                  <a href="#noop" onClick={this.addFile.bind(this)} style={{marginRight:'12px'}} className="btn btn-action pull-right btn-transparent">Add File</a>
                   <input type="file" onChange={this.inputFile.bind(this)} style={{display:'none'}} id="filePicker"/>
 
                 </div>
@@ -166,7 +166,7 @@ export default class Bucket extends Component {
                 </div>
 
                 <div className="col-xs-6">
-                  <a href="javascript:void(0)" onClick={this.updateBucket.bind(this)} className="btn btn-block btn-green btn-create-bucket">Update Bucket</a>
+                  <a href="#noop" onClick={this.updateBucket.bind(this)} className="btn btn-block btn-green btn-create-bucket">Update Bucket</a>
                 </div>
               </div>
 

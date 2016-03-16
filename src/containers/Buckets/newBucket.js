@@ -81,7 +81,7 @@ export default class NewBucket extends Component {
                   </div>
 
                   <div className="col-xs-6">
-                    <a href="javascript:void(0)" onClick={this.props.handleSubmit(this.createBucket.bind(this))} className="btn btn-block btn-green btn-create-bucket">Save Bucket</a>
+                    <a href="#noop" onClick={this.props.handleSubmit(this.createBucket.bind(this))} className="btn btn-block btn-green btn-create-bucket">Save Bucket</a>
                   </div>
 				        </div>
               </form>

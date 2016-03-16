@@ -44,7 +44,7 @@ export default class Dashboard extends Component {
           </Navbar.Toggle>
 
           <Navbar.Brand>
-            <a href="javascript:void(0)" className="navbar-brand">
+            <a href="www.metadisk.org" className="navbar-brand">
               <img src="img/logo-blue.svg" alt="MetaDisk" className="logo"/>
             </a>
           </Navbar.Brand>
@@ -58,7 +58,7 @@ export default class Dashboard extends Component {
             <li><Link to='/dashboard/billing'>Billing</Link></li>
             <li><Link to='/dashboard/support'>Support</Link></li>
           </ul>
-          <a href="javascript:void(0)" onClick={this.handleLogout.bind(this)} className="btn navbar-btn btn-transparent navbar-right">Logout</a>
+          <a href="#noop" onClick={this.handleLogout.bind(this)} className="btn navbar-btn btn-transparent navbar-right" role="button">Logout</a>
 
         </Navbar.Collapse>
       </Navbar>
