@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 // import multireducer from 'multireducer';
 
-import auth from './auth';
 import {reducer as formReducer} from 'redux-form';
 import bucketList from './bucketList';
 import bucket from './bucket';

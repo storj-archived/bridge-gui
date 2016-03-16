@@ -2,6 +2,7 @@ import React from 'react';
 import {Router, IndexRoute, Route, hashHistory} from 'react-router';
 import LoginForm from './containers/Auth/LoginForm';
 import SignupForm from './containers/Auth/SignupForm';
+import SignupSuccess from './components/SignupSuccess';
 import {
     App,
     Auth,
@@ -31,11 +32,11 @@ export default (store) => {
       <Route path="/login" component={App}>
         <IndexRoute components={{navComponent: Auth, mainComponent: LoginForm}}/>
         <Route path="/signup" components={{navComponent: Auth, mainComponent: SignupForm}}/>
+        <Route path="/signup-success" components={{navComponent: Auth, mainComponent: SignupSuccess}}/>
       </Route>
         { /* Routes requiring login */ }
       <Route path="/dashboard" component={App}>
         <IndexRoute components={{navComponent: Dashboard, mainComponent: Buckets}}/>
-
         <Route path="bucket/new" components={{navComponent: Dashboard, mainComponent: BucketNew}}/>
         <Route path="bucket/:bucketId" components={{navComponent: Dashboard, mainComponent: BucketEdit}}/>
         <Route path="billing" components={{navComponent: Dashboard, mainComponent: Billing}}/>

@@ -7,7 +7,6 @@ import FormLabelError from '../../../components/ErrorViews/FormLabelError';
 import {IndexLink} from 'react-router';
 import {Link, hashHistory} from 'react-router';
 
-
 @reduxForm({
   form: 'Signup',
   fields: ['email', 'password'],
@@ -23,10 +22,14 @@ export default class SignUpForm extends Component {
     e.preventDefault();
     client.api.createUser(this.props.fields.email.value, this.props.fields.password.value)
       .then(function success() {
-        hashHistory.push('/login');
+        hashHistory.push('/signup-success');
       },
-      function fail() {
-        //handle signup errors
+      function fail(result) {
+        if(result.error) {
+          this.setState({
+            signupError: result.error
+          });
+        }
       });
   }
 
@@ -58,7 +61,7 @@ export default class SignUpForm extends Component {
                     <div className="form-group">
                       <button type="submit" onClick={this.handleSubmit.bind(this)} className='btn btn-block btn-green'>Sign Up</button>
                     </div>
-
+                    <span>{this.state.signupError}</span>
                   </form>
                 </div>
                 <p>Already have an account? <IndexLink to="/login" className="login">Log In</IndexLink></p>

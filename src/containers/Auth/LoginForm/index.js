@@ -26,10 +26,8 @@ export default class LoginForm extends Component {
     var privkey = window.localStorage.getItem('privkey');
     if(privkey) {
       client.api.getPublicKeys().then(function success() {
-
-      },
-  )
-      hashHistory.push('/dashboard');
+        hashHistory.push('/dashboard');
+      });
     }
   }
 
@@ -47,8 +45,10 @@ export default class LoginForm extends Component {
         client.useKeyPair(keypair);
         hashHistory.push('/dashboard');
       },
-      function fail(err) {
-        //handle login error display
+      function fail(result) {
+        this.setState({
+          loginError: result.error
+        });
       });
   }
 
@@ -79,16 +79,17 @@ export default class LoginForm extends Component {
                     <div className="form-group">
                       <button type="submit" onClick={this.handleSubmit.bind(this)} className='btn btn-block btn-green'>Login</button>
                     </div>
-
+                    <span>{this.state.loginError}</span>
                   </form>
                   <div className="row">
+                    {/*
                     <div className="col-sm-6 text-left">
                       <div className="checkbox">
                         <label><input type="checkbox" {...rememberUser}/> Remember Me</label>
                       </div>
                     </div>
-
-                    <div className="col-sm-6 text-right">
+                    */}
+                    <div className="col-sm-6 text-right pull-right">
                       <Link to="/password-reset" className="forgot-password">Forgot Password?</Link>
                     </div>
 

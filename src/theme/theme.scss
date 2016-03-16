@@ -12,6 +12,10 @@ body {
   background-color: #f9f9f9;
 }
 
+html {
+  height: 100%;
+}
+
 /* --------------------------------
 
 Buttons
@@ -90,4 +94,28 @@ Buttons
 }
 :focus:-ms-input-placeholder {
     color: #BAD7FE;
+}
+
+@mixin radial-gradient-animation( $start, $end, $transTime ){
+  background-size: 100%;
+  background-image: radial-gradient(ellipse at 50% 20%, $start 0%, $end 100%);
+  position: relative;
+  z-index: 100;
+  opacity: 1;
+  &:before {
+    background-image: radial-gradient(ellipse at 50% 20%, $end 0%, $start 100%);
+    content: '';
+    display: block;
+    height: 100%;
+    position: absolute;
+    top: 0; left: 0;
+    opacity: 0;
+    width: 100%;
+    z-index: -100;
+    transition: opacity $transTime ease-out;
+  }
+}
+
+body.success {
+  @include radial-gradient-animation(lighten($brand-success, 42%), $brand-success, 2s);
 }
