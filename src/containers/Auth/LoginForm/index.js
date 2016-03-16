@@ -18,6 +18,11 @@ import {reduxForm} from 'redux-form';
 })
 
 export default class LoginForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
   static propTypes = {
     fields: PropTypes.object.isRequired
   };
@@ -45,11 +50,13 @@ export default class LoginForm extends Component {
         client.useKeyPair(keypair);
         hashHistory.push('/dashboard');
       },
-      function fail(result) {
-        this.setState({
-          loginError: result.error
-        });
-      });
+      function fail(err) {
+        if(err && err.message) {
+          this.setState({
+            loginError: err.message
+          });
+        }
+      }.bind(this));
   }
 
   render() {
@@ -79,7 +86,7 @@ export default class LoginForm extends Component {
                     <div className="form-group">
                       <button type="submit" onClick={this.handleSubmit.bind(this)} className='btn btn-block btn-green'>Login</button>
                     </div>
-                    <span>{this.state.loginError}</span>
+                    <span className="text-danger">{this.state.loginError}</span>
                   </form>
                   <div className="row">
                     {/*

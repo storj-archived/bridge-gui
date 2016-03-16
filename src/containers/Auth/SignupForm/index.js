@@ -14,6 +14,11 @@ import {Link, hashHistory} from 'react-router';
 })
 
 export default class SignUpForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
   static propTypes = {
     fields: PropTypes.object.isRequired
   };
@@ -24,13 +29,13 @@ export default class SignUpForm extends Component {
       .then(function success() {
         hashHistory.push('/signup-success');
       },
-      function fail(result) {
-        if(result.error) {
+      function fail(err) {
+        if(err && err.message) {
           this.setState({
-            signupError: result.error
+            signupError: err.message
           });
         }
-      });
+      }.bind(this));
   }
 
   render() {
@@ -61,7 +66,7 @@ export default class SignUpForm extends Component {
                     <div className="form-group">
                       <button type="submit" onClick={this.handleSubmit.bind(this)} className='btn btn-block btn-green'>Sign Up</button>
                     </div>
-                    <span>{this.state.signupError}</span>
+                    <span className="text-danger">{this.state.signupError}</span>
                   </form>
                 </div>
                 <p>Already have an account? <IndexLink to="/login" className="login">Log In</IndexLink></p>
