@@ -7,7 +7,6 @@ import ReactDOM from 'react-dom';
 import createStore from './redux/create';
 import client from 'utils/apiClient';
 import { Provider } from 'react-redux';
-import { Router, browserHistory } from 'react-router';
 import config from './config';
 import renderRoutes from './routes';
 
