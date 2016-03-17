@@ -5,15 +5,21 @@ const BucketList = (props) => {
   // const styles = require('./BucketList.scss');
 
   function renderBucketListItems(buckets) {
-    return buckets.map((bucket) => {
+    if(buckets && buckets.length && buckets.length > 0) {
+      return buckets.map((bucket) => {
+        return (
+          <BucketListItem
+            key     = {bucket.id}
+            onClick = {() => props.onBucketClick(bucket.id)}
+            {...bucket}
+          />
+        );
+      });
+    } else {
       return (
-        <BucketListItem
-          key     = {bucket.id}
-          onClick = {() => props.onBucketClick(bucket.id)}
-          {...bucket}
-        />
+        <tr className="text-center"><td colSpan="5"><span>Create a Bucket to Get Started...</span></td></tr>
       );
-    });
+    }
   }
 
   return (
