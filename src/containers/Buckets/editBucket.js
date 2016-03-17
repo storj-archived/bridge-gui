@@ -18,6 +18,16 @@ var filetype;
 )
 */
 
+@reduxForm({
+    form: 'BucketForm',
+    fields: ['name', 'transfer', 'status', 'pubkeys[]', 'storage', 'fileHash'],
+    validate: bucketFormValidation
+  },
+  (state) => ({
+    initialValues: state.bucket
+  })
+)
+
 @connect(
   state => ({
     bucket: state.bucket
@@ -26,47 +36,29 @@ var filetype;
     load: (bucketId) => dispatch(bucketActions.load(bucketId)),
     listFiles: (bucketId) => dispatch(bucketActions.listFiles(bucketId)),
     update: (bucketId, updateObj) => dispatch(bucketActions.update(bucketId, updateObj)),
-    destroy: (bucketObj) => dispatch(bucketActions.destroy(bucketId)),
+    destroy: (bucketId) => dispatch(bucketActions.destroy(bucketId)),
     genToken: (bucketId, operation) => dispatch(bucketActions.genToken(bucketId, operation)),
     storeFile: (bucketId, token, file) => dispatch(bucketActions.storeFile(bucketId, token, file)),
     getFile: (bucketId, token, hash) => dispatch(bucketActions.getFile(bucketId, token, hash)),
   })
 )
 
-@reduxForm({
-  form: 'Bucket',
-  fields: ['name', 'transfer', 'status', 'pubkeys[]', 'storage', 'fileHash'],
-  validate: bucketFormValidation
-  },
-  (state) => ({
-    initialValues: state.bucket
-  })
-)
-
 export default class Bucket extends Component {
-  // const styles = require('./Bucket.scss');
-/*
-  static propTypes = {
-    fields     : PropTypes.object.isRequired, // from redux-form
-    submitting : PropTypes.bool.isRequired,
-    load       : PropTypes.func.isRequired, client.getBucketById(bucketId),
-    bucket     : PropTypes.object.isRequired, // from state.bucket
-  };
-*/
   componentDidMount() {
     this.props.load(this.props.params.bucketId);
     this.props.listFiles(this.props.params.bucketId);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if(nextProps.bucket.saved) {
+    if(nextProps.bucket.saved || nextProps.bucket.destroyed) {
       hashHistory.push('/dashboard');
+      return false;
     }
     return true;
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.bucket.fileHash) {
+    if(nextProps.bucket.stored && !nextProps.bucket.listFilePending && !nextProps.bucket.listFileLoaded) {
       this.props.listFiles(this.props.params.bucketId);
     }
   }
@@ -103,10 +95,10 @@ export default class Bucket extends Component {
   }
 
   inputFile(e) {
-    var self = this;
     if(confirm('Would you like to upload ' + e.target.files[0].name + ' (' + e.target.files[0].size + 'b)?')) {
       filetype = e.target.files[0].type;
-      self.props.storeFile(self.props.params.bucketId, e.target.files[0]);
+      this.props.storeFile(this.props.params.bucketId, e.target.files[0]);
+      e.target.value = '';
     }
   }
 
@@ -128,7 +120,7 @@ export default class Bucket extends Component {
 
                   <a href="#noop" onClick={this.destroy.bind(this)} className="btn btn-action pull-right btn-red">Delete Bucket</a>
                   <a href="#noop" onClick={this.addFile.bind(this)} style={{marginRight:'12px'}} className="btn btn-action pull-right btn-transparent">Add File</a>
-                  <input type="file" onChange={this.inputFile.bind(this)} style={{display:'none'}} id="filePicker"/>
+                  <input type="file" multiple onChange={this.inputFile.bind(this)} style={{display:'none'}} id="filePicker"/>
 
                 </div>
               </div>

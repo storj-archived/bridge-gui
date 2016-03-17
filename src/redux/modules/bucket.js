@@ -128,16 +128,23 @@ export default function Bucket(state = {}, action = {}) {
     case STORE:
       return {
         ...state,
+        stored: false,
+        storing: true,
       }
     case STORE_FAIL:
       return {
         ...state,
+        stored: false,
+        storing: false,
         error: action.error
       };
     case STORE_SUCCESS:
       return {
         ...state,
-        fileHash: action.result.hash
+        stored: true,
+        storing: false,
+        listFileLoaded: false
+        //fileHash: action.result.hash
       };
 
     case GETFILE:
@@ -160,7 +167,7 @@ export default function Bucket(state = {}, action = {}) {
         ...state,
         listFilePending: true,
         listFileLoaded: false
-      }
+      };
     case LISTFILES_FAIL:
       return {
         ...state,
@@ -172,7 +179,7 @@ export default function Bucket(state = {}, action = {}) {
       return {
         ...state,
         listFilePending: false,
-        listFileLoaded: false,
+        listFileLoaded: true,
         files: action.result
       };
 
@@ -228,18 +235,33 @@ export function storeFile(bucketId, file) {
         return new Promise(function(resolve, reject) {
           var fileReq = new XMLHttpRequest();
           var formData = new FormData();
-          formData.append('data', file)
+          formData.append('data', file);
           fileReq.open('PUT', client._options.baseURI + '/buckets/' + bucketId + '/files');
-          fileReq.setRequestHeader('x-token', result.token)
-          fileReq.setRequestHeader('x-filesize', file.size)
+          fileReq.setRequestHeader('x-token', result.token);
+          fileReq.setRequestHeader('x-filesize', file.size);
           fileReq.send(formData);
-          fileReq.addEventListener('load', function complete(ev) {
-            let response = JSON.parse(fileReq.responseText);
-            if(response.error) {
-              return reject(new Error(response.error));
+
+          fileReq.addEventListener('load', function handleSuccess(ev) {
+            try {
+              var response = JSON.parse(fileReq.responseText);
+              if(fileReq.status === 200) {
+                return resolve(response);
+              } else if(response.error) {
+                return reject(new Error(response.error));
+              } else {
+                return reject(new Error('Error ' + fileReq.status + 'while trying to upload your file. Please try again.' ));
+              }
+            } catch(e) {
+              return reject(e);
             }
-            return resolve(response);
           });
+
+          fileReq.addEventListener('error', handleFail);
+          fileReq.addEventListener('abort', handleFail);
+
+          function handleFail(ev) {
+            return reject(new Error('An Error occurred while trying to upload your file. Please try again.'))
+          }
         });
     })
   };
