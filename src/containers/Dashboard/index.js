@@ -26,7 +26,7 @@ export default class Dashboard extends Component {
         window.localStorage.removeItem('privkey');
       }
       client.removeKeyPair();
-      hashHistory.push('/login');
+      hashHistory.push('/');
     }
   };
 

@@ -22,14 +22,14 @@ export default (store) => {
     if(/\/dashboard/.test(ev.pathname)) {
       let privkey = window.localStorage.getItem('privkey');
       if (!privkey) {
-        hashHistory.push('/login');
+        hashHistory.push('/');
       }
     }
   });
 
   return (
     <Router history={hashHistory}>
-      <Route path="/login" component={App}>
+      <Route path="/" component={App}>
         <IndexRoute components={{navComponent: Auth, mainComponent: LoginForm}}/>
         <Route path="/signup" components={{navComponent: Auth, mainComponent: SignupForm}}/>
         <Route path="/signup-success" components={{navComponent: Auth, mainComponent: SignupSuccess}}/>

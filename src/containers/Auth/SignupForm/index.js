@@ -69,7 +69,7 @@ export default class SignUpForm extends Component {
                     <span className="text-danger">{this.state.signupError}</span>
                   </form>
                 </div>
-                <p>Already have an account? <IndexLink to="/login" className="login">Log In</IndexLink></p>
+                <p>Already have an account? <IndexLink to="/" className="login">Log In</IndexLink></p>
               </div>
             </div>
           </div>
