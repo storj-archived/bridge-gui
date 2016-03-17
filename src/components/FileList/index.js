@@ -23,7 +23,7 @@ const FileList = (props) => {
   }
 
   return (
-    <table className="table table-hover">
+    <table className="table table-hover table-files">
       <thead>
         <tr>
           <th>Name</th>

@@ -119,3 +119,8 @@ Buttons
 body.success {
   @include radial-gradient-animation(lighten($brand-success, 42%), $brand-success, 2s);
 }
+
+.table-files {
+  table-layout: fixed;
+  word-break: break-word;
+}

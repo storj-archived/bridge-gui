@@ -40,6 +40,7 @@ var filetype;
     genToken: (bucketId, operation) => dispatch(bucketActions.genToken(bucketId, operation)),
     storeFile: (bucketId, token, file) => dispatch(bucketActions.storeFile(bucketId, token, file)),
     getFile: (bucketId, token, hash) => dispatch(bucketActions.getFile(bucketId, token, hash)),
+    clear: () => dispatch(bucketActions.clear())
   })
 )
 
@@ -61,6 +62,10 @@ export default class Bucket extends Component {
     if(nextProps.bucket.stored && !nextProps.bucket.listFilePending && !nextProps.bucket.listFileLoaded) {
       this.props.listFiles(this.props.params.bucketId);
     }
+  }
+
+  componentWillUnmount() {
+    this.props.clear();
   }
 
   renderPubKeys(pks) {
