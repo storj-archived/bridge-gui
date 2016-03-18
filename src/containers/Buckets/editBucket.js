@@ -100,6 +100,7 @@ export default class Bucket extends Component {
   }
 
   inputFile(e) {
+
     if(confirm('Would you like to upload ' + e.target.files[0].name + ' (' + e.target.files[0].size + 'b)?')) {
       filetype = e.target.files[0].type;
       this.props.storeFile(this.props.params.bucketId, e.target.files[0]);
@@ -125,7 +126,7 @@ export default class Bucket extends Component {
 
                   <a href="#noop" onClick={this.destroy.bind(this)} className="btn btn-action pull-right btn-red">Delete Bucket</a>
                   <a href="#noop" onClick={this.addFile.bind(this)} style={{marginRight:'12px'}} className="btn btn-action pull-right btn-transparent">Add File</a>
-                  <input type="file" multiple onChange={this.inputFile.bind(this)} style={{display:'none'}} id="filePicker"/>
+                  <input type="file" onChange={this.inputFile.bind(this)} style={{display:'none'}} id="filePicker"/>
 
                 </div>
               </div>
