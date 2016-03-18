@@ -25,7 +25,7 @@ export default class SignUpForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    client.api.createUser(this.props.fields.email.value, this.props.fields.password.value)
+    client.api.createUser(this.props.fields.email.value, this.props.fields.password.value, 'https://app.metadisk.org')
       .then(function success() {
         hashHistory.push('/signup-success');
       },

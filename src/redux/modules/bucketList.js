@@ -2,7 +2,7 @@ const LOAD = 'metadisk-gui/bucketList/LOAD';
 const LOAD_SUCCESS = 'metadisk-gui/bucketList/LOAD_SUCCESS';
 const LOAD_FAIL = 'metadisk-gui/bucketList/LOAD_FAIL';
 
-export default function BucketList(state = {buckets:[]}, action = {}) {
+export default function BucketList(state = {}, action = {}) {
   switch (action.type) {
     case LOAD:
       return {

@@ -6,6 +6,7 @@ import * as bucketActions from 'redux/modules/bucket';
 import bucketFormValidation from './bucketFormValidation'
 import {Link, hashHistory} from 'react-router';
 import { FileList } from '../../components';
+import Loader from 'react-loader';
 
 var file;
 var filetype;
@@ -67,7 +68,7 @@ export default class Bucket extends Component {
   componentWillUnmount() {
     this.props.clear();
   }
-
+/*
   renderPubKeys(pks) {
     return pks.map((pk, index) => {
       return(
@@ -80,7 +81,7 @@ export default class Bucket extends Component {
     ev.preventDefault();
     this.props.fields.pubkeys.addField();
   }
-
+*/
   updateBucket(e) {
     e.preventDefault();
     this.props.update(this.props.params.bucketId, {
@@ -137,7 +138,9 @@ export default class Bucket extends Component {
 						        <div className="content">
                       <div className="form-group">
                         <label htmlFor="name">Bucket Name</label>
-                        <input type="text" className="form-control" name="name" placeholder="Bucket Name" {...this.props.fields.name}/>
+                        <Loader loaded={!this.props.bucket.loading}>
+                          <input type="text" className="form-control" name="name" placeholder="Bucket Name" {...this.props.fields.name}/>
+                        </Loader>
                       </div>
 						        </div>
                   </div>
@@ -150,7 +153,9 @@ export default class Bucket extends Component {
 
                     <div className="form-group">
                       <h2>Files</h2>
-                      <FileList files={this.props.bucket.files}/>
+                      <Loader loaded={!this.props.bucket.listFilePending && !this.props.bucket.storing}>
+                        <FileList files={this.props.bucket.files}/>
+                      </Loader>
                     </div>
 
                   </div>

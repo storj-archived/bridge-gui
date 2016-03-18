@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as bucketListActions from 'redux/modules/bucketList';
 import {Link, hashHistory} from 'react-router';
+import Loader from 'react-loader';
 
 /*
 @connect(
@@ -47,7 +48,9 @@ export default class Buckets extends Component {
           <div className="row">
             <div className="col-xs-12">
               <div className="table-responsive content">
-                <BucketList onBucketClick={this.handleBucketClick} {...this.props.buckets}/>
+                <Loader loaded={this.props && this.props.buckets && this.props.buckets.loaded}>
+                  <BucketList onBucketClick={this.handleBucketClick} {...this.props.buckets}/>
+                </Loader>
               </div>
             </div>
           </div>
