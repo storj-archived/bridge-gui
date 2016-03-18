@@ -97,7 +97,7 @@ export default class LoginForm extends Component {
                     </div>
                     */}
                     <div className="col-sm-6 text-right pull-right">
-                      <Link to="/password-reset" className="forgot-password">Forgot Password?</Link>
+                      {/*<Link to="/password-reset" className="forgot-password">Forgot Password?</Link>*/}
                     </div>
 
                   </div>
