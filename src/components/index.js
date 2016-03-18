@@ -10,3 +10,4 @@ export ErrorViews from './ErrorViews';
 export FileListItem from './FileList/fileListItem';
 export FileList from './FileList/index';
 export SignupSuccess from './SignupSuccess/index'
+export ApiDocs from './ApiDocs/index';

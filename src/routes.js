@@ -3,6 +3,7 @@ import {Router, IndexRoute, Route, hashHistory} from 'react-router';
 import LoginForm from './containers/Auth/LoginForm';
 import SignupForm from './containers/Auth/SignupForm';
 import SignupSuccess from './components/SignupSuccess';
+import ApiDocs from './components/ApiDocs';
 import {
     App,
     Auth,
@@ -39,7 +40,8 @@ export default (store) => {
         <IndexRoute components={{navComponent: Dashboard, mainComponent: Buckets}}/>
         <Route path="bucket/new" components={{navComponent: Dashboard, mainComponent: BucketNew}}/>
         <Route path="bucket/:bucketId" components={{navComponent: Dashboard, mainComponent: BucketEdit}}/>
-        <Route path="billing" components={{navComponent: Dashboard, mainComponent: Billing}}/>
+        {/* <Route path="billing" components={{navComponent: Dashboard, mainComponent: Billing}}/> */}
+        <Route path="api-docs" components={{navComponent: Dashboard, mainComponent: ApiDocs}}/>
         <Route path="support" components={{navComponent: Dashboard, mainComponent: Support}}/>
       </Route>
       { /* Catch all malformed route */ }

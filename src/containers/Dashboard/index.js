@@ -54,9 +54,9 @@ export default class Dashboard extends Component {
         <Navbar.Collapse>
           <ul className="nav navbar-nav navbar-left">
             <li><IndexLink to='/dashboard'>Buckets</IndexLink></li>
-            <li><Link to='/dashboard/api'>API</Link></li>
-            <li><Link to='/dashboard/billing'>Billing</Link></li>
-            <li><Link to='/dashboard/support'>Support</Link></li>
+            <li><Link to='/dashboard/api-docs'>API</Link></li>
+            {/*<li><Link to='/dashboard/billing'>Billing</Link></li>*/}
+            {/*<li><Link to='/dashboard/support'>Support</Link></li>*/}
           </ul>
           <a href="#noop" onClick={this.handleLogout.bind(this)} className="btn navbar-btn btn-transparent navbar-right" role="button">Logout</a>
 

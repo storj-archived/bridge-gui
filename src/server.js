@@ -18,7 +18,7 @@ const server = new http.Server(app);
 
 function addSecurityHeaders(req, res, next) {
   res.set('X-Frame-Options', 'DENY');
-  res.set('Content-Security-Policy', "default-src 'self'; style-src 'unsafe-inline' 'self'; object-src 'none'; plugin-src 'none'; connect-src https://" + config.apiHost + ";")
+  res.set('Content-Security-Policy', "default-src 'self'; style-src 'unsafe-inline' 'self'; object-src 'none'; connect-src https://" + config.apiHost + "; frame-src https://storj.github.io;")
   next();
 }
 

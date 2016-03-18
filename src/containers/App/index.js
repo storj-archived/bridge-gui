@@ -8,9 +8,9 @@ export default class App extends Component {
   render() {
     //const styles = require('./App.scss');
     return (
-      <div>
+      <div style={{height:'100%'}}>
         <Helmet {...config.app.head}/>
-        <div>
+        <div style={{height:'100%'}}>
         	{ this.props.navComponent }
         	{ this.props.mainComponent }
         </div>
