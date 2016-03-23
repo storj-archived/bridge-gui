@@ -49,7 +49,7 @@ export default class SignUpForm extends Component {
   }
 
   render() {
-    const {fields: {email, password, eula}, error, handleSubmit} = this.props;
+    const {fields: {email, password, eula}, error, submitFailed, handleSubmit} = this.props;
 
     return(
       <div className="container auth">
@@ -64,13 +64,13 @@ export default class SignUpForm extends Component {
 
                   <form>
 
-                    <div className="form-group">
-                      {FormLabelError(email)}
+                    <div className={"form-group " + (submitFailed && email.error ? "has-error" : "")}>
+                      {submitFailed && FormLabelError(email)}
                       <input type="email" className="form-control" name="email" placeholder="Email Address" {...email} />
                     </div>
 
-                    <div className="form-group">
-                      {FormLabelError(password)}
+                    <div className={"form-group " + (submitFailed && password.error ? "has-error" : "")}>
+                      {submitFailed && FormLabelError(password)}
                       <input type="password" className="form-control" name="password" placeholder="Password" {...password} />
                     </div>
 

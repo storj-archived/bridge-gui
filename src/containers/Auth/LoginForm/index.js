@@ -36,32 +36,31 @@ export default class LoginForm extends Component {
     }
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-    var keypair = client.createKeyPair();
-    client.useBasicAuth(this.props.fields.email.value, this.props.fields.password.value);
+  submit(e) {
+    return new Promise((resolve, reject) => {
+      var keypair = client.createKeyPair();
+      client.useBasicAuth(this.props.fields.email.value, this.props.fields.password.value);
 
-    client.api.addPublicKey(keypair.getPublicKey()).then(
-      function success(result) {
-        client.removeBasicAuth();
-        if(window && window.localStorage) {
-          window.localStorage.setItem('privkey', keypair.getPrivateKey());
-        }
-        client.useKeyPair(keypair);
-        hashHistory.push('/dashboard');
-      },
-      function fail(err) {
-        if(err && err.message) {
-          this.setState({
-            loginError: err.message
-          });
-        }
-      }.bind(this));
+      client.api.addPublicKey(keypair.getPublicKey()).then(
+        function success(result) {
+          client.removeBasicAuth();
+          if(window && window.localStorage) {
+            window.localStorage.setItem('privkey', keypair.getPrivateKey());
+          }
+          client.useKeyPair(keypair);
+          resolve();
+          hashHistory.push('/dashboard');
+        },
+        function fail(err) {
+          if(err && err.message) {
+            reject({_error: err.message});
+          }
+        });
+    });
   }
 
   render() {
-    const {fields: {email, password, rememberUser}} = this.props;
-
+    const {fields: {email, password, rememberUser}, error, handleSubmit, submitFailed} = this.props;
     return(
       <div className="container auth">
         <div className="row">
@@ -72,21 +71,21 @@ export default class LoginForm extends Component {
 
                   <h1 className="title text-center form-group">Login</h1>
 
-                  <form onSumbit={this.handleSubmit}>
-                    <div className="form-group">
-                      {FormLabelError(email)}
+                  <form>
+                    <div className={"form-group " + (submitFailed && email.error ? "has-error" : "")}>
+                      {submitFailed && FormLabelError(email)}
                       <input type="email" className="form-control" name="email" placeholder="Email Address" {...email}/>
                     </div>
 
-                    <div className="form-group">
-                      {FormLabelError(password)}
+                    <div className={"form-group " + (submitFailed && password.error ? "has-error" : "")}>
+                      {submitFailed && FormLabelError(password)}
                       <input type="password" className="form-control" name="password" placeholder="Password" {...password}/>
                     </div>
 
                     <div className="form-group">
-                      <button type="submit" onClick={this.handleSubmit.bind(this)} className='btn btn-block btn-green'>Login</button>
+                      <button type="submit" onClick={handleSubmit(this.submit.bind(this))} className='btn btn-block btn-green'>Login</button>
                     </div>
-                    <span className="text-danger">{this.state.loginError}</span>
+                    {error && <div><span className="text-danger">{error}</span></div>}
                   </form>
                   <div className="row">
                     {/*
