@@ -5,5 +5,8 @@ export default function(values) {
       errors.name = 'required'
     }
   */
+  if(!values.eula) {
+    errors.eula = 'Please accept the Terms of Service to proceed.';
+  }
   return errors;
 };

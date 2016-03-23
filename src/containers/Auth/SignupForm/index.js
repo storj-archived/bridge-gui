@@ -6,10 +6,11 @@ import signupValidation from './signupValidation';
 import FormLabelError from '../../../components/ErrorViews/FormLabelError';
 import {IndexLink} from 'react-router';
 import {Link, hashHistory} from 'react-router';
+import Modal from 'react-bootstrap/lib/Modal';
 
 @reduxForm({
   form: 'Signup',
-  fields: ['email', 'password'],
+  fields: ['email', 'password', 'eula'],
   validate: signupValidation
 })
 
@@ -23,26 +24,36 @@ export default class SignUpForm extends Component {
     fields: PropTypes.object.isRequired
   };
 
-  handleSubmit(e) {
+  openEula(e) {
     e.preventDefault();
-    client.api.createUser(this.props.fields.email.value, this.props.fields.password.value, 'https://app.metadisk.org')
-      .then(function success() {
-        hashHistory.push('/signup-success');
-      },
-      function fail(err) {
-        if(err && err.message) {
-          this.setState({
-            signupError: err.message
-          });
-        }
-      }.bind(this));
+    this.setState({showEula: true})
+  }
+
+  closeEula(e) {
+    this.setState({showEula: false})
+  }
+
+  submit(e) {
+    return new Promise((resolve, reject) => {
+      client.api.createUser(this.props.fields.email.value, this.props.fields.password.value, 'https://app.metadisk.org')
+        .then(function success() {
+          resolve();
+          hashHistory.push('/signup-success');
+        },
+        function fail(err) {
+          if(err && err.message) {
+            reject({_error: err.message});
+          }
+        });
+    });
   }
 
   render() {
-    const {fields: {email, password}} = this.props;
+    const {fields: {email, password, eula}, error, handleSubmit} = this.props;
 
     return(
       <div className="container auth">
+        {this.renderEula()}
         <div className="row">
           <div className="col-lg-6 col-lg-push-3 col-md-8 col-md-push-2 col-xs-12 text-center">
             <div className="row">
@@ -51,7 +62,7 @@ export default class SignUpForm extends Component {
 
                   <h1 className="title text-center form-group">Sign Up</h1>
 
-                  <form onSumbit={this.handleSubmit}>
+                  <form>
 
                     <div className="form-group">
                       {FormLabelError(email)}
@@ -64,9 +75,15 @@ export default class SignUpForm extends Component {
                     </div>
 
                     <div className="form-group">
-                      <button type="submit" onClick={this.handleSubmit.bind(this)} className='btn btn-block btn-green'>Sign Up</button>
+                      <button type="submit" onClick={handleSubmit(this.submit.bind(this))} className='btn btn-block btn-green'>Sign Up</button>
                     </div>
-                    <span className="text-danger">{this.state.signupError}</span>
+
+                    <div className="form-group">
+                      <label><input type="checkbox" className="text-right" name="eula" {...eula} />I agree to the <a href="#noop" onClick={this.openEula.bind(this)}>Terms of Service</a></label>
+                    </div>
+
+                    {error && <div><span className="text-danger">{error}</span></div>}
+                    {eula.error && eula.touched && <div><span className="text-danger">{eula.error}</span></div>}
                   </form>
                 </div>
                 <p>Already have an account? <IndexLink to="/" className="login">Log In</IndexLink></p>
@@ -75,6 +92,20 @@ export default class SignUpForm extends Component {
           </div>
         </div>
       </div>
+    );
+  }
+
+  renderEula() {
+    return (
+      <Modal show={this.state.showEula} onHide={this.closeEula.bind(this)}>
+        <Modal.Header closeButton><h3>Terms of Service</h3></Modal.Header>
+        <Modal.Body>
+          <p>This software is released for testing purposes only. We make no guarantees with respect to its function. By using this software you agree that Storj is not liable for any damage to your system. You also agree not to upload illegal content, content that infringes on other's IP, or information that would be protected by HIPAA, FERPA, or any similar standard. Generally speaking, you agree to test the software responsibly. We'd love to hear feedback too.</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <button className="btn btn-transparent" onClick={this.closeEula.bind(this)}>Close</button>
+        </Modal.Footer>
+      </Modal>
     );
   }
 }
