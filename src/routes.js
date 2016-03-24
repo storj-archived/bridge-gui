@@ -12,6 +12,7 @@ import {
     BucketNew,
     Buckets,
     Dashboard,
+    FileBucket,
     Home,
     NotFound,
     Support
@@ -40,6 +41,7 @@ export default (store) => {
         <IndexRoute components={{navComponent: Dashboard, mainComponent: Buckets}}/>
         <Route path="bucket/new" components={{navComponent: Dashboard, mainComponent: BucketNew}}/>
         <Route path="bucket/:bucketId" components={{navComponent: Dashboard, mainComponent: BucketEdit}}/>
+        <Route path="bucket/:bucketId/files" components={{navComponent: Dashboard, mainComponent: FileBucket}}/>
         {/* <Route path="billing" components={{navComponent: Dashboard, mainComponent: Billing}}/> */}
         <Route path="api-docs" components={{navComponent: Dashboard, mainComponent: ApiDocs}}/>
         <Route path="support" components={{navComponent: Dashboard, mainComponent: Support}}/>

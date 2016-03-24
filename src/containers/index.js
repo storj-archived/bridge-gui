@@ -5,6 +5,7 @@ export BucketEdit from './Buckets/editBucket';
 export BucketNew from './Buckets/newBucket';
 export Buckets from './Buckets';
 export Dashboard from './Dashboard';
+export FileBucket from './Buckets/fileBucket.js'
 export LoginForm from './Auth/LoginForm';
 export NotFound from './NotFound';
 export SignupForm from './Auth/SignupForm';

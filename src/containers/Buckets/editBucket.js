@@ -49,7 +49,6 @@ var filetype;
 export default class Bucket extends Component {
   componentDidMount() {
     this.props.load(this.props.params.bucketId);
-    this.props.listFiles(this.props.params.bucketId);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -58,12 +57,6 @@ export default class Bucket extends Component {
       return false;
     }
     return true;
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.bucket.stored && !nextProps.bucket.listFilePending && !nextProps.bucket.listFileLoaded) {
-      this.props.listFiles(this.props.params.bucketId);
-    }
   }
 
   componentWillUnmount() {
@@ -96,30 +89,8 @@ export default class Bucket extends Component {
     this.props.destroy(this.props.params.bucketId);
   }
 
-  addFile(e) {
-    e.preventDefault();
-    document.getElementById('filePicker').click();
-  }
-
-  inputFile(e) {
-
-    if(confirm('Would you like to upload ' + e.target.files[0].name + ' (' + e.target.files[0].size + 'b)?')) {
-      filetype = e.target.files[0].type;
-      this.props.storeFile(this.props.params.bucketId, e.target.files[0]);
-      e.target.value = '';
-    }
-  }
-
-  previewHash(e) {
-    this.props.getFile(this.props.params.bucketId, this.props.fields.fileHash.value, filetype);
-  }
-
   render() {
-    let {query} = this.props.location
-    const tooltip = (
-      <Tooltip>Files can only be downloaded from the API at this time. Unlike native clients, browsers may execute content that is downloaded (XSS) from an malicious host. We must properly sandboxed this before we can enable that feature in the browser.</Tooltip>
-    );
-
+    let { query } = this.props.location
     return (
       <section>
 		    <div className="container">
@@ -129,11 +100,7 @@ export default class Bucket extends Component {
               <div className="row">
                 <div className="col-sm-12">
 						      <h1 className="title pull-left">Edit Bucket</h1>
-
                   <a href="#noop" onClick={this.destroy.bind(this)} className="btn btn-action pull-right btn-red">Delete Bucket</a>
-                  <a href="#noop" onClick={this.addFile.bind(this)} style={{marginRight:'12px'}} className="btn btn-action pull-right btn-transparent">Add File</a>
-                  <input type="file" onChange={this.inputFile.bind(this)} style={{display:'none'}} id="filePicker"/>
-
                 </div>
               </div>
 
@@ -153,27 +120,8 @@ export default class Bucket extends Component {
               </form>
 
               <div className="row">
-                <div className="col-sm-12">
-                  <div className="content" style={{overflow:'hidden'}}>
-
-                    <div className="form-group">
-                      <h2 className="pull-left">Files</h2>
-                      <OverlayTrigger placement="top" overlay={tooltip}>
-                        <span className="pull-right psuedo-link">Why Can't I Download Files?</span>
-                      </OverlayTrigger>
-                      <Loader loaded={!this.props.bucket.listFilePending && !this.props.bucket.storing}>
-                        <FileList files={this.props.bucket.files}/>
-                      </Loader>
-                    </div>
-
-                  </div>
-
-                </div>
-              </div>
-
-              <div className="row">
                 <div className="col-xs-6">
-                  <Link to="/dashboard" className="btn btn-block btn-transparent">Go Back</Link>
+                  <Link to={"/dashboard/bucket/" + this.props.params.bucketId + '/files'} className="btn btn-block btn-transparent">Go Back</Link>
                 </div>
 
                 <div className="col-xs-6">
@@ -205,6 +153,4 @@ export default class Bucket extends Component {
     </div>
     }
 */
-
-
 };
