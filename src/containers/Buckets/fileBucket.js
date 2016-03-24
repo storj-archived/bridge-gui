@@ -87,7 +87,7 @@ export default class FileBucket extends Component {
                 <div className="col-sm-12">
 						      <h1 className="title pull-left">Files</h1>
                   <Link to={'/dashboard/bucket/' + this.props.params.bucketId} className="btn btn-action pull-right btn-transparent">Edit Bucket</Link>
-                  <a href="#noop" onClick={this.addFile.bind(this)} style={{marginRight:'12px'}} className="btn btn-action pull-right btn-transparent">Add File</a>
+                  <a href="#noop" onClick={this.addFile.bind(this)} style={{marginRight:'12px'}} className="btn btn-action pull-right btn-orange">Upload Files</a>
                   <input type="file" onChange={this.inputFile.bind(this)} style={{display:'none'}} id="filePicker"/>
                 </div>
               </div>
@@ -95,11 +95,6 @@ export default class FileBucket extends Component {
               <div className="row">
                 <div className="col-sm-12">
                   <div className="content" style={{overflow:'hidden'}}>
-                    <div className="clearfix">
-                      <OverlayTrigger placement="top" overlay={tooltip}>
-                        <span className="pull-right psuedo-link">Why Can't I Download Files?</span>
-                      </OverlayTrigger>
-                    </div>
                     <div className="form-group">
                       <Loader loaded={!this.props.bucket.listFilePending && !this.props.bucket.storing}>
                         <FileList files={this.props.bucket.files}/>
@@ -110,8 +105,12 @@ export default class FileBucket extends Component {
               </div>
 
               <div className="row">
-                <div className="col-xs-12">
-                  <Link to="/dashboard" className="btn btn-block btn-transparent">Go Back</Link>
+                <div className="col-sm-12">
+                    <div className="text-center clearfix">
+                      <OverlayTrigger placement="top" overlay={tooltip}>
+                        <span className="psuedo-link">How can I download the files?</span>
+                      </OverlayTrigger>
+                    </div>
                 </div>
               </div>
 
