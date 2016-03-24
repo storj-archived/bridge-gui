@@ -44,7 +44,7 @@ export default class Dashboard extends Component {
           </Navbar.Toggle>
 
           <Navbar.Brand>
-            <a href="www.metadisk.org" className="navbar-brand">
+            <a href="https://metadisk.org" className="navbar-brand">
               <img src="img/logo-blue.svg" alt="MetaDisk" className="logo"/>
             </a>
           </Navbar.Brand>

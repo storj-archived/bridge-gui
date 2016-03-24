@@ -126,3 +126,13 @@ body.show {
   table-layout: fixed;
   word-break: break-word;
 }
+
+span.psuedo-link {
+  color: $brand-primary;
+  cursor: pointer;
+  margin-top:22px;
+}
+
+span.psuedo-link:hover {
+  text-decoration: underline;
+}

@@ -7,6 +7,7 @@ import bucketFormValidation from './bucketFormValidation'
 import {Link, hashHistory} from 'react-router';
 import { FileList } from '../../components';
 import Loader from 'react-loader';
+import {Tooltip, OverlayTrigger} from 'react-bootstrap/lib/index';
 
 var file;
 var filetype;
@@ -115,6 +116,10 @@ export default class Bucket extends Component {
 
   render() {
     let {query} = this.props.location
+    const tooltip = (
+      <Tooltip>Files can only be downloaded from the API at this time. Unlike native clients, browsers may execute content that is downloaded (XSS) from an malicious host. We must properly sandboxed this before we can enable that feature in the browser.</Tooltip>
+    );
+
     return (
       <section>
 		    <div className="container">
@@ -152,7 +157,10 @@ export default class Bucket extends Component {
                   <div className="content" style={{overflow:'hidden'}}>
 
                     <div className="form-group">
-                      <h2>Files</h2>
+                      <h2 className="pull-left">Files</h2>
+                      <OverlayTrigger placement="top" overlay={tooltip}>
+                        <span className="pull-right psuedo-link">Why Can't I Download Files?</span>
+                      </OverlayTrigger>
                       <Loader loaded={!this.props.bucket.listFilePending && !this.props.bucket.storing}>
                         <FileList files={this.props.bucket.files}/>
                       </Loader>
