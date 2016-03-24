@@ -58,7 +58,7 @@ export default class Dashboard extends Component {
             {/*<li><Link to='/dashboard/billing'>Billing</Link></li>*/}
             {/*<li><Link to='/dashboard/support'>Support</Link></li>*/}
           </ul>
-          <a href="#noop" onClick={this.handleLogout.bind(this)} className="btn navbar-btn btn-transparent navbar-right" role="button">Logout</a>
+          <a href="#noop" onClick={this.handleLogout.bind(this)} className="btn btn-menu btn-transparent navbar-right" role="button">Logout</a>
 
         </Navbar.Collapse>
       </Navbar>
