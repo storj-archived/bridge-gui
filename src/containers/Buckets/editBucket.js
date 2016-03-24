@@ -46,7 +46,7 @@ var filetype;
   })
 )
 
-export default class Bucket extends Component {
+export default class EditBucket extends Component {
   componentDidMount() {
     this.props.load(this.props.params.bucketId);
   }
