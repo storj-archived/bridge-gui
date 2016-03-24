@@ -10,6 +10,12 @@ Fonts
 
 -------------------------------- */
 @font-face {
+	font-family: 'Avenir Next LT Pro Regular';
+	font-style: normal;
+	font-weight: normal;
+	src: local('Avenir Next LT Pro Regular'), url('../../static/fonts/AvenirNextLTPro-Regular.woff') format('woff');
+}
+@font-face {
 	font-family: 'Avenir Next LT Pro Demi';
 	font-style: normal;
 	font-weight: normal;
@@ -73,6 +79,11 @@ a {
 .navbar-btn {
 	padding: 6px 36px; //navbar-btn top-bottom margins based on $input-height-base variable, set @ 6px
 }
+.navbar-brand {
+	padding: 0;
+	margin: 15px 25px 15px 15px;
+	height: auto;
+}
 
 input, select {
 	border-radius: 3px;
@@ -120,7 +131,8 @@ input:focus, select:focus {
 }
 
 .navbar-default {
- border: 2px solid $gray-lighter;
+	border: 2px solid $gray-lighter;
+	border-top: 0;
 }
 
 .tooltip-inner {
