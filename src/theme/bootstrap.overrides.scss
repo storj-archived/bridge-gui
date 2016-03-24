@@ -81,17 +81,17 @@ a {
 }
 .navbar-brand {
 	padding: 0;
-	margin: 15px 25px 15px 15px;
+	margin: 15px;
 	height: auto;
 }
 
 input, select {
 	border-radius: 3px;
-  font-size: 16px;
-  -webkit-transition: all 0.15s ease-in-out;
-  -moz-transition: all 0.15s ease-in-out;
-  -ms-transition: all 0.15s ease-in-out;
-  transition: all 0.15s ease-in-out;
+	font-size: 16px;
+	-webkit-transition: all 0.15s ease-in-out;
+	-moz-transition: all 0.15s ease-in-out;
+	-ms-transition: all 0.15s ease-in-out;
+	transition: all 0.15s ease-in-out;
 	padding: 12px 18px 10px;
 	color: $brand-primary;
 	background: #fbfbfb;
