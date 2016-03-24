@@ -117,7 +117,7 @@ export default class Bucket extends Component {
   render() {
     let {query} = this.props.location
     const tooltip = (
-      <Tooltip>Files can only be downloaded from the API at this time. Unlike native clients, browsers may execute content that is downloaded (XSS) from an malicious host. We must properly sandboxed this before we can enable that feature in the browser.</Tooltip>
+      <Tooltip>Files can only be downloaded from the API at this time. Unlike native clients, browsers may execute content that is downloaded (XSS) from an malicious host. We must properly sandbox this before we can enable the download feature in the browser.</Tooltip>
     );
 
     return (
