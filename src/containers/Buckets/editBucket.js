@@ -93,13 +93,13 @@ export default class EditBucket extends Component {
     let { query } = this.props.location
     return (
       <section>
-		    <div className="container">
+        <div className="container">
           <div className="row">
             <div className="col-xs-12">
 
               <div className="row">
                 <div className="col-sm-12">
-						      <h1 className="title pull-left">Edit Bucket</h1>
+                  <h1 className="title pull-left">Edit Bucket</h1>
                   <a href="#noop" onClick={this.destroy.bind(this)} className="btn btn-action pull-right btn-red">Delete Bucket</a>
                 </div>
               </div>
@@ -107,14 +107,14 @@ export default class EditBucket extends Component {
               <form>
                 <div className="row">
                   <div className="col-sm-12">
-						        <div className="content">
+                    <div className="content">
                       <div className="form-group">
                         <label htmlFor="name">Bucket Name</label>
                         <Loader loaded={!this.props.bucket.loading}>
                           <input type="text" className="form-control" name="name" placeholder="Bucket Name" {...this.props.fields.name}/>
                         </Loader>
                       </div>
-						        </div>
+                    </div>
                   </div>
                 </div>
               </form>
@@ -129,23 +129,23 @@ export default class EditBucket extends Component {
                 </div>
               </div>
 
-			     </div>
-			   </div>
-		    </div>
+           </div>
+         </div>
+        </div>
       </section>
     );
   }
 
 /*
-		<div className="row">
-		 <div className="col-sm-12">
-		    <div className="content" id="publicKeys">
-		     <label htmlFor="public-key">Add Public Key</label>
-		     <a href="" onClick={this.addPubKeyHandler} className="pull-right" id="newKey">+ Add More Keys</a>
+    <div className="row">
+     <div className="col-sm-12">
+        <div className="content" id="publicKeys">
+         <label htmlFor="public-key">Add Public Key</label>
+         <a href="" onClick={this.addPubKeyHandler} className="pull-right" id="newKey">+ Add More Keys</a>
         {this.renderPubKeys(pubkeys)}
-		    </div>
-		 </div>
-		</div>
+        </div>
+     </div>
+    </div>
 
     { this.props.bucket.fileURI &&
     <div className="content">
