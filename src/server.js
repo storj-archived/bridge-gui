@@ -54,6 +54,10 @@ app.get('/', addSecurityHeaders, (req, res) => {
   }
 });
 
+app.get('*', (req, res) => {
+  res.status(404).redirect('/#/404');
+})
+
 if (config.port) {
   server.listen(config.port, (err) => {
     if (err) {
