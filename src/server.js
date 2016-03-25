@@ -18,7 +18,8 @@ const server = new http.Server(app);
 
 function addSecurityHeaders(req, res, next) {
   res.set('X-Frame-Options', 'DENY');
-  res.set('Content-Security-Policy', "default-src 'self'; style-src 'unsafe-inline' 'self'; object-src 'none'; connect-src https://" + config.apiHost + "; frame-src https://storj.github.io;")
+  //connect-src https://" + config.apiHost + ";
+  res.set('Content-Security-Policy', "default-src 'self'; style-src 'unsafe-inline' 'self'; object-src 'none'; connect-src *; frame-src https://storj.github.io;")
   next();
 }
 
@@ -28,32 +29,30 @@ app.use(favicon(path.join(__dirname, '..', 'static/img/favicon', 'favicon.ico'))
 app.use(addSecurityHeaders)
   .use(Express.static(path.join(__dirname, '..', 'static')));
 
-app.use(addSecurityHeaders)
-  .use((req, res) => {
+app.get('/', addSecurityHeaders, (req, res) => {
+  if (__DEVELOPMENT__) {
+    // Do not cache webpack stats: the script file would change since
+    // hot module replacement is enabled in the development env
+    webpackIsomorphicTools.refresh();
+  }
 
-    if (__DEVELOPMENT__) {
-      // Do not cache webpack stats: the script file would change since
-      // hot module replacement is enabled in the development env
-      webpackIsomorphicTools.refresh();
-    }
+/*
+  function hydrateOnClient() {
+    res.send('<!doctype html>\n' +
+      ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} store={store}/>));
+  }
+*/
 
-  /*
-    function hydrateOnClient() {
-      res.send('<!doctype html>\n' +
-        ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} store={store}/>));
-    }
-  */
+  function hydrateOnClient() {
+    res.send('<!doctype html>\n' +
+      ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()}/>));
+  }
 
-    function hydrateOnClient() {
-      res.send('<!doctype html>\n' +
-        ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()}/>));
-    }
-
-    if (__DISABLE_SSR__) {
-      hydrateOnClient();
-      return;
-    }
-  });
+  if (__DISABLE_SSR__) {
+    hydrateOnClient();
+    return;
+  }
+});
 
 if (config.port) {
   server.listen(config.port, (err) => {
