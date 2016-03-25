@@ -55,10 +55,10 @@ export default class Dashboard extends Component {
           <ul className="nav navbar-nav navbar-left">
             <li><IndexLink to='/dashboard'>Buckets</IndexLink></li>
             <li><Link to='/dashboard/api-docs'>API</Link></li>
-            {/*<li><Link to='/dashboard/billing'>Billing</Link></li>*/}
-            {/*<li><Link to='/dashboard/support'>Support</Link></li>*/}
           </ul>
-          <a href="#noop" onClick={this.handleLogout.bind(this)} className="btn btn-menu btn-transparent navbar-right" role="button">Logout</a>
+          <div className="navbar-right">
+            <a href="#noop" onClick={this.handleLogout.bind(this)} className="btn btn-menu btn-transparent" role="button">Logout</a>
+          </div>
 
         </Navbar.Collapse>
       </Navbar>

@@ -5,11 +5,11 @@
 
 @import 'variables';
 
-/* --------------------------------
 
-Buckets
-
--------------------------------- */
+html {
+	-webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 
 body.page {
 	background: #f9f9f9;
@@ -76,7 +76,7 @@ th, td {
 	margin: 15px;
 }
 
-.page .btn-block {
+.btn-block {
     font-size: 16px;
     margin: 0.5em auto;
     padding: 0.9em 0 0.8em;
@@ -118,4 +118,39 @@ tbody a {
 .btn-action {
 	margin-top: 8px;
     padding: 12px 36px 10px;
+}
+
+
+
+/* -------------------------------- 
+
+Media Queries
+
+-------------------------------- */
+
+@media (min-width: 768px) and (max-width: 991px) {
+	.btn-menu {
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+}
+
+@media (max-width: 767px) {
+	.btn-menu {
+		width: 100%;
+		margin: 0.5em 0;
+	}
+}
+
+@media (max-width: 480px) {
+	.btn-action {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	.btn-block {
+		font-size: 16px;
+	}
+	.menu {
+		padding: 30px 0 20px;
+	}
 }

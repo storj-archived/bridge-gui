@@ -4,8 +4,9 @@
 @import 'variables';
 
 .logo {
-  width:150px;
-  margin: 12px 15px 12px 20px;
+  display: inline-block;
+  margin: 12px 20px 12px 15px;
+  width: 150px;
 }
 
 body {
@@ -29,9 +30,8 @@ Buttons
 }
 
 .btn-transparent:hover {
-	background: #fff;
+	background: #eee;
 	color: #333;
-	border-color: #555;
 }
 
 .btn-green {
@@ -70,30 +70,28 @@ Buttons
   color: #fff;
 }
 
-
-
-::-webkit-input-placeholder {
+.form-control::-webkit-input-placeholder {
     color: #444;
 }
-:focus::-webkit-input-placeholder {
+.form-control:focus::-webkit-input-placeholder {
     color: #BAD7FE;
 }
-:-moz-placeholder {
+.form-control:-moz-placeholder {
     color: #444;
 }
-:focus:-moz-placeholder {
+.form-control:focus:-moz-placeholder {
     color: #BAD7FE;
 }
-::-moz-placeholder {
+.form-control::-moz-placeholder {
     color: #444;
 }
-:focus::-moz-placeholder {
+.form-control:focus::-moz-placeholder {
     color: #BAD7FE;
 }
-:-ms-input-placeholder {
+.form-control:-ms-input-placeholder {
     color: #444;
 }
-:focus:-ms-input-placeholder {
+.form-control:focus:-ms-input-placeholder {
     color: #BAD7FE;
 }
 
