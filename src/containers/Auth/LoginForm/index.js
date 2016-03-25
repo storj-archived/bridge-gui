@@ -30,9 +30,10 @@ export default class LoginForm extends Component {
   componentWillMount() {
     var privkey = window.localStorage.getItem('privkey');
     if(privkey) {
-      client.api.getPublicKeys().then(function success() {
-        hashHistory.push('/dashboard');
-      });
+      client.api.getPublicKeys()
+        .then(function success() {
+          hashHistory.push('/dashboard');
+        });
     }
   }
 

@@ -20,15 +20,6 @@ import {
 
 export default (store) => {
 
-  hashHistory.listen((ev) => {
-    if(/\/dashboard/.test(ev.pathname)) {
-      let privkey = window.localStorage.getItem('privkey');
-      if (!privkey) {
-        hashHistory.push('/');
-      }
-    }
-  });
-
   return (
     <Router history={hashHistory}>
       <Route path="/" component={App}>
