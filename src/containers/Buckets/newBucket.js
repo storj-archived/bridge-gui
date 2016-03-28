@@ -41,7 +41,7 @@ export default class NewBucket extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.bucket.saved === true) {
-      hashHistory.push('/dashboard/bucket/' + nextProps.bucket.id);
+      hashHistory.push('/dashboard/bucket/' + nextProps.bucket.id + '/files');
     }
   }
 
