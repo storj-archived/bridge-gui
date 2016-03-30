@@ -50,6 +50,7 @@
     }
   },
   "dependencies": {
+    "async": "^2.0.0-rc.2",
     "babel": "~5.8.29",
     "babel-plugin-typecheck": "^2.0.0",
     "buffer-to-arraybuffer": "0.0.4",

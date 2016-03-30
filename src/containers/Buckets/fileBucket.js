@@ -12,16 +12,6 @@ import {Tooltip, OverlayTrigger} from 'react-bootstrap/lib/index';
 var file;
 var filetype;
 
-@reduxForm({
-    form: 'BucketForm',
-    fields: ['name', 'transfer', 'status', 'pubkeys[]', 'storage', 'fileHash'],
-    validate: bucketFormValidation
-  },
-  (state) => ({
-    initialValues: state.bucket
-  })
-)
-
 @connect(
   state => ({
     bucket: state.bucket
@@ -29,11 +19,8 @@ var filetype;
   dispatch => ({
     load: (bucketId) => dispatch(bucketActions.load(bucketId)),
     listFiles: (bucketId) => dispatch(bucketActions.listFiles(bucketId)),
-    update: (bucketId, updateObj) => dispatch(bucketActions.update(bucketId, updateObj)),
-    destroy: (bucketId) => dispatch(bucketActions.destroy(bucketId)),
-    genToken: (bucketId, operation) => dispatch(bucketActions.genToken(bucketId, operation)),
     storeFile: (bucketId, token, file) => dispatch(bucketActions.storeFile(bucketId, token, file)),
-    getFile: (bucketId, token, hash) => dispatch(bucketActions.getFile(bucketId, token, hash)),
+    getFile: (bucketId, token, hash, name) => dispatch(bucketActions.getFile(bucketId, token, hash, name)),
     clear: () => dispatch(bucketActions.clear())
   })
 )
@@ -48,8 +35,17 @@ export default class FileBucket extends Component {
     if(nextProps.bucket.stored && !nextProps.bucket.listFilePending && !nextProps.bucket.listFileLoaded) {
       this.props.listFiles(this.props.params.bucketId);
     }
+    if(nextProps.bucket.fileURI && !nextProps.bucket.getFilePending && nextProps.bucket.getFileLoaded) {
+      this.renderFileDownload(nextProps.bucket.fileURI, nextProps.bucket.downloadName);
+    }
   }
-
+/*
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.bucket.stored && !nextProps.bucket.listFilePending && !nextProps.bucket.listFileLoaded) {
+      this.props.listFiles(this.props.params.bucketId);
+    }
+  }
+*/
   componentWillUnmount() {
     this.props.clear();
   }
@@ -67,15 +63,22 @@ export default class FileBucket extends Component {
     }
   }
 
-  previewHash(e) {
-    this.props.getFile(this.props.params.bucketId, this.props.fields.fileHash.value, filetype);
+  getFile(hash, type, name) {
+    //this.props.getFile(this.props.params.bucketId, hash, type, name);
+  }
+
+  renderFileDownload(objURL, name) {
+    let tempAnchor = window.document.createElement('a');
+    tempAnchor.href = objURL;
+    tempAnchor.download = name;
+    window.document.body.appendChild(tempAnchor);
+    tempAnchor.click();
+    window.document.body.removeChild(tempAnchor);
+    window.URL.revokeObjectURL(objURL);
   }
 
   render() {
     let {query} = this.props.location
-    const tooltip = (
-      <Tooltip>Files can only be downloaded from the API at this time. Unlike native clients, browsers may execute content that is downloaded (XSS) from an malicious host. We must properly sandbox this before we can enable the download feature in the browser.</Tooltip>
-    );
 
     return (
       <section>
@@ -97,20 +100,10 @@ export default class FileBucket extends Component {
                   <div className="content table-responsive files-container" style={{overflow:'hidden'}}>
                     <div className="form-group">
                       <Loader loaded={!this.props.bucket.listFilePending && !this.props.bucket.storing}>
-                        <FileList files={this.props.bucket.files}/>
+                        <FileList files={this.props.bucket.files} fileSelectAction={this.getFile.bind(this)}/>
                       </Loader>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              <div className="row">
-                <div className="col-sm-12">
-                    <div className="text-center clearfix">
-                      <OverlayTrigger placement="top" overlay={tooltip}>
-                        <span className="psuedo-link">How can I download the files?</span>
-                      </OverlayTrigger>
-                    </div>
                 </div>
               </div>
 

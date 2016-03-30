@@ -28,7 +28,7 @@ const LISTFILES = 'metadisk-gui/bucket/LISTFILES';
 const LISTFILES_SUCCESS = 'metadisk-gui/bucket/LISTFILES_SUCCESS';
 const LISTFILES_FAIL = 'metadisk-gui/bucket/LISTFILES_FAIL';
 
-const bufferToArray = require('buffer-to-arraybuffer')
+const bufferToArray = require('buffer-to-arraybuffer');
 
 export default function Bucket(state = {}, action = {}) {
   switch(action.type) {
@@ -150,16 +150,23 @@ export default function Bucket(state = {}, action = {}) {
     case GETFILE:
       return {
         ...state,
+        getFilePending: true,
+        getFileLoaded: false
       }
     case GETFILE_FAIL:
       return {
         ...state,
-        error: action.error
+        error: action.error,
+        getFilePending: false,
+        getFileLoaded: false
       };
     case GETFILE_SUCCESS:
       return {
         ...state,
-        fileURI: action.result
+        fileURI: action.result,
+        downloadName: action.filename,
+        getFilePending: false,
+        getFileLoaded: true
       };
 
     case LISTFILES:
@@ -267,23 +274,29 @@ export function storeFile(bucketId, file) {
   };
 }
 
-export function getFile(bucketId, filehash, type) {
+export function getFile(bucketId, filehash, type, name) {
   return {
     types: [GETFILE, GETFILE_SUCCESS, GETFILE_FAIL],
+    filename: name,
     promise: (client) => client.createToken(bucketId, "PULL")
       .then(function(result) {
-        return client.getFileFromBucket(bucketId, result.token, filehash);
+        return client.getFilePointer(bucketId, result.token, filehash);
       })
-      .then(function(result) {
-        return client.resolveFileFromPointers(result);
-      })
-      .then(function(result) {
+      .then(function(pointers) {
         return new Promise(function(resolve, reject) {
-          let arrBuff = bufferToArray(result);
-          let blob = new Blob([arrBuff], {
-            type: type
-          });
-          resolve(URL.createObjectURL(blob));
+          var chunks = [];
+          client.resolveFileFromPointers(pointers).then(
+            function success(chunks) {
+              let blob = new Blob(chunks, {
+                type: type
+              });
+              let objURL = URL.createObjectURL(blob);
+              return resolve(objURL);
+            },
+            function fail(err) {
+              return reject(err);
+            }
+          );
         });
       })
   };

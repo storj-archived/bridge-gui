@@ -30,12 +30,6 @@ app.use(addSecurityHeaders)
   .use(Express.static(path.join(__dirname, '..', 'static')));
 
 app.get('/', addSecurityHeaders, (req, res) => {
-  if (__DEVELOPMENT__) {
-    // Do not cache webpack stats: the script file would change since
-    // hot module replacement is enabled in the development env
-    webpackIsomorphicTools.refresh();
-  }
-
 /*
   function hydrateOnClient() {
     res.send('<!doctype html>\n' +

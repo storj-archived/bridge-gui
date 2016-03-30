@@ -36,12 +36,8 @@ var filetype;
   }),
   dispatch => ({
     load: (bucketId) => dispatch(bucketActions.load(bucketId)),
-    listFiles: (bucketId) => dispatch(bucketActions.listFiles(bucketId)),
     update: (bucketId, updateObj) => dispatch(bucketActions.update(bucketId, updateObj)),
     destroy: (bucketId) => dispatch(bucketActions.destroy(bucketId)),
-    genToken: (bucketId, operation) => dispatch(bucketActions.genToken(bucketId, operation)),
-    storeFile: (bucketId, token, file) => dispatch(bucketActions.storeFile(bucketId, token, file)),
-    getFile: (bucketId, token, hash) => dispatch(bucketActions.getFile(bucketId, token, hash)),
     clear: () => dispatch(bucketActions.clear())
   })
 )
@@ -146,11 +142,5 @@ export default class EditBucket extends Component {
         </div>
      </div>
     </div>
-
-    { this.props.bucket.fileURI &&
-    <div className="content">
-      <iframe style={{minHeight: '800px', width: '100%'}} src={this.props.bucket.fileURI}></iframe>
-    </div>
-    }
 */
 };
