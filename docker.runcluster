@@ -15,9 +15,10 @@ echo "Running a cluster with $CLUSTER_HOSTS instances..."
 
 # Run the docker container
 COUNTER=1
+PORT=$START_EXTERNAL_PORT
 while [ $COUNTER -le $CLUSTER_HOSTS ]; do
   docker run -p $PORT:$INTERNAL_PORT --name $APP-$COUNTER -d $IMAGE
-  let COUNTER=COUNTER+1
-  let PORT=$START_EXTERNAL_PORT+$COUNTER
   echo "Started instance $APP-$COUNTER from image $IMAGE"
+  let COUNTER=COUNTER+1
+  let PORT=PORT+1
 done
