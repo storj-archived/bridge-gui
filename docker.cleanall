@@ -8,10 +8,9 @@ IMAGE_IDS=$(docker images | grep $IMAGE | tr -s ' ' | cut -d ' ' -f 3)
 
 ./docker.stopall
 
-for container in $CONTAINER_NAMES; do
-  docker rm $container
-done
+./docker.clean
 
 for image in $IMAGE_IDS; do
-  docker rmi $image
+  echo "Removing image $image"
+  docker rmi -f $image
 done
