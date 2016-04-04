@@ -13,8 +13,11 @@ RUN npm install
 # Expose listen port
 EXPOSE 8080
 
-# Start the app
+# Build the app
+RUN [ "npm ", "run", "build" ]
 
-CMD [ "npm ", "run", "build" ]
+# Start the app
 CMD [ "npm", "run", "start-prod" ]
-#CMD [ "/bin/sleep", "500" ]
+
+# Use for testing
+# CMD [ "/bin/sleep", "5000" ]
