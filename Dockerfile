@@ -14,5 +14,7 @@ RUN npm install
 EXPOSE 8080
 
 # Start the app
+
+CMD [ "npm ", "run", "build" ]
 CMD [ "npm", "run", "start-prod" ]
 #CMD [ "/bin/sleep", "500" ]
