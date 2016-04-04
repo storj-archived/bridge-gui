@@ -1,7 +1,7 @@
 Storj Bridge GUI
 ================
 
-Client application for interacting with the MetaDisk service.
+Client application for interacting with Storj Bridge.
 
 ## Installation
 Install Node.js, NPM. Clone the repository, install dependencies:
