@@ -1,5 +1,5 @@
-MetaDisk GUI
-============
+Storj Bridge GUI
+================
 
 Client application for interacting with the MetaDisk service.
 
