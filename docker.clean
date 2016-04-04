@@ -3,8 +3,14 @@
 NAMESPACE=storj
 APP=metadisk-gui
 IMAGE=$NAMESPACE/$APP
-IMAGE_ID=$(docker images | grep $IMAGE | tr -s ' ' | cut -d ' ' -f 3)
+CONTAINER_NAMES=$(docker ps --format "{{.Names}}" | grep $APP)
+IMAGE_IDS=$(docker images | grep $IMAGE | tr -s ' ' | cut -d ' ' -f 3)
 
-docker kill $APP
-docker rm $APP
-docker rmi $IMAGE_ID
+for container in $CONTAINER_NAMES; do
+  docker kill $container
+  docker rm $container
+done
+
+for image in $IMAGE_IDS; do
+  docker rmi $image
+done
