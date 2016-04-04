@@ -5,6 +5,7 @@ APP=metadisk-gui
 VERSION=$(git rev-parse --short HEAD)
 IMAGE=$NAMESPACE/$APP
 CLUSTER_HOSTS=$1
+START_PORT=8080
 
 echo "Running a cluster with $1 instances..."
 
@@ -13,7 +14,8 @@ echo "Running a cluster with $1 instances..."
 # Run the docker container
 COUNTER=0
 while [ $COUNTER -t $CLUSTER_HOSTS ]; do
-  docker run -p 8080:8080 --name $APP-$COUNTER -d $IMAGE
+  let PORT=PORT+1
+  docker run -p $PORT:8080 --name $APP-$COUNTER -d $IMAGE
   let COUNTER=COUNTER+1
   echo "Started instance $APP-$COUNTER from image $IMAGE"
 done
