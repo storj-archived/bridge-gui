@@ -2,6 +2,7 @@ import {KeyPair, Client} from 'storj-bridge-client';
 import request from 'request';
 import {hashHistory} from 'react-router';
 import async from 'async';
+import config from '../config.js';
 
 /* isArray Pollyfill, if not present */
 if (!Array.isArray) {
@@ -118,7 +119,7 @@ class WrappedClient extends Client {
 
 const client = {};
 
-client.api = new WrappedClient();
+client.api = new WrappedClient('https://'+config.apiHost);
 
 client.useKeyPair = (keypair) => {
   client.api._options.keypair = keypair;
