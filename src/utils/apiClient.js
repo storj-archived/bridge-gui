@@ -1,4 +1,4 @@
-import {KeyPair, Client} from 'metadisk-client';
+import {KeyPair, Client} from 'storj-bridge-client';
 import request from 'request';
 import {hashHistory} from 'react-router';
 import async from 'async';

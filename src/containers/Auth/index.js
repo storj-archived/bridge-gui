@@ -9,8 +9,8 @@ export default class Login extends Component {
           <div className="row">
             <div className="col-lg-6 col-lg-push-3 col-md-8 col-md-push-2 col-xs-12 text-center">
               <div className="row text-center">
-                <a href="https://metadisk.org">
-                  <img src="img/logo-blue.svg" alt="MetaDisk" className="logo" />
+                <a href="https://storj.io">
+                  <img src="img/logo-blue.svg" alt="Storj" className="logo" />
                 </a>
               </div>
             </div>

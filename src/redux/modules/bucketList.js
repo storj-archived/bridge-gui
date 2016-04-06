@@ -1,6 +1,6 @@
-const LOAD = 'metadisk-gui/bucketList/LOAD';
-const LOAD_SUCCESS = 'metadisk-gui/bucketList/LOAD_SUCCESS';
-const LOAD_FAIL = 'metadisk-gui/bucketList/LOAD_FAIL';
+const LOAD = 'storj/bucketList/LOAD';
+const LOAD_SUCCESS = 'storj/bucketList/LOAD_SUCCESS';
+const LOAD_FAIL = 'storj/bucketList/LOAD_FAIL';
 
 export default function BucketList(state = {}, action = {}) {
   switch (action.type) {

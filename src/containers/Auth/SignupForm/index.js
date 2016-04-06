@@ -35,7 +35,7 @@ export default class SignUpForm extends Component {
 
   submit(e) {
     return new Promise((resolve, reject) => {
-      client.api.createUser(this.props.fields.email.value, this.props.fields.password.value, 'https://app.metadisk.org')
+      client.api.createUser(this.props.fields.email.value, this.props.fields.password.value, 'https://app.storj.io/')
         .then(function success() {
           resolve();
           hashHistory.push('/signup-success');

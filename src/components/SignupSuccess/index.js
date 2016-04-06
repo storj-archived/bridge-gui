@@ -10,7 +10,7 @@ const SignupSuccess = (props) => {
               <div className="content form-horizontal">
                 <h1 className="title text-center form-group">Success!</h1>
                 <div className="row">
-                  <p className="text-left">Thanks for signing up! We'll soon send a confirmation email. Please follow the activation link to begin using MetaDisk.</p>
+                  <p className="text-left">Thanks for signing up! We'll soon send a confirmation email. Please follow the activation link to begin using Storj.</p>
                 </div>
               </div>
             </div>

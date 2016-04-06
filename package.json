@@ -1,13 +1,13 @@
 {
-  "name": "metadisk-gui",
+  "name": "storj-bridge-gui",
   "version": "0.0.1",
-  "description": "A gui dashboard for Metadisk",
+  "description": "A GUI dashboard for Storj Bridge",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/Storj/metadisk-gui"
+    "url": "https://github.com/Storj/bridge-gui"
   },
-  "homepage": "http://www.metadisk.org/",
+  "homepage": "https://app.storj.io/",
   "main": "bin/server.js",
   "scripts": {
     "start": "concurrent --kill-others \"npm run start-prod\" \"npm run start-prod-api\"",
@@ -53,11 +53,10 @@
     "async": "^2.0.0-rc.2",
     "babel": "~5.8.29",
     "babel-plugin-typecheck": "^2.0.0",
-    "buffer-to-arraybuffer": "0.0.4",
     "compression": "^1.6.0",
     "express": "^4.13.3",
     "file-loader": "^0.8.5",
-    "metadisk-client": "Storj/metadisk-client",
+    "storj-bridge-client": "Storj/bridge-client-javascript",
     "multireducer": "^2.0.0",
     "piping": "^0.3.0",
     "pretty-error": "^1.2.0",
