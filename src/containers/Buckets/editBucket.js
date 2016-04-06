@@ -1,34 +1,11 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
 import {reduxForm} from 'redux-form';
 import * as bucketActions from 'redux/modules/bucket';
 import bucketFormValidation from './bucketFormValidation'
 import {Link, hashHistory} from 'react-router';
-import { FileList } from '../../components';
+import { PubKeyList } from '../../components';
 import Loader from 'react-loader';
-import {Tooltip, OverlayTrigger} from 'react-bootstrap/lib/index';
-
-var file;
-var filetype;
-/*
-@connect(
-  state => ({
-    bucket: state.bucket
-  }),
-  dispatch => bindActionCreators(bucketActions, dispatch)
-)
-*/
-
-@reduxForm({
-    form: 'BucketForm',
-    fields: ['name', 'transfer', 'status', 'pubkeys[]', 'storage', 'fileHash'],
-    validate: bucketFormValidation
-  },
-  (state) => ({
-    initialValues: state.bucket
-  })
-)
 
 @connect(
   state => ({
@@ -58,20 +35,7 @@ export default class EditBucket extends Component {
   componentWillUnmount() {
     this.props.clear();
   }
-/*
-  renderPubKeys(pks) {
-    return pks.map((pk, index) => {
-      return(
-        <input key={index} type="text" title={pk.error} placeholder="Enter your public key" {...pk}/>
-      )
-    })
-  }
 
-  addPubKeyHandler(ev) {
-    ev.preventDefault();
-    this.props.fields.pubkeys.addField();
-  }
-*/
   updateBucket(e) {
     e.preventDefault();
     this.props.update(this.props.params.bucketId, {
@@ -83,6 +47,26 @@ export default class EditBucket extends Component {
   destroy(e) {
     e.preventDefault();
     this.props.destroy(this.props.params.bucketId);
+  }
+
+  pubKeyAddClickHandler(newKey) {
+
+  }
+
+  pubKeyEditClickHandler(key) {
+
+  }
+
+  pubKeyDeleteClickHandler(keysArr) {
+
+  }
+
+  pubKeySelectHandler(key) {
+
+  }
+
+  pubKeySelectAllHandler(e) {
+    e.preventDefault();
   }
 
   render() {
@@ -107,7 +91,27 @@ export default class EditBucket extends Component {
                       <div className="form-group">
                         <label htmlFor="name">Bucket Name</label>
                         <Loader loaded={!this.props.bucket.loading}>
-                          <input type="text" className="form-control" name="name" placeholder="Bucket Name" {...this.props.fields.name}/>
+                          <input type="text" className="form-control" name="name" placeholder="Bucket Name" value={this.props.bucket.name}/>
+                        </Loader>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-sm-12">
+                    <div className="content">
+                      <div className="form-group">
+                        <h4 className="pull-left">Public Keys</h4>
+                        <Loader loaded={!this.props.bucket.loading}>
+                          <PubKeyList
+                            pubkeys          = {this.props.bucket.pubkeys}
+                            itemDeleteAction = {this.pubKeyDeleteClickHandler}
+                            itemAddAction    = {this.pubKeyAddClickHandler}
+                            itemEditAction   = {this.pubKeyEditAction}
+                            itemSelectAction = {this.pubKeySelectHandler}
+                            selectAllAction  = {this.pubKeySelectAllHandler}
+                          ></PubKeyList>
                         </Loader>
                       </div>
                     </div>

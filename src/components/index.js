@@ -6,6 +6,8 @@
  */
 export BucketListItem from './BucketList/bucketListItem';
 export BucketList from './BucketList/bucketList';
+export PubKeyListItem from './PubKeyList/pubKeyListItem';
+export PubKeyList from './PubKeyList/pubKeyList';
 export ErrorViews from './ErrorViews';
 export FileListItem from './FileList/fileListItem';
 export FileList from './FileList/index';

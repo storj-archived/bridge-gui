@@ -119,10 +119,12 @@ tbody a {
 	margin-top: 8px;
     padding: 12px 36px 10px;
 }
+.btn-link:focus, .btn-link:active {
+	outline:0 !important;
+}
 
 
-
-/* -------------------------------- 
+/* --------------------------------
 
 Media Queries
 
