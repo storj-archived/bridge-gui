@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/Storj/bridge-gui"
   },
-  "homepage": "http://www.metadisk.org/",
+  "homepage": "https://app.storj.io/",
   "main": "bin/server.js",
   "scripts": {
     "start": "concurrent --kill-others \"npm run start-prod\" \"npm run start-prod-api\"",
@@ -53,7 +53,6 @@
     "async": "^2.0.0-rc.2",
     "babel": "~5.8.29",
     "babel-plugin-typecheck": "^2.0.0",
-    "buffer-to-arraybuffer": "0.0.4",
     "compression": "^1.6.0",
     "express": "^4.13.3",
     "file-loader": "^0.8.5",

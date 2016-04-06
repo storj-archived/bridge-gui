@@ -1,34 +1,32 @@
-const LOAD = 'metadisk-gui/bucket/LOAD';
-const LOAD_SUCCESS = 'metadisk-gui/bucket/LOAD_SUCCESS';
-const LOAD_FAIL = 'metadisk-gui/bucket/LOAD_FAIL';
+const LOAD = 'storj/bucket/LOAD';
+const LOAD_SUCCESS = 'storj/bucket/LOAD_SUCCESS';
+const LOAD_FAIL = 'storj/bucket/LOAD_FAIL';
 
-const CLEAR = 'metadisk-gui/bucket/CLEAR';
+const CLEAR = 'storj/bucket/CLEAR';
 
-const CREATE = 'metadisk-gui/bucket/CREATE';
-const CREATE_SUCCESS = 'metadisk-gui/bucket/CREATE_SUCCESS';
-const CREATE_FAIL = 'metadisk-gui/bucket/CREATE_FAIL';
+const CREATE = 'storj/bucket/CREATE';
+const CREATE_SUCCESS = 'storj/bucket/CREATE_SUCCESS';
+const CREATE_FAIL = 'storj/bucket/CREATE_FAIL';
 
-const UPDATE = 'metadisk-gui/bucket/UPDATE';
-const UPDATE_SUCCESS = 'metadisk-gui/bucket/UPDATE_SUCCESS';
-const UPDATE_FAIL = 'metadisk-gui/bucket/UPDATE_FAIL';
+const UPDATE = 'storj/bucket/UPDATE';
+const UPDATE_SUCCESS = 'storj/bucket/UPDATE_SUCCESS';
+const UPDATE_FAIL = 'storj/bucket/UPDATE_FAIL';
 
-const DEL = 'metadisk-gui/bucket/DELETE';
-const DEL_SUCCESS = 'metadisk-gui/bucket/DELETE_SUCCESS';
-const DEL_FAIL = 'metadisk-gui/bucket/DELETE_FAIL';
+const DEL = 'storj/bucket/DELETE';
+const DEL_SUCCESS = 'storj/bucket/DELETE_SUCCESS';
+const DEL_FAIL = 'storj/bucket/DELETE_FAIL';
 
-const GETFILE = 'metadisk-gui/bucket/GETFILE';
-const GETFILE_SUCCESS = 'metadisk-gui/bucket/GETFILE_SUCCESS';
-const GETFILE_FAIL = 'metadisk-gui/bucket/GETFILE_FAIL';
+const GETFILE = 'storj/bucket/GETFILE';
+const GETFILE_SUCCESS = 'storj/bucket/GETFILE_SUCCESS';
+const GETFILE_FAIL = 'storj/bucket/GETFILE_FAIL';
 
-const STORE = 'metadisk-gui/bucket/STORE';
-const STORE_SUCCESS = 'metadisk-gui/bucket/STORE_SUCCESS';
-const STORE_FAIL = 'metadisk-gui/bucket/STORE_FAIL';
+const STORE = 'storj/bucket/STORE';
+const STORE_SUCCESS = 'storj/bucket/STORE_SUCCESS';
+const STORE_FAIL = 'storj/bucket/STORE_FAIL';
 
-const LISTFILES = 'metadisk-gui/bucket/LISTFILES';
-const LISTFILES_SUCCESS = 'metadisk-gui/bucket/LISTFILES_SUCCESS';
-const LISTFILES_FAIL = 'metadisk-gui/bucket/LISTFILES_FAIL';
-
-const bufferToArray = require('buffer-to-arraybuffer');
+const LISTFILES = 'storj/bucket/LISTFILES';
+const LISTFILES_SUCCESS = 'storj/bucket/LISTFILES_SUCCESS';
+const LISTFILES_FAIL = 'storj/bucket/LISTFILES_FAIL';
 
 export default function Bucket(state = {}, action = {}) {
   switch(action.type) {
