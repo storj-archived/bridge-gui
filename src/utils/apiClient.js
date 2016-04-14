@@ -45,7 +45,7 @@ class WrappedClient extends Client {
           return reject(err);
         }
 
-        if (res.statusCode >= 400) {
+        if (res.statusCode > 400) {
           window.localStorage.removeItem('privkey');
           client.removeKeyPair();
           hashHistory.push('/');

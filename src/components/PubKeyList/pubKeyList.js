@@ -5,37 +5,48 @@ const PubKeyList = (props) => {
   return (
     <table className="table table-hover table-files">
       <caption>
-        <button className="btn btn-link btn-sm pull-left" onClick={props.itemAddAction}>
+        <button className="btn btn-link btn-sm pull-left" onClick={(e)=>{e.preventDefault(); props.itemAddAction()}}>
           <span className="glyphicon glyphicon-plus"></span>
         </button>
 
-        <button className="btn btn-link btn-sm pull-right" onClick={props.itemDeleteAction}>
+        <button className="btn btn-link btn-sm pull-right" onClick={(e)=>{e.preventDefault(); props.itemDeleteAction()}}>
           <span className="glyphicon glyphicon-trash"></span>
         </button>
 
       </caption>
       <thead>
         <tr>
-          <th style={{width:'20px'}}><input type="checkbox" onClick={props.selectAllAction}/></th>
+          <th style={{width:'20px'}}>
+            <input
+              type    = "checkbox"
+              onClick = {props.selectAllAction}
+              checked = {props.selectedItems.length === props.rowItem.length}/>
+          </th>
           <th>Key</th>
         </tr>
       </thead>
       <tbody>
-        {renderPubKeyListItems(props.pubkeys)}
+        {renderPubKeyListItems(props.rowItem)}
       </tbody>
     </table>
   );
 
+
   function renderPubKeyListItems(pubkeys) {
+    console.log(props)
     if(pubkeys && pubkeys.length && pubkeys.length > 0) {
       return pubkeys.map((pubkey) => {
+        let isSelected = props.selectedItems.indexOf(pubkey) !== -1;
         return (
           <PubKeyListItem
-            labelClickAction = {props.labelClickAction}
-            keyClickAction   = {props.keyClickAction}
-            itemSelectAction = {props.itemSelectAction}
-            key              = {pubkey}
-            pubkey           = {pubkey}
+            pubkey               = {pubkey}
+            key                  = {pubkey}
+            isEditing            = {props.isEditing === pubkey}
+            isSelected           = {isSelected}
+            itemEditAction       = {props.itemEditAction}
+            itemSelectAction     = {props.itemSelectAction}
+            itemEditSaveAction   = {props.itemEditSaveAction}
+            itemEditCancelAction = {props.itemEditCancelAction}
           />
         );
       });

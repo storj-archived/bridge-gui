@@ -44,7 +44,7 @@ export default class Dashboard extends Component {
           </Navbar.Toggle>
 
           <Navbar.Brand>
-            <a href="https://storj.io" className="navbar-brand">
+            <a href="/" className="navbar-brand">
               <img src="img/logo-blue.svg" alt="Storj" className="logo"/>
             </a>
           </Navbar.Brand>
