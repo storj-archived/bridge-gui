@@ -38,7 +38,6 @@ const LISTFILES_SUCCESS = 'storj/bucket/LISTFILES_SUCCESS';
 const LISTFILES_FAIL = 'storj/bucket/LISTFILES_FAIL';
 
 export default function Bucket(state = {}, action = {}) {
-  console.log(action.type)
   switch(action.type) {
     case LOAD:
       return {
@@ -49,7 +48,8 @@ export default function Bucket(state = {}, action = {}) {
         //saved: false,
         token: null,
         fileHash: null,
-        fileURI: null
+        fileURI: null,
+        newKeyField: null
       }
     case LOAD_FAIL:
       return {
@@ -71,15 +71,13 @@ export default function Bucket(state = {}, action = {}) {
     case ADDNEWKEYFIELD:
       return {
         ...state,
-        pubkeys: PubKeys(state, action),
-        editing: ''
+        newKeyField: ''
       }
 
     case REMOVENEWKEYFIELD:
       return {
         ...state,
-        pubkeys: PubKeys(state, action),
-        editing: false
+        newKeyField: null
       }
 
     case EDITKEYFIELD:
@@ -97,13 +95,13 @@ export default function Bucket(state = {}, action = {}) {
     case SELECTKEYFIELDS:
       return {
         ...state,
-        selectedKeys: PubKeys(state, action)
+        selectedKeys: SelectedPubKeys(state, action)
       };
 
     case SELECTALLKEYFIELDS:
       return {
         ...state,
-        selectedKeys: PubKeys(state, action)
+        selectedKeys: SelectedPubKeys(state, action)
       };
 
     case CLEAR:
@@ -151,7 +149,10 @@ export default function Bucket(state = {}, action = {}) {
         ...state,
         updating: false,
         updated: true,
-        ...action.result
+        newKeyField: null,
+        ...action.result,
+        selectedKeys: SelectedPubKeys(state, action)
+
       };
 
     case DEL:
@@ -243,22 +244,18 @@ export default function Bucket(state = {}, action = {}) {
   }
 }
 
-export function PubKeys(state, action) {
+export function SelectedPubKeys(state, action) {
   switch(action.type) {
     case SELECTKEYFIELDS:
       return (function() {
       let keys = [...state.selectedKeys];
       let keyInd = keys.indexOf(action.keyId);
       let isAlreadySelected = keyInd !== -1;
-      console.log(isAlreadySelected)
-      console.log(action.keyId)
-      console.log(keys)
       if(isAlreadySelected) {
         keys.splice(keyInd, 1);
       } else {
         keys.push(action.keyId);
       }
-      console.log(keys)
       return keys;
     })();
 
@@ -268,28 +265,22 @@ export function PubKeys(state, action) {
         if(state.selectedKeys.length === state.pubkeys.length) {
           keys = [];
         } else {
-          keys = state.pubkeys.filter((val)=> {
-            return val !== '';
-          });
+          keys = [...state.pubkeys];
         }
         return keys;
     })();
 
-    case ADDNEWKEYFIELD:
-      let keysArr = [...state.pubkeys];
-      keysArr.push('');
-      return keysArr;
-
-    case REMOVENEWKEYFIELD:
+    case UPDATE_SUCCESS:
       return (function() {
-        let keys = [...state.pubkeys];
-        let keyInd = keys.indexOf('');
-        let hasEmptyKeyField = keyInd !== -1;
-        if(hasEmptyKeyField) {
-          keys.splice(keyInd, 1);
+      var sKeys = [...state.selectedKeys];
+      state.selectedKeys.forEach((sElem, sInd, arr) => {
+        let hasBeenRemoved = action.result.pubkeys.indexOf(sElem) === -1;
+        if(hasBeenRemoved) {
+          sKeys.splice(sKeys.indexOf(sElem), 1);
         }
-        return keys;
-      })();
+      });
+      return sKeys;
+    })();
 
     default:
       return state;
@@ -417,6 +408,14 @@ export function editPubKey(id) {
   }
 }
 
+export function deleteSelectedPubKeys(selectedKeys, bucketId, bucket) {
+  bucket.pubkeys = bucket.pubkeys.filter((val) => {
+    return selectedKeys.indexOf(val) === -1;
+  });
+
+  return update(bucketId, bucket);
+}
+
 export function addNewPubKey() {
   return {
     type: ADDNEWKEYFIELD
@@ -427,6 +426,26 @@ export function removeNewPubKey() {
   return {
     type: REMOVENEWKEYFIELD
   }
+}
+
+export function saveEditedPubKey(prevKey, newKey, bucketId, bucket) {
+  let keyInd = bucket.pubkeys.indexOf(prevKey);
+  let keys = [...bucket.pubkeys];
+
+  if(keyInd !== -1) {
+    keys[keyInd] = newKey;
+  }
+  bucket.pubkeys = keys;
+
+  return update(bucketId, bucket);
+}
+
+export function saveNewPubKey(newKey, bucketId, bucket) {
+  let keys = [...bucket.pubkeys];
+  keys.push(newKey);
+  bucket.pubkeys = keys;
+
+  return update(bucketId, bucket);
 }
 
 export function stopEditPubKey() {
