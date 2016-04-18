@@ -4,6 +4,15 @@ const LOAD_FAIL = 'storj/bucket/LOAD_FAIL';
 
 const CLEAR = 'storj/bucket/CLEAR';
 
+const ADDNEWKEYFIELD = 'storj/bucket/ADDNEWKEYFIELD';
+const REMOVENEWKEYFIELD = 'storj/bucket/REMOVENEWKEYFIELD';
+
+const EDITKEYFIELD = 'storj/bucket/EDITKEYFIELD';
+const STOPEDITKEYFIELD = 'storj/bucket/STOPEDITKEYFIELD';
+
+const SELECTKEYFIELDS = 'storj/bucket/SELECTKEYFIELDS';
+const SELECTALLKEYFIELDS = 'storj/bucket/SELECTALLKEYFIELDS';
+
 const CREATE = 'storj/bucket/CREATE';
 const CREATE_SUCCESS = 'storj/bucket/CREATE_SUCCESS';
 const CREATE_FAIL = 'storj/bucket/CREATE_FAIL';
@@ -39,7 +48,8 @@ export default function Bucket(state = {}, action = {}) {
         //saved: false,
         token: null,
         fileHash: null,
-        fileURI: null
+        fileURI: null,
+        newKeyField: null
       }
     case LOAD_FAIL:
       return {
@@ -53,7 +63,45 @@ export default function Bucket(state = {}, action = {}) {
         ...state,
         loaded: true,
         loading: false,
-        ...action.result
+        ...action.result,
+        selectedKeys: [],
+        editing: false
+      };
+
+    case ADDNEWKEYFIELD:
+      return {
+        ...state,
+        newKeyField: ''
+      }
+
+    case REMOVENEWKEYFIELD:
+      return {
+        ...state,
+        newKeyField: null
+      }
+
+    case EDITKEYFIELD:
+      return {
+        ...state,
+        editing: action.keyId
+      };
+
+    case STOPEDITKEYFIELD:
+      return {
+        ...state,
+        editing: false
+      };
+
+    case SELECTKEYFIELDS:
+      return {
+        ...state,
+        selectedKeys: SelectedPubKeys(state, action)
+      };
+
+    case SELECTALLKEYFIELDS:
+      return {
+        ...state,
+        selectedKeys: SelectedPubKeys(state, action)
       };
 
     case CLEAR:
@@ -86,22 +134,25 @@ export default function Bucket(state = {}, action = {}) {
     case UPDATE:
       return {
         ...state,
-        saving: true,
-        saved: false,
+        updating: true,
+        updated: false,
       }
     case UPDATE_FAIL:
       return {
         ...state,
-        saving: false,
-        saved: false,
+        updating: false,
+        updated: false,
         error: action.error
       };
     case UPDATE_SUCCESS:
       return {
         ...state,
-        saving: false,
-        saved: true,
-        ...action.result
+        updating: false,
+        updated: true,
+        newKeyField: null,
+        ...action.result,
+        selectedKeys: SelectedPubKeys(state, action)
+
       };
 
     case DEL:
@@ -187,6 +238,49 @@ export default function Bucket(state = {}, action = {}) {
         listFileLoaded: true,
         files: action.result
       };
+
+    default:
+      return state;
+  }
+}
+
+export function SelectedPubKeys(state, action) {
+  switch(action.type) {
+    case SELECTKEYFIELDS:
+      return (function() {
+      let keys = [...state.selectedKeys];
+      let keyInd = keys.indexOf(action.keyId);
+      let isAlreadySelected = keyInd !== -1;
+      if(isAlreadySelected) {
+        keys.splice(keyInd, 1);
+      } else {
+        keys.push(action.keyId);
+      }
+      return keys;
+    })();
+
+    case SELECTALLKEYFIELDS:
+      return (function() {
+        let keys;
+        if(state.selectedKeys.length === state.pubkeys.length) {
+          keys = [];
+        } else {
+          keys = [...state.pubkeys];
+        }
+        return keys;
+    })();
+
+    case UPDATE_SUCCESS:
+      return (function() {
+      var sKeys = [...state.selectedKeys];
+      state.selectedKeys.forEach((sElem, sInd, arr) => {
+        let hasBeenRemoved = action.result.pubkeys.indexOf(sElem) === -1;
+        if(hasBeenRemoved) {
+          sKeys.splice(sKeys.indexOf(sElem), 1);
+        }
+      });
+      return sKeys;
+    })();
 
     default:
       return state;
@@ -306,6 +400,73 @@ export function listFiles(bucketId) {
     promise: (client) => client.listFilesInBucket(bucketId)
   };
 }
+
+export function editPubKey(id) {
+  return {
+    type: EDITKEYFIELD,
+    keyId: id
+  }
+}
+
+export function deleteSelectedPubKeys(selectedKeys, bucketId, bucket) {
+  bucket.pubkeys = bucket.pubkeys.filter((val) => {
+    return selectedKeys.indexOf(val) === -1;
+  });
+
+  return update(bucketId, bucket);
+}
+
+export function addNewPubKey() {
+  return {
+    type: ADDNEWKEYFIELD
+  }
+}
+
+export function removeNewPubKey() {
+  return {
+    type: REMOVENEWKEYFIELD
+  }
+}
+
+export function saveEditedPubKey(prevKey, newKey, bucketId, bucket) {
+  let keyInd = bucket.pubkeys.indexOf(prevKey);
+  let keys = [...bucket.pubkeys];
+
+  if(keyInd !== -1) {
+    keys[keyInd] = newKey;
+  }
+  bucket.pubkeys = keys;
+
+  return update(bucketId, bucket);
+}
+
+export function saveNewPubKey(newKey, bucketId, bucket) {
+  let keys = [...bucket.pubkeys];
+  keys.push(newKey);
+  bucket.pubkeys = keys;
+
+  return update(bucketId, bucket);
+}
+
+export function stopEditPubKey() {
+  return {
+    type: STOPEDITKEYFIELD
+  }
+}
+
+export function selectPubKey(id) {
+  return {
+    type: SELECTKEYFIELDS,
+    keyId: id
+  }
+}
+
+export function selectAllPubKey() {
+  return {
+    type: SELECTALLKEYFIELDS
+  }
+}
+
 /*
 export function storeFile(bucketId, tokenStr, file) {
   return {

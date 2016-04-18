@@ -27,23 +27,35 @@ Buttons
 	background: transparent;
   border-color: #eee;
   color: #555;
+  span, a {
+    color: #555;
+  }
 }
 
 .btn-transparent:hover {
 	background: #eee;
 	color: #333;
+  span, a {
+    color: #333;
+  }
 }
 
 .btn-green {
 	border-color: #88C425;
 	color: #fff;
 	background: #88C425;
+  span, a {
+    color: #fff;
+  }
 }
 
 .btn-green:hover, .btn-green:focus {
 	background: #91D127;
 	border-color: #91D127;
   color: #fff;
+  span, a {
+    color: #fff;
+  }
 }
 
 .btn-orange {
@@ -56,19 +68,109 @@ Buttons
 	background: #FF6600;
 	border-color: #FF6600;
   color: #fff;
+  span, a {
+    color: #fff;
+  }
 }
 
 .btn-red {
   background: transparent;
   border-color: #fa6e50;
   color: #fa6e50;
+  span, a {
+    color: #fa6e50;
+  }
 }
 
 .btn-red:hover, .btn-red:focus {
   background: #fa6e50;
   border-color: #fa6e50;
   color: #fff;
+  span, a {
+    color: #fff;
+  }
 }
+
+.btn.btn-circle {
+  padding: 0;
+  border-radius: 50%;
+  &:focus {
+    outline:0;
+  }
+}
+
+.btn-circle {
+  width: 56px;
+  height: 56px;
+  min-width: 56px;
+
+  span {
+    top:0px;
+    //subtract button border
+    line-height: 52px;
+  }
+}
+
+.btn-circle.btn-lg {
+  width: 78px;
+  height: 78px;
+  min-width: 78px;
+
+  span {
+    line-height: 74px;
+  }
+}
+
+.btn-circle.btn-sm {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+
+  span {
+    line-height: 36px;
+  }
+}
+
+.btn-circle.btn-xs {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+
+  span {
+    line-height: 26px;
+  }
+}
+
+.btn-raised {
+  // shadow depth 1
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12),
+  0 1px 2px 0 rgba(0, 0, 0, .24);
+    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12),
+  0 1px 2px 0 rgba(0, 0, 0, .24);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12),
+  0 1px 2px 0 rgba(0, 0, 0, .24);
+
+  &:active, &.active, &:active:focus, &.active:focus {
+    // shadow depth 2
+    -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, .16),
+  0 3px 6px rgba(0, 0, 0, .23);
+    -moz-box-shadow: 0 3px 6px rgba(0, 0, 0, .16),
+  0 3px 6px rgba(0, 0, 0, .23);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .16),
+  0 3px 6px rgba(0, 0, 0, .23);
+  }
+
+  &:focus {
+    // shadow depth 2
+    -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, .16),
+  0 3px 6px rgba(0, 0, 0, .23);
+    -moz-box-shadow: 0 3px 6px rgba(0, 0, 0, .16),
+  0 3px 6px rgba(0, 0, 0, .23);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .16),
+  0 3px 6px rgba(0, 0, 0, .23);
+  }
+}
+
 
 .form-control::-webkit-input-placeholder {
     color: #444;

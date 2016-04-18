@@ -1,44 +1,30 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
 import {reduxForm} from 'redux-form';
 import * as bucketActions from 'redux/modules/bucket';
 import bucketFormValidation from './bucketFormValidation'
 import {Link, hashHistory} from 'react-router';
-import { FileList } from '../../components';
+import { PubKeyList } from '../../components';
 import Loader from 'react-loader';
-import {Tooltip, OverlayTrigger} from 'react-bootstrap/lib/index';
-
-var file;
-var filetype;
-/*
-@connect(
-  state => ({
-    bucket: state.bucket
-  }),
-  dispatch => bindActionCreators(bucketActions, dispatch)
-)
-*/
-
-@reduxForm({
-    form: 'BucketForm',
-    fields: ['name', 'transfer', 'status', 'pubkeys[]', 'storage', 'fileHash'],
-    validate: bucketFormValidation
-  },
-  (state) => ({
-    initialValues: state.bucket
-  })
-)
 
 @connect(
   state => ({
     bucket: state.bucket
   }),
   dispatch => ({
-    load: (bucketId) => dispatch(bucketActions.load(bucketId)),
-    update: (bucketId, updateObj) => dispatch(bucketActions.update(bucketId, updateObj)),
-    destroy: (bucketId) => dispatch(bucketActions.destroy(bucketId)),
-    clear: () => dispatch(bucketActions.clear())
+    load                  : (bucketId) => dispatch(bucketActions.load(bucketId)),
+    update                : (bucketId, updateObj) => dispatch(bucketActions.update(bucketId, updateObj)),
+    destroy               : (bucketId) => dispatch(bucketActions.destroy(bucketId)),
+    clear                 : () => dispatch(bucketActions.clear()),
+    editPubKey            : (keyId) => dispatch(bucketActions.editPubKey(keyId)),
+    addNewPubKey          : () => dispatch(bucketActions.addNewPubKey()),
+    removeNewPubKey       : () => dispatch(bucketActions.removeNewPubKey()),
+    saveNewPubKey         : (newKey, bucketId, bucket) => dispatch(bucketActions.saveNewPubKey(newKey, bucketId, bucket)),
+    saveEditedPubKey      : (prevKey, newKey, bucketId, bucket) => dispatch(bucketActions.saveEditedPubKey(prevKey, newKey, bucketId, bucket)),
+    stopEditPubKey        : () => dispatch(bucketActions.stopEditPubKey()),
+    selectPubKey          : (keyId) => dispatch(bucketActions.selectPubKey(keyId)),
+    selectAllPubKey       : () => dispatch(bucketActions.selectAllPubKey()),
+    deleteSelectedPubKeys : (selectedKeys, bucketId, bucket) => dispatch(bucketActions.deleteSelectedPubKeys(selectedKeys, bucketId, bucket))
   })
 )
 
@@ -58,25 +44,14 @@ export default class EditBucket extends Component {
   componentWillUnmount() {
     this.props.clear();
   }
-/*
-  renderPubKeys(pks) {
-    return pks.map((pk, index) => {
-      return(
-        <input key={index} type="text" title={pk.error} placeholder="Enter your public key" {...pk}/>
-      )
-    })
-  }
 
-  addPubKeyHandler(ev) {
-    ev.preventDefault();
-    this.props.fields.pubkeys.addField();
-  }
-*/
   updateBucket(e) {
     e.preventDefault();
     this.props.update(this.props.params.bucketId, {
-      name: this.props.fields.name.value
-      //pubkeys: this.props.fields.pubkeys.value
+      name: this.props.bucket.name,
+      pubkeys: this.props.bucket.pubkeys,
+      storage: this.props.bucket.storage,
+      transfer: this.props.bucket.transfer
     });
   }
 
@@ -85,8 +60,27 @@ export default class EditBucket extends Component {
     this.props.destroy(this.props.params.bucketId);
   }
 
+  itemEditSaveAction(prevKey, newKey) {
+    this.props.stopEditPubKey();
+    this.props.saveEditedPubKey(prevKey, newKey, this.props.params.bucketId, this.getCurrentBucket(this.props.bucket));
+  }
+
+  itemNewSaveAction(newKey) {
+    this.props.stopEditPubKey();
+    this.props.saveNewPubKey(newKey, this.props.params.bucketId, this.getCurrentBucket(this.props.bucket));
+  }
+
+  getCurrentBucket(bucketObj) {
+    return {
+      name: bucketObj.name,
+      pubkeys: bucketObj.pubkeys,
+      storage: bucketObj.storage,
+      transfer: bucketObj.transfer
+    }
+  }
+
   render() {
-    let { query } = this.props.location
+    let { query } = this.props.location;
     return (
       <section>
         <div className="container">
@@ -107,7 +101,36 @@ export default class EditBucket extends Component {
                       <div className="form-group">
                         <label htmlFor="name">Bucket Name</label>
                         <Loader loaded={!this.props.bucket.loading}>
-                          <input type="text" className="form-control" name="name" placeholder="Bucket Name" {...this.props.fields.name}/>
+                          <input type="text" className="form-control" name="name" placeholder="Bucket Name" value={this.props.bucket.name}/>
+                        </Loader>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-sm-12">
+                    <div className="content">
+                      <div className="form-group">
+                        <h4 className="pull-left">Public Keys</h4>
+                        <Loader loaded={!this.props.bucket.loading}>
+                          <PubKeyList
+                            rowItems                = {this.props.bucket.pubkeys}
+                            rowItemDeleteAction     = {this.props.deleteSelectedPubKeys.bind(this, this.props.bucket.selectedKeys, this.props.params.bucketId, this.getCurrentBucket(this.props.bucket))}
+                            rowItemAddAction        = {this.props.addNewPubKey.bind(this)}
+
+                            isEditing               = {this.props.bucket.editing}
+                            editRowItemAction       = {this.props.editPubKey.bind(this)}
+                            editRowItemSaveAction   = {this.itemEditSaveAction.bind(this)}
+                            editRowItemCancelAction = {this.props.stopEditPubKey.bind(this)}
+
+                            newRowItem              = {this.props.bucket.newKeyField}
+                            newRowItemSaveAction    = {this.itemNewSaveAction.bind(this)}
+                            newRowItemCancelAction  = {this.props.removeNewPubKey.bind(this)}
+
+                            selectedItems           = {this.props.bucket.selectedKeys}
+                            itemSelectAction        = {this.props.selectPubKey.bind(this)}
+                            selectAllAction         = {this.props.selectAllPubKey.bind(this)}/>
                         </Loader>
                       </div>
                     </div>
@@ -131,16 +154,4 @@ export default class EditBucket extends Component {
       </section>
     );
   }
-
-/*
-    <div className="row">
-     <div className="col-sm-12">
-        <div className="content" id="publicKeys">
-         <label htmlFor="public-key">Add Public Key</label>
-         <a href="" onClick={this.addPubKeyHandler} className="pull-right" id="newKey">+ Add More Keys</a>
-        {this.renderPubKeys(pubkeys)}
-        </div>
-     </div>
-    </div>
-*/
 };

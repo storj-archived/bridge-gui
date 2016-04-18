@@ -45,7 +45,7 @@ class WrappedClient extends Client {
           return reject(err);
         }
 
-        if (res.statusCode >= 400) {
+        if (res.statusCode > 400) {
           window.localStorage.removeItem('privkey');
           client.removeKeyPair();
           hashHistory.push('/');
@@ -119,7 +119,7 @@ class WrappedClient extends Client {
 
 const client = {};
 
-client.api = new WrappedClient('https://'+config.apiHost);
+client.api = new WrappedClient('https://' + config.apiHost);
 
 client.useKeyPair = (keypair) => {
   client.api._options.keypair = keypair;

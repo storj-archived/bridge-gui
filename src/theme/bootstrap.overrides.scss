@@ -63,6 +63,10 @@ a {
 	padding: 12px 36px 10px;
 }
 
+.btn-link:focus {
+	outline:0;
+}
+
 .btn-xs {
 	padding: 6px 12px 6px;
 }
