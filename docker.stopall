@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NAMESPACE=storj
+NAMESPACE=storjlabs
 APP=bridge-gui
 IMAGE=$NAMESPACE/$APP
 CONTAINER_NAMES=$(docker ps --format "{{.Names}}" | grep $APP)
