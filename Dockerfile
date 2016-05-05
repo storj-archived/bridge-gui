@@ -1,7 +1,7 @@
 FROM debian:jessie
 
 # Create directory for the app
-RUN mkdir -p /opt/bridge-bui
+RUN mkdir -p /opt/bridge-gui
 WORKDIR /opt/bridge-gui
 
 # Copy over the app and install
