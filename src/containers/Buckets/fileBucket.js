@@ -90,8 +90,10 @@ export default class FileBucket extends Component {
                 <div className="col-sm-12">
 						      <h1 className="title pull-left">Files</h1>
                   <Link to={'/dashboard/bucket/' + this.props.params.bucketId} className="btn btn-action pull-right btn-transparent">Edit Bucket</Link>
+                  {/*
                   <a href="#noop" onClick={this.addFile.bind(this)} style={{marginRight:'12px'}} className="btn btn-action pull-right btn-orange">Upload Files</a>
                   <input type="file" onChange={this.inputFile.bind(this)} style={{display:'none'}} id="filePicker"/>
+                  */}
                 </div>
               </div>
 
