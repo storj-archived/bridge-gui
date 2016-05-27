@@ -16,11 +16,12 @@ Start the local server ([Redux Devtools](https://github.com/gaearon/redux-devtoo
 
 ```bash
 npm run dev
+npm run start-dev
 ```
 ---
 
 ## Building and Running Production Server
 ```bash
 npm run build
-npm run start
+npm run start-prod
 ```
