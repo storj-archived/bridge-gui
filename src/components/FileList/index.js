@@ -18,8 +18,7 @@ const FileList = (props) => {
       });
     } else {
       return (
-        <tr className="text-center"><td colSpan="3"><span>Ready to Store Objects</span></td></tr>
-        <tr className="text-center"><td colSpan="3"><span>Read the <a href="https://storj.readme.io/">Get Started</a> tutorial, or go straight to the <a href="https://storj.io/api.html">Storj API</a>.</span></td></tr>
+        <tr className="text-center"><td colSpan="3"><span>Ready to store objects. Read the <a href="https://storj.readme.io/">Get Started</a> tutorial, or go straight to the <a href="https://storj.io/api.html">Storj API</a>.</span></td></tr>
       );
     }
   }
