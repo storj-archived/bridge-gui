@@ -78,7 +78,7 @@ export default class SignUpForm extends Component {
                       <button type="submit" onClick={handleSubmit(this.submit.bind(this))} className='btn btn-block btn-green'>Sign Up</button>
                     </div>
 
-                    <div className="form-group">
+                    <div className="form-group checkbox">
                       <label><input type="checkbox" className="text-right" name="eula" {...eula} />I agree to the <a href="#noop" onClick={this.openEula.bind(this)}>Terms of Service</a></label>
                     </div>
 
