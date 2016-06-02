@@ -54,8 +54,9 @@ export default class Dashboard extends Component {
         <Navbar.Collapse>
           <ul className="nav navbar-nav navbar-left">
             <li><IndexLink to='/dashboard'>Buckets</IndexLink></li>
-            <li><a href='https://storj.readme.io/'>Docs</a></li>
+            <li><a href='https://storj.readme.io/'>Documentation</a></li>
             <li><Link to='/dashboard/api-docs'>API</Link></li>
+            <li><a href='https://storj.readme.io/discuss'>Support</a></li>
           </ul>
           <div className="navbar-right">
             <a href="#noop" onClick={this.handleLogout.bind(this)} className="btn btn-menu btn-transparent" role="button">Logout</a>
