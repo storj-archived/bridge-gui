@@ -56,7 +56,6 @@
     "compression": "^1.6.0",
     "express": "^4.13.3",
     "file-loader": "^0.8.5",
-    "storj-bridge-client": "Storj/bridge-client-javascript",
     "multireducer": "^2.0.0",
     "piping": "^0.3.0",
     "pretty-error": "^1.2.0",
@@ -71,6 +70,7 @@
     "redux-form": "^4.2.2",
     "request": "^2.69.0",
     "serve-favicon": "^2.3.0",
+    "storj": "^1.2.4",
     "url-loader": "^0.5.7",
     "webpack-isomorphic-tools": "^2.2.18"
   },
@@ -111,6 +111,7 @@
     "redux-devtools-dock-monitor": "^1.0.0-beta-3",
     "redux-devtools-log-monitor": "^1.0.0-beta-3",
     "sass-loader": "^3.1.2",
+    "shebang-loader": "0.0.1",
     "sinon": "^1.17.2",
     "strip-loader": "^0.1.0",
     "style-loader": "^0.13.0",
