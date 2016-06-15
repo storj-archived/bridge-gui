@@ -33,18 +33,22 @@ export default class SignUpForm extends Component {
     this.setState({showEula: false})
   }
 
-  submit(e) {
+  submit (e) {
     return new Promise((resolve, reject) => {
-      client.api.createUser(this.props.fields.email.value, this.props.fields.password.value, 'https://app.storj.io/')
-        .then(function success() {
-          resolve();
-          hashHistory.push('/signup-success');
-        },
-        function fail(err) {
-          if(err && err.message) {
-            reject({_error: err.message});
-          }
-        });
+      client.api.createUser({
+        email   : this.props.fields.email.value,
+        password: this.props.fields.password.value,
+        redirect: 'https://app.storj.io/'
+      })
+        .then(function success () {
+            resolve();
+            hashHistory.push('/signup-success');
+          },
+          function fail (err) {
+            if (err && err.message) {
+              reject({ _error: err.message });
+            }
+          });
     });
   }
 
