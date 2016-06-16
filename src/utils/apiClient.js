@@ -1,4 +1,4 @@
-import {KeyPair, Client} from 'storj-bridge-client';
+import {KeyPair, BridgeClient as Client} from 'storj';
 import request from 'request';
 import {hashHistory} from 'react-router';
 import async from 'async';
@@ -17,7 +17,7 @@ class WrappedClient extends Client {
     super(uri, options);
   };
 
-  _request(method, path, params, stream) {
+  _request(method, path, params, callback) {
     var opts = {
       baseUrl: this._options.baseURI,
       uri: path,
@@ -35,11 +35,7 @@ class WrappedClient extends Client {
 
     this._authenticate(opts);
 
-    if (stream) {
-      return request(opts);
-    }
-
-    return new Promise(function(resolve, reject) {
+    const requestPromise = new Promise(function(resolve, reject) {
       request(opts, function(err, res, body) {
         if (err) {
           return reject(err);
@@ -55,6 +51,10 @@ class WrappedClient extends Client {
         resolve(body);
       });
     });
+
+    if (callback) requestPromise.then(callback, callback);
+
+    return requestPromise;
   };
 
   resolveFileFromPointers(pointers) {
