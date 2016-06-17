@@ -1,7 +1,9 @@
-export default function(values) {
+import * as validate from '../../utils/validation';
+
+export default function({name}) {
   const errors = {};
-    if(!values.name) {
-      errors.name = 'required'
-    }
+  
+  errors.name = validate.required(name);
+  
   return errors;
 };
