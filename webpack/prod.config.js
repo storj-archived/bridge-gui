@@ -65,7 +65,7 @@ module.exports = {
     tls: 'empty'
   },
   plugins: [
-    new CleanPlugin([relativeAssetsPath]),
+    new CleanPlugin([path.join(__dirname, relativeAssetsPath, '**/*')], {root: process.cwd()}),
 
     // css files from the extract-text-plugin loader
     new ExtractTextPlugin('[name]-[chunkhash].css', {allChunks: true}),
