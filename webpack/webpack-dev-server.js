@@ -3,6 +3,7 @@
 import path from 'path';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
+import favicon from 'serve-favicon';
 import Html from '../src/helpers/Html';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
@@ -29,24 +30,30 @@ const serverOptions = {
 const WDS = new WebpackDevServer(compiler, serverOptions);
 const app = WDS.app;
 
-app.use(Express.static(path.join(__dirname, '..', 'static')));
+const addSecurityHeaders = (req, res, next) => {
+  res.set('X-Frame-Options', 'DENY');
+  res.set('Content-Security-Policy', "default-src 'self'; style-src 'unsafe-inline' 'self'; object-src 'none'; connect-src *; frame-src https://storj.github.io;");
+  next();
+};
 
-app.get('/', function (req, res, next) {
-  res.send('<!doctype html>\n' +
-    ReactDOM.renderToString(React.createElement(Html, {
-      assets: {
-        javascript: {main: '/dist/main.js'},
-        styles: {main: '/dist/main.css'}
-      }
-    })));
-});
+app
+  .use(favicon(path.join(__dirname, '..', 'static/img/favicon', 'favicon.ico')))
+  .use(addSecurityHeaders)
+  .use(Express.static(path.join(__dirname, '..', 'static')))
+  .get('/', function (req, res, next) {
+    res.send('<!doctype html>\n' +
+      ReactDOM.renderToString(React.createElement(Html, {
+        assets: {
+          javascript: {main: '/dist/main.js'},
+          styles: {main: '/dist/main.css'}
+        }
+      })));
+  })
+  .get('*', (req, res) => {
+    res.status(404).redirect('/#/404');
+  });
 
-//-- TODO: replicate prod express config
-// app.get('*', function(req, res, next){
-//
-// });
-
-WDS.listen(port, 'localhost', function (err) {
+WDS.listen(port, host, function (err) {
   if (err) {
     return console.log(err);
   }
