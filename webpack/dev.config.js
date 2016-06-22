@@ -36,7 +36,7 @@ module.exports = {
       /node_modules\/json-schema\/lib\/validate\.js/
     ],
     loaders: [
-      { test: /\.(js|jsx)?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel']},
+      { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel']},
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css?importLoaders=2&sourceMap!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true') },
       { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
