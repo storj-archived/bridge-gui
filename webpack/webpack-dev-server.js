@@ -1,19 +1,20 @@
-require('../server.babel');
+// import '../server.babel';
 
-var React = require('react');
-var ReactDOM = require('react-dom/server');
-var Html = require('../src/helpers/Html');
+import path from 'path';
+import React from 'react';
+import ReactDOM from 'react-dom/server';
+import Html from '../src/helpers/Html';
+import webpack from 'webpack';
+import WebpackDevServer from 'webpack-dev-server';
+import Express from 'express';
+import config from '../src/config';
+import webpackConfig from './dev.config';
 
-var Express = require('express');
-var webpack = require('webpack');
+const compiler = webpack(webpackConfig);
 
-var config = require('../src/config');
-var webpackConfig = require('./dev.config');
-var compiler = webpack(webpackConfig);
-
-var host = config.host || 'localhost';
-var port = (config.port + 1) || 3001;
-var serverOptions = {
+const host = config.host || 'localhost';
+const port = (config.port + 1) || 3001;
+const serverOptions = {
   contentBase: '../src/',
   quiet: true,
   noInfo: true,
@@ -25,11 +26,10 @@ var serverOptions = {
   stats: {colors: true}
 };
 
-// var app = new Express();
+const WDS = new WebpackDevServer(compiler, serverOptions);
+const app = WDS.app;
 
-var WebpackDevServer = require('webpack-dev-server');
-var wds = new WebpackDevServer(compiler, serverOptions);
-var app = wds.app;
+app.use(Express.static(path.join(__dirname, '..', 'static')));
 
 app.get('/', function (req, res, next) {
   res.send('<!doctype html>\n' +
@@ -41,7 +41,12 @@ app.get('/', function (req, res, next) {
     })));
 });
 
-wds.listen(port, 'localhost', function (err) {
+//-- TODO: replicate prod express config
+// app.get('*', function(req, res, next){
+//
+// });
+
+WDS.listen(port, 'localhost', function (err) {
   if (err) {
     return console.log(err);
   }
