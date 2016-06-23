@@ -1,5 +1,3 @@
-require('babel/polyfill');
-
 // Webpack config for creating the production bundle.
 var path = require('path');
 var webpack = require('webpack');
@@ -16,19 +14,17 @@ var port = (config.port + 1) || 3001;
 module.exports = {
   devtool: 'source-map',
   context: path.resolve(__dirname, '..'),
-  entry: {
-    'main': [
-      'webpack-dev-server/client?http://localhost:' + port,
-      'webpack/hot/only-dev-server',
-      'bootstrap-sass!./src/theme/bootstrap.config.js',
-      './src/client.js',
-      './src/theme/shame.scss'
-    ]
-  },
+  entry: [
+    'webpack-dev-server/client?http://localhost:' + port,
+    'webpack/hot/only-dev-server',
+    'bootstrap-sass!./src/theme/bootstrap.config.prod.js',
+    './src/client.js',
+    './src/theme/shame.scss'
+  ],
   output: {
     path: assetsPath,
     filename: '[name].js',
-    // chunkFilename: '[name]-[chunkhash].js',
+    chunkFilename: '[name].js',
     publicPath: '/dist/'
   },
   module: {
@@ -71,7 +67,6 @@ module.exports = {
     new CleanPlugin([path.join(__dirname, relativeAssetsPath, '**/*')], {root: process.cwd()}),
 
     // css files from the extract-text-plugin loader
-    // new ExtractTextPlugin('[name]-[chunkhash].css', {allChunks: true}),
     new ExtractTextPlugin('[name].css', {allChunks: true}),
     new webpack.DefinePlugin({
       __CLIENT__: true,

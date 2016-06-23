@@ -1,5 +1,3 @@
-require('babel/polyfill');
-
 // Webpack config for creating the production bundle.
 var path = require('path');
 var webpack = require('webpack');
@@ -10,20 +8,14 @@ var strip = require('strip-loader');
 var relativeAssetsPath = '../static/dist';
 var assetsPath = path.join(__dirname, relativeAssetsPath);
 
-// https://github.com/halt-hammerzeit/webpack-isomorphic-tools
-var WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
-var webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(require('./webpack-isomorphic-tools'));
-
 module.exports = {
   devtool: 'source-map',
   context: path.resolve(__dirname, '..'),
-  entry: {
-    'main': [
-      'bootstrap-sass!./src/theme/bootstrap.config.prod.js',
-      './src/client.js',
-      './src/theme/shame.scss'
-    ]
-  },
+  entry: [
+    'bootstrap-sass!./src/theme/bootstrap.config.prod.js',
+    './src/client.js',
+    './src/theme/shame.scss'
+  ],
   output: {
     path: assetsPath,
     filename: '[name]-[chunkhash].js',
@@ -35,22 +27,27 @@ module.exports = {
       /node_modules\/json-schema\/lib\/validate\.js/
     ],
     loaders: [
-      { test: /\.jsx?$/, exclude: /node_modules/, loaders: [strip.loader('debug'), 'babel']},
-      { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css?importLoaders=2&sourceMap!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true') },
-      { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
-      { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file" },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml" },
-      { test: webpackIsomorphicToolsPlugin.regular_expression('images'), loader: 'url-loader?limit=10240' },
-      { test: /kad-localstorage/, loader: "shebang" }
+      {test: /\.jsx?$/, exclude: /node_modules/, loaders: [strip.loader('debug'), 'babel']},
+      {test: /\.json$/, loader: 'json-loader'},
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract('style', 'css?importLoaders=2&sourceMap!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true')
+      },
+      {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff"},
+      {test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff"},
+      {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream"},
+      {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file"},
+      {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml"},
+      {test: /\.(jpeg|jpg|png|gif)$/, loader: 'url-loader?limit=10240'},
+      {test: /kad-localstorage/, loader: "shebang"}
     ]
   },
   progress: true,
   resolve: {
     alias: {
-      dgram: `${__dirname}/stubs/dgram.js`
+      dgram: `${__dirname}/stubs/dgram`,
+      bufferutil: `${__dirname}/stubs/blank`,
+      'utf-8-validate': `${__dirname}/stubs/blank`
     },
     modulesDirectories: [
       'src',
@@ -90,13 +87,12 @@ module.exports = {
     // optimizations
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
-/*
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
-    }),
-*/
-    webpackIsomorphicToolsPlugin
+    /*
+     new webpack.optimize.UglifyJsPlugin({
+     compress: {
+     warnings: false
+     }
+     }),
+     */
   ]
 };

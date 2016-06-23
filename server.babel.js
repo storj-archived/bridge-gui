@@ -13,3 +13,6 @@ try {
 }
 
 require('babel-core/register')(config);
+require.extensions['.scss'] = () => {
+  return;
+};

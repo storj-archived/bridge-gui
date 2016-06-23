@@ -44,8 +44,8 @@ app
     res.send('<!doctype html>\n' +
       ReactDOM.renderToString(React.createElement(Html, {
         assets: {
-          javascript: {main: '/dist/main.js'},
-          styles: {main: '/dist/main.css'}
+          js: {main: '/dist/main.js'},
+          css: {main: '/dist/main.css'}
         }
       })));
   })
