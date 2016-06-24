@@ -41,6 +41,24 @@ Buttons
   }
 }
 
+.btn-blue {
+  border-color: $brand-primary;
+  color: #fff;
+  background: $brand-primary;
+  span, a {
+    color: #fff;
+  }
+}
+
+.btn-blue:hover, .btn-blue:focus {
+  background: #173AE8;
+  border-color: #173AE8;
+  color: #fff;
+  span, a {
+    color: #fff;
+  }
+}
+
 .btn-green {
 	border-color: #88C425;
 	color: #fff;
