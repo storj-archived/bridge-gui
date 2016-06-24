@@ -1,5 +1,3 @@
-require('babel/polyfill');
-
 // Webpack config for creating the production bundle.
 var path = require('path');
 var webpack = require('webpack');
@@ -10,24 +8,23 @@ var strip = require('strip-loader');
 var relativeAssetsPath = '../static/dist';
 var assetsPath = path.join(__dirname, relativeAssetsPath);
 
-// https://github.com/halt-hammerzeit/webpack-isomorphic-tools
-var WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
-var webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(require('./webpack-isomorphic-tools'));
+var config = require('../src/config');
+var port = (config.port + 1) || 3001;
 
 module.exports = {
   devtool: 'source-map',
   context: path.resolve(__dirname, '..'),
-  entry: {
-    'main': [
-      'bootstrap-sass!./src/theme/bootstrap.config.prod.js',
-      './src/client.js',
-      './src/theme/shame.scss'
-    ]
-  },
+  entry: [
+    'webpack-dev-server/client?http://localhost:' + port,
+    'webpack/hot/only-dev-server',
+    'bootstrap-sass!./src/theme/bootstrap.config.prod.js',
+    './src/client.js',
+    './src/theme/shame.scss'
+  ],
   output: {
     path: assetsPath,
-    filename: '[name]-[chunkhash].js',
-    chunkFilename: '[name]-[chunkhash].js',
+    filename: '[name].js',
+    chunkFilename: '[name].js',
     publicPath: '/dist/'
   },
   module: {
@@ -35,7 +32,7 @@ module.exports = {
       /node_modules\/json-schema\/lib\/validate\.js/
     ],
     loaders: [
-      { test: /\.jsx?$/, exclude: /node_modules/, loaders: [strip.loader('debug'), 'babel']},
+      { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel']},
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css?importLoaders=2&sourceMap!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true') },
       { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
@@ -43,14 +40,16 @@ module.exports = {
       { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },
       { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file" },
       { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml" },
-      { test: webpackIsomorphicToolsPlugin.regular_expression('images'), loader: 'url-loader?limit=10240' },
+      { test: /\.(jpeg|jpg|png|gif)$/, loader: 'url-loader?limit=10240' },
       { test: /kad-localstorage/, loader: "shebang" }
     ]
   },
   progress: true,
   resolve: {
     alias: {
-      dgram: `${__dirname}/stubs/dgram.js`
+      dgram: `${__dirname}/stubs/dgram`,
+      bufferutil: `${__dirname}/stubs/blank`,
+      'utf-8-validate': `${__dirname}/stubs/blank`
     },
     modulesDirectories: [
       'src',
@@ -65,10 +64,10 @@ module.exports = {
     tls: 'empty'
   },
   plugins: [
-    new CleanPlugin([relativeAssetsPath]),
+    new CleanPlugin([path.join(__dirname, relativeAssetsPath, '**/*')], {root: process.cwd()}),
 
     // css files from the extract-text-plugin loader
-    new ExtractTextPlugin('[name]-[chunkhash].css', {allChunks: true}),
+    new ExtractTextPlugin('[name].css', {allChunks: true}),
     new webpack.DefinePlugin({
       __CLIENT__: true,
       __SERVER__: false,
@@ -90,6 +89,7 @@ module.exports = {
     // optimizations
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
 /*
     new webpack.optimize.UglifyJsPlugin({
       compress: {
@@ -97,6 +97,5 @@ module.exports = {
       }
     }),
 */
-    webpackIsomorphicToolsPlugin
   ]
 };

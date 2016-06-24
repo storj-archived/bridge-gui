@@ -1,17 +1,25 @@
-var Express = require('express');
-var webpack = require('webpack');
+// import '../server.babel';
 
-var config = require('../src/config');
-var webpackConfig = require('./dev.config');
-var compiler = webpack(webpackConfig);
+import path from 'path';
+import React from 'react';
+import ReactDOM from 'react-dom/server';
+import favicon from 'serve-favicon';
+import Html from '../src/helpers/Html';
+import webpack from 'webpack';
+import WebpackDevServer from 'webpack-dev-server';
+import Express from 'express';
+import config from '../src/config';
+import webpackConfig from './dev.config';
 
-var host = config.host || 'localhost';
-var port = (config.port + 1) || 3001;
-var serverOptions = {
-  contentBase: 'http://' + host + ':' + port,
+const compiler = webpack(webpackConfig);
+
+const host = config.host || 'localhost';
+const port = (config.port + 1) || 3001;
+const serverOptions = {
+  contentBase: '../src/',
   quiet: true,
   noInfo: true,
-  hot: false,
+  hot: true,
   inline: true,
   lazy: false,
   publicPath: webpackConfig.output.publicPath,
@@ -19,15 +27,36 @@ var serverOptions = {
   stats: {colors: true}
 };
 
-var app = new Express();
+const WDS = new WebpackDevServer(compiler, serverOptions);
+const app = WDS.app;
 
-app.use(require('webpack-dev-middleware')(compiler, serverOptions));
-app.use(require('webpack-hot-middleware')(compiler));
+const addSecurityHeaders = (req, res, next) => {
+  res.set('X-Frame-Options', 'DENY');
+  res.set('Content-Security-Policy', "default-src 'self'; style-src 'unsafe-inline' 'self'; object-src 'none'; connect-src *; frame-src https://storj.github.io;");
+  next();
+};
 
-app.listen(port, function onAppListening(err) {
+app
+  .use(favicon(path.join(__dirname, '..', 'static/img/favicon', 'favicon.ico')))
+  .use(addSecurityHeaders)
+  .use(Express.static(path.join(__dirname, '..', 'static')))
+  .get('/', function (req, res, next) {
+    res.send('<!doctype html>\n' +
+      ReactDOM.renderToString(React.createElement(Html, {
+        assets: {
+          js: {main: '/dist/main.js'},
+          css: {main: '/dist/main.css'}
+        }
+      })));
+  })
+  .get('*', (req, res) => {
+    res.status(404).redirect('/#/404');
+  });
+
+WDS.listen(port, host, function (err) {
   if (err) {
-    console.error(err);
-  } else {
-    console.info('==> 🚧  Webpack development server listening on port %s', port);
+    return console.log(err);
   }
+
+  console.info('==> 🚧  Webpack development server listening on port %s', port);
 });

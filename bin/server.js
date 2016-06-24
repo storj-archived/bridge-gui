@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 require('../server.babel'); // babel registration (runtime transpilation for node)
-var path = require('path');
-var rootDir = path.resolve(__dirname, '..');
 /**
  * Define isomorphic constants.
  */
@@ -11,18 +9,23 @@ global.__DISABLE_SSR__ = true;  // <----- DISABLES SERVER SIDE RENDERING FOR ERR
 global.__DEVELOPMENT__ = process.env.NODE_ENV !== 'production';
 
 if (__DEVELOPMENT__) {
-  if (!require('piping')({
-      hook: true,
-      ignore: /(\/\.|~$|\.json|\.scss$)/i
-    })) {
-    return;
-  }
+  console.log(`RUNNING IN DEVELOPMENT`);
+  return require('../webpack/webpack-dev-server');
 }
 
-// https://github.com/halt-hammerzeit/webpack-isomorphic-tools
-var WebpackIsomorphicTools = require('webpack-isomorphic-tools');
-global.webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webpack-isomorphic-tools'))
-  .development(__DEVELOPMENT__)
-  .server(rootDir, function() {
-    require('../src/server');
-  });
+var webpack = require('webpack');
+var webpackConfig = require('../webpack/prod.config');
+
+var compiler = webpack(webpackConfig);
+
+compiler.run(function (err, stats) {
+  if (err) return console.error(err);
+
+  var parseAssets = require('./parseAssets');
+  var assets = parseAssets(stats, compiler.options);
+
+  global.assets = assets.main;
+
+  require('../src/server');
+});
+
