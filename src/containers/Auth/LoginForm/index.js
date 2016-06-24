@@ -68,7 +68,7 @@ export default class LoginForm extends Component {
           <div className="col-lg-6 col-lg-push-3 col-md-8 col-md-push-2 col-xs-12 text-center">
             <div className="row">
               <div className="col-sm-12">
-                <div className="content form-horizontal">
+                <div className="content">
 
                   <h1 className="title text-center form-group">Login</h1>
 
