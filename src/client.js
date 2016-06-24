@@ -1,11 +1,13 @@
 /**
  * THIS IS THE ENTRY POINT FOR THE CLIENT, JUST LIKE server.js IS THE ENTRY POINT FOR THE SERVER.
  */
+import 'babel/polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import createStore from './redux/create';
 import client from 'utils/apiClient';
 import { Provider } from 'react-redux';
+import config from './config';
 import renderRoutes from './routes';
 
 function bootstrapClient() {

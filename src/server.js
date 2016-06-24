@@ -18,21 +18,39 @@ const server = new http.Server(app);
 
 function addSecurityHeaders(req, res, next) {
   res.set('X-Frame-Options', 'DENY');
+  //connect-src https://" + config.apiHost + ";
   res.set('Content-Security-Policy', "default-src 'self'; style-src 'unsafe-inline' 'self'; object-src 'none'; connect-src *; frame-src https://storj.github.io;")
   next();
 }
 
-app.use(compression())
-  .use(favicon(path.join(__dirname, '..', 'static/img/favicon', 'favicon.ico')))
-  .use(addSecurityHeaders)
-  .use(Express.static(path.join(__dirname, '..', 'static')))
-  .get('/', addSecurityHeaders, (req, res) => {
+app.use(compression());
+app.use(favicon(path.join(__dirname, '..', 'static/img/favicon', 'favicon.ico')));
+
+app.use(addSecurityHeaders)
+  .use(Express.static(path.join(__dirname, '..', 'static')));
+
+app.get('/', addSecurityHeaders, (req, res) => {
+/*
+  function hydrateOnClient() {
     res.send('<!doctype html>\n' +
-      ReactDOM.renderToString(<Html assets={global.assets}/>));
-  })
-  .get('*', (req, res) => {
-    res.status(404).redirect('/#/404');
-  });
+      ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} store={store}/>));
+  }
+*/
+
+  function hydrateOnClient() {
+    res.send('<!doctype html>\n' +
+      ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()}/>));
+  }
+
+  if (__DISABLE_SSR__) {
+    hydrateOnClient();
+    return;
+  }
+});
+
+app.get('*', (req, res) => {
+  res.status(404).redirect('/#/404');
+})
 
 if (config.port) {
   server.listen(config.port, (err) => {
