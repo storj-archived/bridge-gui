@@ -7,10 +7,12 @@ WORKDIR /opt/bridge-gui
 # Copy over the app and install
 COPY . /opt/bridge-gui/
 RUN /opt/bridge-gui/scripts/install_deps_debian.sh
-# Need to clean node_modules dir here or exclude it
-RUN npm install
-# Build the app
-RUN npm run build
+
+# Clean remove node_modules copied from host
+RUN rm -rf /opt/bridge-gui/node_modules
+
+# Install node modules for production (i.e. don't install devdeps)
+RUN npm install --production
 
 # Expose listen port
 EXPOSE 8080

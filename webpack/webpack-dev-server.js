@@ -20,7 +20,6 @@ const serverOptions = {
   quiet: true,
   noInfo: true,
   hot: true,
-  inline: true,
   lazy: false,
   publicPath: webpackConfig.output.publicPath,
   headers: {'Access-Control-Allow-Origin': '*'},
@@ -44,8 +43,8 @@ app
     res.send('<!doctype html>\n' +
       ReactDOM.renderToString(React.createElement(Html, {
         assets: {
-          js: {main: '/dist/main.js'},
-          css: {main: '/dist/main.css'}
+          js: '/dist/main.js',
+          css: '/dist/main.css'
         }
       })));
   })

@@ -1,7 +1,6 @@
 // Webpack config for creating the production bundle.
 var path = require('path');
 var webpack = require('webpack');
-var CleanPlugin = require('clean-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var strip = require('strip-loader');
 
@@ -64,8 +63,6 @@ module.exports = {
     tls: 'empty'
   },
   plugins: [
-    new CleanPlugin([path.join(__dirname, relativeAssetsPath, '**/*')], {root: process.cwd()}),
-
     // css files from the extract-text-plugin loader
     new ExtractTextPlugin('[name].css', {allChunks: true}),
     new webpack.DefinePlugin({

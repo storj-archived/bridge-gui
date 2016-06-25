@@ -13,11 +13,10 @@
     "start": "concurrent --kill-others \"npm run start-prod\" \"npm run start-prod-api\"",
     "start-prod": "better-npm-run start-prod",
     "build": "webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
-    "postinstall": "webpack --display-error-details --config webpack/prod.config.js",
     "lint": "eslint -c .eslintrc src api",
     "start-dev": "better-npm-run start-dev",
-    "watch-client": "better-npm-run watch-client",
-    "dev": "concurrent --kill-others \"npm run watch-client\" \"npm run start-dev\" \"npm run start-dev-api\"",
+    "watch-client": "better-npm-run start-dev",
+    "dev": "concurrent --kill-others \"npm run start-dev\" \"npm run start-dev-api\"",
     "test": "karma start",
     "test-node": "./node_modules/mocha/bin/mocha $(find api -name '*-test.js') --compilers js:babel-core/register",
     "test-node-watch": "./node_modules/mocha/bin/mocha $(find api -name '*-test.js') --compilers js:babel-core/register --watch"
@@ -41,13 +40,6 @@
         "APIPORT": 3030
       }
     },
-    "watch-client": {
-      "command": "babel-node webpack/webpack-dev-server.js",
-      "env": {
-        "UV_THREADPOOL_SIZE": 100,
-        "NODE_PATH": "./src"
-      }
-    }
   },
   "dependencies": {
     "async": "^2.0.0-rc.2",
@@ -110,13 +102,15 @@
     "mocha": "^2.3.3",
     "phantomjs": "^1.9.18",
     "phantomjs-polyfill": "0.0.1",
+    "react-hot-loader": "^1.3.0",
     "react-transform-catch-errors": "^1.0.0",
-    "redbox-react": "^1.1.1",
+    "redbox-react": "1.1.1",
     "redux-devtools": "^3.0.0-beta-3",
     "redux-devtools-dock-monitor": "^1.0.0-beta-3",
     "redux-devtools-log-monitor": "^1.0.0-beta-3",
     "sinon": "^1.17.2",
     "webpack-dev-middleware": "^1.4.0",
+    "webpack-dev-server": "^1.14.1",
     "webpack-hot-middleware": "^2.5.0"
   },
   "engines": {
