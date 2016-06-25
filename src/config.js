@@ -9,9 +9,9 @@ const environment = {
 
 module.exports = Object.assign({
   host: process.env.HOST || '127.0.0.1',
-  port: process.env.PORT || 8080,
+  port: Number(process.env.PORT) || 8080,
   apiHost: process.env.APIHOST || 'api.storj.io',
-  apiPort: process.env.APIPORT || 6500,
+  apiPort: Number(process.env.APIPORT) || 6500,
   apiProtocol: 'http://', //(process.env.NODE_ENV === 'development') ? 'http://' : 'https://',
   app: {
     title: 'Storj',

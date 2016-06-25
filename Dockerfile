@@ -7,11 +7,12 @@ WORKDIR /opt/metadisk-gui
 # Copy over the app and install
 COPY . /opt/metadisk-gui/
 RUN /opt/metadisk-gui/scripts/install_deps_debian.sh
-# Need to clean node_modules dir here or exclude it
-# RUN rm -rf /opt/metadisk-gui/node_modules
-RUN npm install
-# Build the app
-# RUN npm run build
+
+# Clean remove node_modules copied from host
+RUN rm -rf /opt/metadisk-gui/node_modules
+
+# Install node modules for production (i.e. don't install devdeps)
+RUN npm install --production
 
 # Expose listen port
 EXPOSE 8080
