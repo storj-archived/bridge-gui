@@ -39,7 +39,7 @@
         "PORT": 3000,
         "APIPORT": 3030
       }
-    },
+    }
   },
   "dependencies": {
     "async": "^2.0.0-rc.2",
