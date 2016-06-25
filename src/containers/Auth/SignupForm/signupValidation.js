@@ -2,7 +2,7 @@ import * as validate from '../../../utils/validation';
 
 validate.eula = validate.createValidator({
   required: value => {
-    if (!value) return 'Please accept the Terms of Service to proceed.';
+    return !!!value ? 'Please accept the Terms of Service to proceed.' : '';
   }
 });
 
@@ -17,7 +17,7 @@ export default function({email, password, eula}) {
 */
 
   errors.password = validate.required(password);
-  errors.eula = validate.eula(eula);
+  errors.eula = validate.eula({required: eula}).required;
 
   return errors;
 };
