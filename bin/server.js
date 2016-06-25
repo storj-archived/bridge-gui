@@ -9,7 +9,7 @@ global.__DISABLE_SSR__ = true;  // <----- DISABLES SERVER SIDE RENDERING FOR ERR
 global.__DEVELOPMENT__ = process.env.NODE_ENV !== 'production';
 
 if (__DEVELOPMENT__) {
-  console.log(`RUNNING IN DEVELOPMENT`);
+  console.log('RUNNING IN DEVELOPMENT');
   return require('../webpack/webpack-dev-server');
 }
 

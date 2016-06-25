@@ -8,9 +8,10 @@ WORKDIR /opt/metadisk-gui
 COPY . /opt/metadisk-gui/
 RUN /opt/metadisk-gui/scripts/install_deps_debian.sh
 # Need to clean node_modules dir here or exclude it
+# RUN rm -rf /opt/metadisk-gui/node_modules
 RUN npm install
 # Build the app
-RUN npm run build
+# RUN npm run build
 
 # Expose listen port
 EXPOSE 8080

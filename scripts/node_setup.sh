@@ -8,9 +8,9 @@
 #
 # Run as root or insert `sudo -E` before `bash`:
 #
-# curl -sL https://deb.nodesource.com/setup_0.12 | bash -
+# curl -sL https://deb.nodesource.com/setup_4.x | bash -
 #   or
-# wget -qO- https://deb.nodesource.com/setup_0.12 | bash -
+# wget -qO- https://deb.nodesource.com/setup_4.x | bash -
 #
 
 export DEBIAN_FRONTEND=noninteractive
@@ -36,7 +36,7 @@ exec_cmd() {
 }
 
 
-print_status "Installing the NodeSource Node.js 0.12 repo..."
+print_status "Installing the NodeSource Node.js 4.x repo..."
 
 
 PRE_INSTALL_PKGS=""
@@ -107,10 +107,10 @@ fi
 print_status "Confirming \"${DISTRO}\" is supported..."
 
 if [ -x /usr/bin/curl ]; then
-    exec_cmd_nobail "curl -sLf -o /dev/null 'https://deb.nodesource.com/node_0.12/dists/${DISTRO}/Release'"
+    exec_cmd_nobail "curl -sLf -o /dev/null 'https://deb.nodesource.com/node_4.x/dists/${DISTRO}/Release'"
     RC=$?
 else
-    exec_cmd_nobail "wget -qO /dev/null -o /dev/null 'https://deb.nodesource.com/node_0.12/dists/${DISTRO}/Release'"
+    exec_cmd_nobail "wget -qO /dev/null -o /dev/null 'https://deb.nodesource.com/node_4.x/dists/${DISTRO}/Release'"
     RC=$?
 fi
 
@@ -134,13 +134,13 @@ else
     exec_cmd 'wget -qO- https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -'
 fi
 
-print_status 'Creating apt sources list file for the NodeSource Node.js 0.12 repo...'
+print_status 'Creating apt sources list file for the NodeSource Node.js 4.x repo...'
 
-exec_cmd "echo 'deb https://deb.nodesource.com/node_0.12 ${DISTRO} main' > /etc/apt/sources.list.d/nodesource.list"
-exec_cmd "echo 'deb-src https://deb.nodesource.com/node_0.12 ${DISTRO} main' >> /etc/apt/sources.list.d/nodesource.list"
+exec_cmd "echo 'deb https://deb.nodesource.com/node_4.x ${DISTRO} main' > /etc/apt/sources.list.d/nodesource.list"
+exec_cmd "echo 'deb-src https://deb.nodesource.com/node_4.x ${DISTRO} main' >> /etc/apt/sources.list.d/nodesource.list"
 
 print_status 'Running `apt-get update` for you...'
 
 exec_cmd 'apt-get update'
 
-print_status 'Run `apt-get install nodejs` (as root) to install Node.js 0.12 and npm'
+print_status 'Run `apt-get install nodejs` (as root) to install Node.js 4.x and npm'
