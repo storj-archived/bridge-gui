@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NAMESPACE=storj
+NAMESPACE=storjlabs
 APP=bridge-gui
 VERSION=$(git rev-parse --short HEAD)
 IMAGE=$NAMESPACE/$APP

@@ -1,24 +1,23 @@
-export default function(values) {
+import * as validate from '../../../utils/validation';
+
+validate.eula = validate.createValidator({
+  required: value => {
+    if (!value) return 'Please accept the Terms of Service to proceed.';
+  }
+});
+
+export default function({email, password, eula}) {
   const errors = {};
 
-  if(!/.+@.+\..+/i.test(values.email)) {
-    errors.email = 'Invalid email address';
-  }
-  if(!values.email) {
-    errors.email = 'Required';
-  }
-/*
-  if(values.password && values.password.length < 8) {
-    errors.password = 'Poor password length: less than 8 characters';
-  }
-*/
-  if(!values.password) {
-    errors.password = 'Required';
-  }
+  errors.email = validate.email(email) || validate.required(email);
+  errors.email = validate.required(email);
 
-  if(!values.eula) {
-    errors.eula = 'Please accept the Terms of Service to proceed.';
-  }
+/*
+  errors.password = validate.minLength(8)(password) || validate.required(password);
+*/
+
+  errors.password = validate.required(password);
+  errors.eula = validate.eula(eula);
 
   return errors;
 };

@@ -1,15 +1,15 @@
 FROM debian:jessie
 
 # Create directory for the app
-RUN mkdir -p /opt/metadisk-gui
-WORKDIR /opt/metadisk-gui
+RUN mkdir -p /opt/bridge-gui
+WORKDIR /opt/bridge-gui
 
 # Copy over the app and install
-COPY . /opt/metadisk-gui/
-RUN /opt/metadisk-gui/scripts/install_deps_debian.sh
+COPY . /opt/bridge-gui/
+RUN /opt/bridge-gui/scripts/install_deps_debian.sh
 
 # Clean remove node_modules copied from host
-RUN rm -rf /opt/metadisk-gui/node_modules
+RUN rm -rf /opt/bridge-gui/node_modules
 
 # Install node modules for production (i.e. don't install devdeps)
 RUN npm install --production
