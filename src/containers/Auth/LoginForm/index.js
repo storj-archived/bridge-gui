@@ -43,6 +43,21 @@ export default class LoginForm extends Component {
     }
   }
 
+  header() {
+    const {location: {query: {passwordReset}}} = this.props;
+
+    if (typeof(passwordReset) === 'undefined') {
+      return <h1 className="title text-center form-group">Login</h1>;
+    }
+
+    return (
+      <div>
+        <h1 className="title text-center form-group">Success</h1>
+        <p>Your password has been successfully changed. Please log in.</p>
+      </div>
+    );
+  }
+
   submit() {
     return new Promise((resolve, reject) => {
       const keypair = client.createKeyPair();
@@ -76,7 +91,7 @@ export default class LoginForm extends Component {
               <div className="col-sm-12">
                 <div className="content">
 
-                  <h1 className="title text-center form-group">Login</h1>
+                  {this.header()}
 
                   <form>
                     <div className={'form-group ' + (submitFailed && email.error ? 'has-error' : '')}>

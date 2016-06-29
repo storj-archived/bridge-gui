@@ -38,7 +38,7 @@ export default class PasswordReset extends Component {
       return client.resetPassword({
         email,
         password,
-        redirect: `${protocol}//${host}/?passwordReset=true`
+        redirect: `${protocol}//${host}/#/?passwordReset`
       }).then(
         function success(data) {
           resolve();
