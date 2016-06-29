@@ -6,7 +6,7 @@ import {Link, hashHistory} from 'react-router';
 // import './LoginForm.scss';
 
 import client from 'utils/apiClient';
-import formLabelError from '../../../components/ErrorViews/FormLabelError';
+import formLabelError from '../../../components/ErrorViews/formLabelError';
 import loginValidation from '../LoginForm/loginValidation';
 
 import {reduxForm} from 'redux-form';

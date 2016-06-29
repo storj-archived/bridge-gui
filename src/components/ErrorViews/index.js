@@ -1,1 +1,1 @@
-export FormLabelError from './FormLabelError';
+export FormLabelError from './formLabelError';
