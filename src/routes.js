@@ -2,7 +2,7 @@ import React from 'react';
 import {Router, IndexRoute, Route, hashHistory} from 'react-router';
 import LoginForm from './containers/Auth/LoginForm';
 import SignupForm from './containers/Auth/SignupForm';
-import SignupSuccess from './components/SignupSuccess';
+import SignupSuccess from './components/MessagePage/signupSuccess';
 import PasswordReset from './containers/Auth/PasswordReset';
 import ApiDocs from './components/ApiDocs';
 import {
