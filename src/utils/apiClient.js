@@ -146,4 +146,8 @@ client.removeBasicAuth = () => {
   }
 };
 
+client.resetPassword = (options) => {
+  return client.api.resetPassword(options);
+};
+
 export default client;

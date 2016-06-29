@@ -4,6 +4,7 @@ import LoginForm from './containers/Auth/LoginForm';
 import SignupForm from './containers/Auth/SignupForm';
 import SignupSuccess from './components/MessagePage/signupSuccess';
 import PasswordReset from './containers/Auth/PasswordReset';
+import PasswordResetPending from './components/MessagePage/passwordResetPending';
 import ApiDocs from './components/ApiDocs';
 import {
   App,
@@ -27,6 +28,7 @@ export default (store) => {
         <Route path="/signup" components={{navComponent: Auth, mainComponent: SignupForm}}/>
         <Route path="/signup-success" components={{navComponent: Auth, mainComponent: SignupSuccess}}/>
         <Route path="/password-reset" components={{navComponent: Auth, mainComponent: PasswordReset}}/>
+        <Route path="/password-reset-pending" components={{navComponent: Auth, mainComponent: PasswordResetPending}}/>
       </Route>
       { /* Routes requiring login */ }
       <Route path="/dashboard" component={App}>
