@@ -1,9 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-// import {connect} from 'react-redux';
-// import {bindActionCreators} from 'redux';
 import {Link, hashHistory} from 'react-router';
-
-// import './LoginForm.scss';
 
 import client from 'utils/apiClient';
 import formLabelError from '../../../components/ErrorViews/formLabelError';

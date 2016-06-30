@@ -27,7 +27,7 @@ class WrappedClient extends Client {
     params.__nonce = Date.now();
 
     if (['GET', 'DELETE'].indexOf(method) !== -1) {
-      opts.qs   = params;
+      opts.qs = params;
       opts.json = true;
     } else {
       opts.json = params;
@@ -58,11 +58,11 @@ class WrappedClient extends Client {
   }
 
   resolveFileFromPointers(pointers) {
-    const chunks    = [];
+    const chunks = [];
     return new Promise(function(resolve, reject) {
       async.forEachOfLimit(pointers, 6,
         function iteratee(pointer, key, callback) {
-          const uri    = pointer.channel;
+          const uri = pointer.channel;
           const client = new WebSocket(uri);
 
           client.onopen = function() {
@@ -74,8 +74,8 @@ class WrappedClient extends Client {
           };
 
           client.onmessage = function(event) {
-            const data  = event.data;
-            let json    = null;
+            const data = event.data;
+            let json = null;
             // create a multidimensional Array if Array not found at index
             chunks[key] = Array.isArray(chunks[key]) ? chunks[key] : [];
             if (typeof Blob !== 'undefined' && event.data instanceof Blob) {
@@ -135,9 +135,9 @@ client.removeKeyPair = () => {
 };
 
 client.useBasicAuth = (email, pass) => {
-  client.api._options.basicauth          = client.api._options.basicauth || {};
+  client.api._options.basicauth = client.api._options.basicauth || {};
   client.api._options.basicauth.password = pass;
-  client.api._options.basicauth.email    = email;
+  client.api._options.basicauth.email = email;
 };
 
 client.removeBasicAuth = () => {

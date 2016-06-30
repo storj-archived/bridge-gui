@@ -16,11 +16,9 @@ import {
   FileBucket,
   NotFound,
   Support
-  // Billing,
-  // Home,
 } from 'containers';
 
-export default (store) => {
+export default () => {
   return (
     <Router history={hashHistory}>
       <Route path="/" component={App}>

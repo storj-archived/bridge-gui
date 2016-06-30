@@ -1,5 +1,4 @@
 import React, {Component, PropTypes} from 'react';
-// import {connect} from 'react-redux';
 import client from 'utils/apiClient';
 import {reduxForm} from 'redux-form';
 import signupValidation from './signupValidation';
@@ -17,7 +16,7 @@ import Modal from 'react-bootstrap/lib/Modal';
 export default class SignUpForm extends Component {
   static propTypes = {
     fields: PropTypes.object.isRequired,
-    error: PropTypes.object,
+    error: PropTypes.string,
     handleSubmit: PropTypes.func.isRequired,
     submitFailed: PropTypes.bool.isRequired
   };
