@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SignupSuccess = (props) => {
+const MessagePage = ({title, message}) => {
   return (
     <div className="container auth">
       <div className="row">
@@ -8,9 +8,9 @@ const SignupSuccess = (props) => {
           <div className="row">
             <div className="col-sm-12">
               <div className="content form-horizontal">
-                <h1 className="title text-center form-group">Success!</h1>
+                <h1 className="title text-center form-group">{title}</h1>
                 <div className="row">
-                  <p className="text-left">Thanks for signing up! We'll soon send a confirmation email. Please follow the activation link to begin using Storj.</p>
+                  <p className="text-left">{message}</p>
                 </div>
               </div>
             </div>
@@ -21,4 +21,4 @@ const SignupSuccess = (props) => {
   );
 };
 
-export default SignupSuccess;
+export default MessagePage;

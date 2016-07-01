@@ -11,5 +11,5 @@ export PubKeyList from './PubKeyList/pubKeyList';
 export ErrorViews from './ErrorViews';
 export FileListItem from './FileList/fileListItem';
 export FileList from './FileList/index';
-export SignupSuccess from './SignupSuccess/index'
+export SignupSuccess from './MessagePage/signupSuccess'
 export ApiDocs from './ApiDocs/index';

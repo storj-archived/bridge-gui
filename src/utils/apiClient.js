@@ -15,10 +15,10 @@ if (!Array.isArray) {
 class WrappedClient extends Client {
   constructor(uri, options) {
     super(uri, options);
-  };
+  }
 
   _request(method, path, params, callback) {
-    var opts = {
+    const opts = {
       baseUrl: this._options.baseURI,
       uri: path,
       method: method
@@ -55,17 +55,15 @@ class WrappedClient extends Client {
     if (callback) requestPromise.then(callback, callback);
 
     return requestPromise;
-  };
+  }
 
   resolveFileFromPointers(pointers) {
-    var iteration = 0;
-    var chunks = [];
-    var self = this;
+    const chunks = [];
     return new Promise(function(resolve, reject) {
       async.forEachOfLimit(pointers, 6,
         function iteratee(pointer, key, callback) {
-          let uri = pointer.channel;
-          let client = new WebSocket(uri);
+          const uri = pointer.channel;
+          const client = new WebSocket(uri);
 
           client.onopen = function() {
             client.send(JSON.stringify({
@@ -75,12 +73,12 @@ class WrappedClient extends Client {
             }));
           };
 
-          client.onmessage = function(e) {
-            var json = null;
-            var data = e.data;
-            //create a multidimensional Array if Array not found at index
+          client.onmessage = function(event) {
+            const data = event.data;
+            let json = null;
+            // create a multidimensional Array if Array not found at index
             chunks[key] = Array.isArray(chunks[key]) ? chunks[key] : [];
-            if(typeof Blob !== 'undefined' && e.data instanceof Blob) {
+            if (typeof Blob !== 'undefined' && event.data instanceof Blob) {
               chunks[key].push(data);
             } else {
               try {
@@ -94,9 +92,9 @@ class WrappedClient extends Client {
             }
           };
 
-          client.onclose = function(e) {
-            if(e.code>1000) {
-              return callback(new Error("Error Connecting to Farmer"));
+          client.onclose = function(event) {
+            if (event.code > 1000) {
+              return callback(new Error('Error Connecting to Farmer'));
             }
             return callback();
           };
@@ -106,7 +104,7 @@ class WrappedClient extends Client {
           };
         },
         function end(err) {
-          if(err) {
+          if (err) {
             reject(err);
           } else {
             resolve(Array.prototype.concat.apply([], chunks));
@@ -114,8 +112,8 @@ class WrappedClient extends Client {
         }
       );
     });
-  };
-};
+  }
+}
 
 const client = {};
 
@@ -126,12 +124,12 @@ client.useKeyPair = (keypair) => {
 };
 
 client.createKeyPair = (privkey) => {
-  var keypair = new KeyPair(privkey);
+  const keypair = new KeyPair(privkey);
   return keypair;
 };
 
 client.removeKeyPair = () => {
-  if(client.api._options.keypair) {
+  if (client.api._options.keypair) {
     delete client.api._options.keypair;
   }
 };
@@ -143,9 +141,13 @@ client.useBasicAuth = (email, pass) => {
 };
 
 client.removeBasicAuth = () => {
-  if(client.api._options.basicauth) {
+  if (client.api._options.basicauth) {
     delete client.api._options.basicauth;
   }
+};
+
+client.resetPassword = (options) => {
+  return client.api.resetPassword(options);
 };
 
 export default client;
