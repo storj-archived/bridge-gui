@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { IndexLink } from 'react-router';
 import Helmet from 'react-helmet';
 import config from '../../config';
+import './App.scss';
 
 export default class App extends Component {
   render() {
