@@ -28,8 +28,7 @@ export default () => {
 
               <p><b>1. Storj Labs Terms of Use</b></p>
 
-              <p>These Storage Terms incorporate by reference and supplement the Storj Labs Terms of Use [<b>Insert
-                hyperlink</b>]. The Storj Labs Terms of Use govern all access to and use of the Services,
+              <p>These Storage Terms incorporate by reference and supplement the <a target="_blank" href="https://storj.io/terms-of-use.html">Storj Labs Terms of Use</a>. The Storj Labs Terms of Use govern all access to and use of the Services,
                 including the Storage Services. You agree to be bound by and comply with the Storj Labs Terms of
                 Use in connection with your access and use of the Services (including the Storage Services). The
                 Storj Labs Terms of Use and these Storage Terms are collectively referred to as
@@ -103,7 +102,7 @@ export default () => {
                 Materials via the Storage Platform, and for maintaining appropriate security of your Storage Materials,
                 which may include the use of encryption. We reserve the right at any time, without notice, to
                 remove, reject or delete any Storage Materials that contain plain text data or otherwise violate the
-                terms of this Agreement (including the Storj Labs Terms of Use [<b>Insert hyperlink</b>] relating to
+                terms of this Agreement (including the <a target="_blank" href="https://storj.io/terms-of-use.html">Storj Labs Terms of Use</a> relating to
                 User Content). </p>
               <p>(d) You are solely responsible for ensuring that any processing of Storage Materials via the Storage
                 Services is in compliance with all applicable laws. We make no representations or warranties
