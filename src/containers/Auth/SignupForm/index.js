@@ -6,6 +6,7 @@ import formLabelError from '../../../components/ErrorViews/formLabelError';
 import {IndexLink} from 'react-router';
 import {hashHistory} from 'react-router';
 import Modal from 'react-bootstrap/lib/Modal';
+import TermsOfService from '../../../components/Copy/termsOfService';
 
 @reduxForm({
   form: 'Signup',
@@ -57,14 +58,10 @@ export default class SignUpForm extends Component {
 
   renderEula() {
     return (
-      <Modal show={this.state.showEula} onHide={this.closeEula.bind(this)}>
-        <Modal.Header closeButton><h3>Terms of Service</h3></Modal.Header>
+      <Modal show={this.state.showEula} onHide={this.closeEula.bind(this)} bsSize="large" className="modal-scroll-body">
+        <Modal.Header closeButton><h1 className="text-center">Storj Labs</h1></Modal.Header>
         <Modal.Body>
-          <p>This software is released for testing purposes only. We make no guarantees with respect to its function. By
-            using this software you agree that Storj is not liable for any damage to your system. You also agree not to
-            upload illegal content, content that infringes on other's IP, or information that would be protected by
-            HIPAA, FERPA, or any similar standard. Generally speaking, you agree to test the software responsibly. We'd
-            love to hear feedback too.</p>
+          <TermsOfService/>
         </Modal.Body>
         <Modal.Footer>
           <button className="btn btn-transparent" onClick={this.closeEula.bind(this)}>Close</button>
