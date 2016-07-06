@@ -9,6 +9,11 @@ export default () => {
             <div className="col-xs-12 text-center">
               <h3>Storage Terms of Service</h3>
               <p className="text-center">Last Updated: July 7, 2016</p>
+              <p>
+                <a href="https://storj.io/terms-of-service.html" target="_blank">
+                  (a static copy of this document is available here)
+                </a>
+              </p>
               <div className="spacer50"></div>
             </div>
           </div>
