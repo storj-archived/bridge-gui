@@ -2,10 +2,10 @@ import 'colors';
 import path from 'path';
 import {spawn} from 'child_process';
 import {sync as glob} from 'glob';
+import {killOnExit} from '../helpers/processes';
+import {seleniumLogger} from '../helpers/logger';
 // import webpack from 'webpack';
 // import webpackConfig from './webpack/e2e.config';
-import {killOnExit} from '../helpers/processes';
-import {seleniumLogger} from '../helpers/logger'
 
 const defaultSpawnOptions = {
   cwd: path.resolve(__dirname, '..', '..'),
@@ -42,12 +42,11 @@ const devServer = spawn('node', [
 console.info('starting mocha...'.magenta);
 const mocha = spawn(path.resolve(__dirname, '../../node_modules/mocha/bin/mocha'), [
   '--compilers', `js:${path.resolve(__dirname, '../../server.babel.js')}`,
-//   path.resolve(__dirname, 'mochaCasperjsBootstrap.js'),
   ...testFiles
-//     path.resolve(__dirname, '../../e2e/build/signup-e2e.js')
 ], defaultSpawnOptions);
 
 killOnExit(selenium, mocha);
 killOnExit(mocha, devServer);
 killOnExit(process, [selenium, mocha, devServer]);
+
 // });

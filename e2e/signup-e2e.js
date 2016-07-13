@@ -60,12 +60,6 @@ context('After server boot:', () => {
       client.start(done);
     });
 
-    // afterEach(function() {
-    //   browser.perform(function() {
-    //     console.log('afterEach')
-    //   });
-    // });
-
     after(function(done) {
       browser.end();
       client.start(done);

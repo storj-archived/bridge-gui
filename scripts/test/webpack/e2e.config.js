@@ -1,6 +1,5 @@
 var glob = require('glob').sync;
 var path = require('path');
-// var webpack = require('webpack');
 
 var e2eTestRoot = path.resolve(__dirname, '../../../e2e');
 var outputPath = path.resolve(__dirname, '../build');
@@ -32,24 +31,5 @@ module.exports = {
     ]
   },
   progress: false,
-  // resolve: {
-  //   alias: {},
-  //   modulesDirectories: [
-  //     'src',
-  //     'node_modules'
-  //   ],
-  //   extensions: ['', '.json', '.js', '.jsx']
-  // },
-  target: 'node',
-  // node: {
-  //   console: true,
-  //   fs: 'empty',
-  //   net: 'empty',
-  //   tls: 'empty'
-  // },
-  // plugins: [
-  //   optimizations
-  //   new webpack.optimize.DedupePlugin(),
-  //   new webpack.optimize.OccurenceOrderPlugin(),
-  // ]
+  target: 'node'
 };
