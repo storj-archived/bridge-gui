@@ -21,3 +21,12 @@ export const killOnExit = (exitingProcess, processesToKill) => {
 // catches uncaught exceptions
   exitingProcess.on('uncaughtException', handler.bind(null));
 };
+
+export const nextOnExit = (exitingProcess, next) => {
+  exitingProcess.on('exit', next.bind(null));
+  exitingProcess.on('SIGTERM', next.bind(null));
+// catches ctrl+c event
+  exitingProcess.on('SIGINT', next.bind(null));
+// catches uncaught exceptions
+  exitingProcess.on('uncaughtException', next.bind(null));
+};

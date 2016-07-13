@@ -15,18 +15,18 @@ const boot = (done) => {
     const request = http.get(baseUrl, (res) => {
       if (res.statusCode === 200) {
         clearInterval(intervalId);
-        console.info('server ready!');
+        console.info('dev server ready...'.magenta);
         done();
       } else {
-        console.info('waiting for server: '.yellow + 'non-200 status...');
+        console.info('waiting for dev server: '.yellow + 'non-200 status...');
       }
     })
       .on('error', (err) => {
-        console.info('waiting for server: '.yellow + `${err}...`);
+        console.info('waiting for dev server: '.yellow + `${err}...`);
       });
 
     request.setTimeout(bootIntervalTimeout, () => {
-      console.info('waiting for server: '.yellow + 'timeout...');
+      console.info('waiting for dev server: '.yellow + 'timeout...');
       request.abort();
     });
   }, bootIntervalTimeout);

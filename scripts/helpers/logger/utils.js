@@ -7,7 +7,7 @@ const logDir = process.env.LOG_DIR || path.resolve(__dirname, '../../../logs');
  * @param {Function} done - callback which is called once the directory is stat'ed or created
  * @param {String} [dirPath=LOG_DIR or <project_root>/logs] -  path of the directory in which logs should be written to
  */
-const ensureLogsDir = (done, dirPath = logDir) => {
+export const ensureLogsDir = (done, dirPath = logDir) => {
   /**
    * Done callback
    * @callback done
@@ -30,7 +30,7 @@ const ensureLogsDir = (done, dirPath = logDir) => {
  * @param {String} [dirPath=LOG_DIR or <project_root>/logs] -  path of the directory in which logs should be written to
  * @return {String} dirPath - the path of the logDir
  */
-const ensureLogsDirSync = (dirPath = logDir) => {
+export const ensureLogsDirSync = (dirPath = logDir) => {
   const mkdir = () => {
     const mkdirErr = fs.mkdirSync(dirPath);
     if (mkdirErr) throw mkdirErr;
@@ -49,9 +49,4 @@ const ensureLogsDirSync = (dirPath = logDir) => {
     // directory doesn't exist
     return mkdir();
   }
-};
-
-export {
-  ensureLogsDir,
-  ensureLogsDirSync
 };

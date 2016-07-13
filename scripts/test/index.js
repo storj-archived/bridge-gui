@@ -4,6 +4,10 @@ import program from 'commander';
 import {eachSeries} from 'async';
 import 'colors';
 
+import unitSuite from './unit';
+import e2eSuite from './e2e';
+import visualSuite from './visual';
+
 const pkg = JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', '..', 'package.json')));
 const version = pkg.version;
 
@@ -28,24 +32,26 @@ program
 
 /*
  * Test entry points are expected to be in a file with the same name as the
- * corresponding `type` option, and located in the `scripts/test` directory.
+ * corresponding commander `type` cli option (e.g.: `--e2e` = e2e.js), and
+ * located in the `scripts/test` directory.
  */
-
-const types = [
-  'unit',
-  'e2e',
-  'visual'
+const typeSuites = [
+  unitSuite,
+  e2eSuite,
+  visualSuite
 ];
 
 // no types specified, run all
-const noTypes = !(types.some(type => !!program[type]));
+const noTypes = !(typeSuites.some(suite => !!program[suite.typeName]));
 
-eachSeries(types,
-  (type, next) => {
+eachSeries(typeSuites,
+  (suite, next) => {
+    const typeName = suite.typeName;
+
     // checking for `-a || --all`, specific type option, or no type options
-    if (program.all || program[type] || noTypes) {
-      console.info(`BEGINNING tests for type ${type}:`);
-      const typePath = path.resolve(__dirname, `${type}.js`);
+    if (program.all || program[typeName] || noTypes) {
+      console.info(`BEGINNING tests for type ${typeName}:`.cyan);
+      const typePath = path.resolve(__dirname, `${typeName}.js`);
 
       fs.stat(typePath, (err) => {
         if (err) {
@@ -53,19 +59,20 @@ eachSeries(types,
            * report errors via `console.error`; async exits loop
            * if `next` is called with an error
            */
-          console.error(`${err} - CONTINUING...`.red);
+          console.error(`${err} - CONTINUING TO NEXT SUITE...`.cyan);
           next(null);
         } else {
-          // run tests
-          require(typePath);
-          next(null);
+          /*
+           * Run tests - hand next off to each test so that test-type suites run serially.
+           */
+          suite(next);
         }
       });
     } else {
       next(null);
     }
   }, () => {
-    console.info('DONE');
+    console.info('ALL SUITES FINISHED'.cyan);
   }
 );
 
