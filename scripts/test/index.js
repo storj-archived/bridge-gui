@@ -13,6 +13,16 @@ program
   .option('-u, --unit', 'Run unit tests')
   .option('-e, --e2e', 'Run end-to-end tests')
   .option('-v, --visual', 'Run visual regression tests')
+  .on('--help', () => {
+    console.log('  Examples:');
+    console.log('');
+    console.log('    $ npm test -- --unit');
+    console.log('    $ npm test -- -u');
+    console.log('    $ npm test -- --e2e --unit');
+    console.log('    $ npm test -- -e -u');
+    console.log('    $ npm test -- -eu');
+    console.log('');
+  })
   .parse(process.argv)
 ;
 
@@ -35,7 +45,7 @@ eachSeries(types,
     // checking for `-a || --all`, specific type option, or no type options
     if (program.all || program[type] || noTypes) {
       console.info(`BEGINNING tests for type ${type}:`);
-      const typePath = path.resolve(__dirname, type);
+      const typePath = path.resolve(__dirname, `${type}.js`);
 
       fs.stat(typePath, (err) => {
         if (err) {
