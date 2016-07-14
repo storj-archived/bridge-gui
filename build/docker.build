@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Should pull these from docker.env file or something so all docker wrapper scritps can use it
 NAMESPACE=storjlabs
 APP=bridge-gui
 VERSION=$(git rev-parse --short HEAD)
