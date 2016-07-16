@@ -17,6 +17,11 @@ program
   .option('-u, --unit', 'Run unit tests')
   .option('-e, --e2e', 'Run end-to-end tests')
   .option('-v, --visual', 'Run visual regression tests')
+  .option('-M, --no-mock-backend [url]',
+    'Use bridge backend at `url` instead of the mock backend; ' +
+    'defaults to http://localhost:6382; ' +
+    'requires running bridge server (only applicable for --e2e and --visual; ' +
+    'overriden by APIHOST and APIPORT env vars)')
   .on('--help', () => {
     console.log('  Examples:');
     console.log('');
@@ -29,6 +34,14 @@ program
   })
   .parse(process.argv)
 ;
+
+const {
+  noMockBackend
+} = program;
+
+const suiteOptions = {
+  noMockBackend
+};
 
 /*
  * Test entry points are expected to be in a file with the same name as the
@@ -65,7 +78,7 @@ eachSeries(typeSuites,
           /*
            * Run tests - hand next off to each test so that test-type suites run serially.
            */
-          suite(next);
+          suite(next, suiteOptions);
         }
       });
     } else {

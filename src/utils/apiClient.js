@@ -1,3 +1,4 @@
+import url from 'url';
 import {KeyPair, BridgeClient as Client} from 'storj';
 import request from 'request';
 import {hashHistory} from 'react-router';
@@ -117,7 +118,12 @@ class WrappedClient extends Client {
 
 const client = {};
 
-client.api = new WrappedClient('https://' + config.apiHost);
+client.api = new WrappedClient(url.format({
+  protocol: config.apiProtocol,
+  hostname: config.apiHost,
+  port: config.apiPort,
+  slashes: true
+}));
 
 client.useKeyPair = (keypair) => {
   client.api._options.keypair = keypair;
