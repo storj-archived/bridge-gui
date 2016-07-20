@@ -11,8 +11,8 @@ module.exports = Object.assign({
   host: process.env.HOST || '127.0.0.1',
   port: Number(process.env.PORT) || 8080,
   apiHost: process.env.APIHOST || 'api.storj.io',
-  apiPort: Number(process.env.APIPORT) || 6500,
-  apiProtocol: 'http://', //(process.env.NODE_ENV === 'development') ? 'http://' : 'https://',
+  apiPort: Number(process.env.APIPORT) || 80,
+  apiProtocol: (/develop(?:ment)?|test/.test(process.env.NODE_ENV)) ? 'http' : 'https',
   app: {
     title: 'Storj',
     description: 'Storj provides developers and IT teams with high performance, durable object storage.',
