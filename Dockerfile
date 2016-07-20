@@ -19,6 +19,9 @@ RUN git clean -fdx
 # Install node modules for production (i.e. don't install devdeps)
 RUN npm install --production
 
+# Build for production
+RUN npm run build
+
 # Expose listen port
 EXPOSE 8080
 

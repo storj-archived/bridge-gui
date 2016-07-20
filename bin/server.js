@@ -9,6 +9,9 @@ var currentNodeVersion = process.versions.node;
 var wantedNodeVersion = fs.readFileSync(path.resolve(__dirname, '../.nvmrc')).toString();
 var wantedRegex = (new RegExp('^' + wantedNodeVersion.match(/^(\d+)\./)[1]));
 
+var webpackConfig = require('../webpack/prod.config');
+var assets = require(webpackConfig.output.assetsJsonPath);
+
 if (!wantedRegex.test(currentNodeVersion)) {
   console.error('Your current node version is %s. Please use a version that is semver compatible with ^%s', currentNodeVersion, wantedNodeVersion)
 } else {
@@ -25,21 +28,9 @@ if (!wantedRegex.test(currentNodeVersion)) {
     console.log('RUNNING IN DEVELOPMENT');
     require('../webpack/webpack-dev-server');
   } else {
-    var webpack = require('webpack');
-    var webpackConfig = require('../webpack/prod.config');
+    global.assets = assets.main;
 
-    var compiler = webpack(webpackConfig);
-
-    compiler.run(function (err, stats) {
-      if (err) return console.error(err);
-
-      var parseAssets = require('./parseAssets');
-      var assets = parseAssets(stats, compiler.options);
-
-      global.assets = assets.main;
-
-      require('../src/server');
-    });
+    require('../src/server');
   }
 }
 
