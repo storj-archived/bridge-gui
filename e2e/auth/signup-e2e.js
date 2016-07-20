@@ -51,7 +51,7 @@ context('After server boot:', () => {
     const submitSelector = 'form [type="submit"]';
     const eulaSelector = 'form [type="checkbox"]';
     const signupUrl = `${devServerBaseUrl}#/signup`;
-    const goToSignup = () => {
+    const goToSignup = (done) => {
       // parallel([
       //   (next) => {
       //     browser
@@ -64,6 +64,7 @@ context('After server boot:', () => {
       browser
         .url(signupUrl)
         .waitForElementVisible('body', 5000);
+      done();
     };
 
     before(goToSignup);
