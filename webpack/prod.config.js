@@ -12,6 +12,7 @@ var assetsJsonFilename = 'webpack-assets.json';
 var assetsJsonPath = path.resolve(assetsPath, assetsJsonFilename);
 
 module.exports = {
+  cache: true,
   devtool: 'source-map',
   context: path.resolve(__dirname, '..'),
   entry: [
