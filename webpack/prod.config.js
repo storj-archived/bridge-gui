@@ -4,11 +4,15 @@ var webpack = require('webpack');
 var CleanPlugin = require('clean-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var strip = require('strip-loader');
+var AssetsPlugin = require('assets-webpack-plugin');
 
 var relativeAssetsPath = '../static/dist';
 var assetsPath = path.join(__dirname, relativeAssetsPath);
+var assetsJsonFilename = 'webpack-assets.json';
+var assetsJsonPath = path.resolve(assetsPath, assetsJsonFilename);
 
 module.exports = {
+  cache: true,
   devtool: 'source-map',
   context: path.resolve(__dirname, '..'),
   entry: [
@@ -20,7 +24,8 @@ module.exports = {
     path: assetsPath,
     filename: '[name]-[chunkhash].js',
     chunkFilename: '[name]-[chunkhash].js',
-    publicPath: '/dist/'
+    publicPath: '/dist/',
+    assetsJsonPath: assetsJsonPath
   },
   module: {
     noParse: [
@@ -62,6 +67,7 @@ module.exports = {
     tls: 'empty'
   },
   plugins: [
+    new AssetsPlugin({path: assetsPath, filename: assetsJsonFilename, prettyPrint: true}),
     new CleanPlugin([path.join(__dirname, relativeAssetsPath, '**/*')], {root: process.cwd()}),
 
     // css files from the extract-text-plugin loader
