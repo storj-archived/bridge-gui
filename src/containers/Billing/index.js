@@ -7,6 +7,7 @@ import Loader from 'react-loader';
 import CountryDropdown from '../../components/form-controls/country-dropdown';
 import BalancePanel from '../../components/billing/balance-panel';
 import UsagePanel from '../../components/billing/usage-panel';
+import AddCardForm from './add-card-form';
 
 // @connect(
 //   state => ({
@@ -51,6 +52,8 @@ export default class Billing extends Component {
 			</div>
 		</div>
 	</section>
+
+  <AddCardForm />
 
 	<section>
 		<div className="container">
