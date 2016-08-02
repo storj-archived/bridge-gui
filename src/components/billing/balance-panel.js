@@ -1,7 +1,7 @@
 import React from 'react';
 
 const BalancePanel = ({amount, addCreditHandler}) => {
-  
+
   return (
     <div>
       <h2 className="title">Your Balance</h2>
