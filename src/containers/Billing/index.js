@@ -15,16 +15,16 @@ import Loader from 'react-loader';
 //   })
 // )
 
-export default className Billing extends Component {
+export default class Billing extends Component {
   render() {
     return (
       <div>
 
       <section>
-        <div classNameName="container">
-          <div classNameName="row">
-            <div classNameName="col-xs-12">
-              <h1 classNameName="title pull-left">Billing</h1>
+        <div className="container">
+          <div className="row">
+            <div className="col-xs-12">
+              <h1 className="title pull-left">Billing</h1>
             </div>
           </div>
         </div>
@@ -85,31 +85,31 @@ export default className Billing extends Component {
 								<legend>Your Details</legend>
 								<div className="row">
 									<div className="col-sm-6">
-										<input placeholder="First Name" data-required="true" data-stripe="first_name" type="text" name="user_payment_profile[first_name]" id="user_payment_profile_first_name" />
+										<input className="form-control" placeholder="First Name" data-required="true" data-stripe="first_name" type="text" name="user_payment_profile[first_name]" id="user_payment_profile_first_name" />
 									</div>
 									<div className="col-sm-6">
-										<input placeholder="Last Name" data-required="true" data-stripe="last_name" type="text" name="user_payment_profile[last_name]" id="user_payment_profile_last_name" />
-									</div>
-								</div>
-								<div className="row">
-									<div className="col-sm-6">
-										<input placeholder="Phone Number" data-required="true" type="tel" name="user_payment_profile[phone_number]" id="user_payment_profile_phone_number" />
-									</div>
-									<div className="col-sm-6">
-										<input placeholder="Street Address" data-required="true" data-stripe="address_line1" type="text" name="user_payment_profile[address]" id="user_payment_profile_address" />
+										<input className="form-control" placeholder="Last Name" data-required="true" data-stripe="last_name" type="text" name="user_payment_profile[last_name]" id="user_payment_profile_last_name" />
 									</div>
 								</div>
 								<div className="row">
 									<div className="col-sm-6">
-										<input placeholder="City" data-required="true" data-stripe="address_city" type="text" name="user_payment_profile[city]" id="user_payment_profile_city" />
+										<input className="form-control" placeholder="Phone Number" data-required="true" type="tel" name="user_payment_profile[phone_number]" id="user_payment_profile_phone_number" />
 									</div>
 									<div className="col-sm-6">
-										<input placeholder="State" data-stripe="address_state" type="text" name="user_payment_profile[state]" id="user_payment_profile_state" />
+										<input className="form-control" placeholder="Street Address" data-required="true" data-stripe="address_line1" type="text" name="user_payment_profile[address]" id="user_payment_profile_address" />
 									</div>
 								</div>
 								<div className="row">
 									<div className="col-sm-6">
-										<input placeholder="Postal Code" data-stripe="address_zip" type="number" name="user_payment_profile[zip]" id="user_payment_profile_zip" />
+										<input className="form-control" placeholder="City" data-required="true" data-stripe="address_city" type="text" name="user_payment_profile[city]" id="user_payment_profile_city" />
+									</div>
+									<div className="col-sm-6">
+										<input className="form-control" placeholder="State" data-stripe="address_state" type="text" name="user_payment_profile[state]" id="user_payment_profile_state" />
+									</div>
+								</div>
+								<div className="row">
+									<div className="col-sm-6">
+										<input className="form-control" placeholder="Postal Code" data-stripe="address_zip" type="number" name="user_payment_profile[zip]" id="user_payment_profile_zip" />
 									</div>
 									<div className="col-sm-6">
 										<select name="user_payment_profile[country]" id="user_payment_profile_country" title="Select your country">
@@ -125,18 +125,18 @@ export default className Billing extends Component {
 								<legend>Credit Card Details</legend>
 								<div className="row">
 									<div className="col-sm-6">
-										<input placeholder="Credit Card Number" className="Input--floatLabel cc-num FloatLabel-input" name="" data-required="true" data-stripe="number" type="text" id="user_payment_profile_credit_card_number" />
+										<input className="form-control" placeholder="Credit Card Number" className="Input--floatLabel cc-num FloatLabel-input" name="" data-required="true" data-stripe="number" type="text" id="user_payment_profile_credit_card_number" />
 									</div>
 									<div className="col-sm-6">
-										<input placeholder="CVV" className="Input--floatLabel cc-cvc FloatLabel-input" name="" data-required="true" data-stripe="cvc" type="text" id="user_payment_profile_cvv" />
+										<input className="form-control" placeholder="CVV" className="Input--floatLabel cc-cvc FloatLabel-input" name="" data-required="true" data-stripe="cvc" type="text" id="user_payment_profile_cvv" />
 									</div>
 								</div>
 								<div className="row">
 									<div className="col-sm-6">
-										<input placeholder="Expires MM / YYYY" className="Input--floatLabel cc-exp FloatLabel-input" name="" data-required="true" data-stripe="expiry" type="text" id="user_payment_profile_expiration" />
+										<input className="form-control" placeholder="Expires MM / YYYY" className="Input--floatLabel cc-exp FloatLabel-input" name="" data-required="true" data-stripe="expiry" type="text" id="user_payment_profile_expiration" />
 									</div>
 									<div className="col-sm-6">
-										<input placeholder="Please enter a name for this credit card" type="text" name="user_payment_profile[name]" id="user_payment_profile_name" />
+										<input className="form-control" placeholder="Please enter a name for this credit card" type="text" name="user_payment_profile[name]" id="user_payment_profile_name" />
 									</div>
 								</div>
 							</fieldset>
@@ -145,7 +145,7 @@ export default className Billing extends Component {
 
 							<div className="row">
 								<div className="col-xs-12">
-									<input type="submit" name="submit" value="Save Credit Card" className="btn btn-block" />
+									<input className="form-control" type="submit" name="submit" value="Save Credit Card" className="btn btn-block" />
 								</div>
 							</div>
 
