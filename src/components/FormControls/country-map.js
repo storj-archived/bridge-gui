@@ -253,4 +253,4 @@ const CountryMap = {
   ZW: "Zimbabwe"
 }
 
-export default CountryMap
+export default countryMap

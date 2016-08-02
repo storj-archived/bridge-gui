@@ -1,11 +1,15 @@
 import React from 'react';
-import CountryMap from './country-map';
+import countryMap from './country-map';
 
 const CountryDropdown = (props) => {
   return (
     <select {...props}>
       {
-        <option value=>The World</option>
+        Object.keys(countryMap).map((value) => {
+          const text = countryMap[value];
+          return <option value={value}>{text}</option>
+        })
+
       }
     </select>
   )
