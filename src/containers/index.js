@@ -10,3 +10,4 @@ export LoginForm from './Auth/LoginForm';
 export NotFound from './NotFound';
 export SignupForm from './Auth/SignupForm';
 export Support from './Support/index';
+export Billilng from './Billing/index'; 

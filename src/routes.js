@@ -6,6 +6,7 @@ import SignupSuccess from './components/MessagePage/signupSuccess';
 import PasswordReset from './containers/Auth/PasswordReset';
 import PasswordResetPending from './components/MessagePage/passwordResetPending';
 import ApiDocs from './components/ApiDocs';
+
 import {
   App,
   Auth,
@@ -15,7 +16,8 @@ import {
   Dashboard,
   FileBucket,
   NotFound,
-  Support
+  Support,
+  Billing
 } from 'containers';
 
 export default () => {
@@ -31,6 +33,7 @@ export default () => {
       { /* Routes requiring login */ }
       <Route path="/dashboard" component={App}>
         <IndexRoute components={{navComponent: Dashboard, mainComponent: Buckets}}/>
+        <Route path="billing" components={{navComponent: Dashboard, mainComponent: Billing}}/>
         <Route path="bucket/new" components={{navComponent: Dashboard, mainComponent: NewBucket}}/>
         <Route path="bucket/:bucketId" components={{navComponent: Dashboard, mainComponent: EditBucket}}/>
         <Route path="bucket/:bucketId/files" components={{navComponent: Dashboard, mainComponent: FileBucket}}/>
