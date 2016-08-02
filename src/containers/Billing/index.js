@@ -6,6 +6,7 @@ import * as bucketListActions from 'redux/modules/bucketList';
 import {Link, hashHistory} from 'react-router';
 import Loader from 'react-loader';
 import CountryDropdown from '../../components/FormControls/CountryDropdown';
+import BalancePanel from '../../components/Billing/BalancePanel';
 
 // @connect(
 //   state => ({
@@ -18,6 +19,10 @@ import CountryDropdown from '../../components/FormControls/CountryDropdown';
 
 export default class Billing extends Component {
   render() {
+
+    const addCreditHandler = () => {};
+    const amount = '$32.48';
+
     return (
       <div>
 
@@ -35,18 +40,9 @@ export default class Billing extends Component {
 		<div className="container">
 			<div className="row">
 				<div className="col-xs-12 col-sm-6">
-					<h2 className="title">Your Balance</h2>
-					<div className="content">
-						<div className="row">
-							<div className="col-xs-6">
-								<p className="text-muted">Credit Balance</p>
-								<h2 className="mb0 blue"><b>$32.58</b></h2>
-							</div>
-							<div className="col-xs-6 text-right">
-								<a href="" className="btn btn-green btn-action">Add Credit</a>
-							</div>
-						</div>
-					</div>
+
+        <BalancePanel amount={amount} addCreditHandler={addCreditHandler} />
+
 				</div>
 				<div className="col-xs-12 col-sm-6">
 					<h2 className="title">This Month</h2>
