@@ -6,7 +6,10 @@ import * as bucketListActions from 'redux/modules/bucketList';
 import {Link, hashHistory} from 'react-router';
 import Loader from 'react-loader';
 import CountryDropdown from '../../components/FormControls/CountryDropdown';
+// import {BalancePanel, UsagePanel} from '../../components/Billing';
 import BalancePanel from '../../components/Billing/BalancePanel';
+import UsagePanel from '../../components/Billing/UsagePanel';
+
 
 // @connect(
 //   state => ({
@@ -22,6 +25,7 @@ export default class Billing extends Component {
 
     const addCreditHandler = () => {};
     const amount = '$32.48';
+    const linkParams = '/dashboard/billing/usage';
 
     return (
       <div>
@@ -45,18 +49,7 @@ export default class Billing extends Component {
 
 				</div>
 				<div className="col-xs-12 col-sm-6">
-					<h2 className="title">This Month</h2>
-					<div className="content">
-						<div className="row">
-							<div className="col-xs-6">
-								<p className="text-muted">Current Usage</p>
-								<h2 className="mb0 blue"><b>$12.44</b></h2>
-							</div>
-							<div className="col-xs-6 text-right">
-								<a href="" className="btn btn-action">View Usage</a>
-							</div>
-						</div>
-					</div>
+					<UsagePanel amount={amount} linkParams={linkParams}/>
 				</div>
 			</div>
 		</div>
