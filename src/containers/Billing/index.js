@@ -18,7 +18,15 @@ import Loader from 'react-loader';
 export default class Billing extends Component {
   render() {
     return (
-      <h1>Welcome to THE RECKONING</h1>
+      <section>
+        <div className="container">
+          <div className="row">
+            <div className="col-xs-12">
+              <h1 className="title pull-left">Billing</h1>
+            </div>
+          </div>
+        </div>
+      </section>
     );
   }
 }
