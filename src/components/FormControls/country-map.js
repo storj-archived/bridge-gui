@@ -1,4 +1,4 @@
-const CountryMap = {
+const countryMap = {
   AX: "Aland Islands",
   AL: "Albania",
   DZ: "Algeria",

@@ -5,6 +5,7 @@ import {bindActionCreators} from 'redux';
 import * as bucketListActions from 'redux/modules/bucketList';
 import {Link, hashHistory} from 'react-router';
 import Loader from 'react-loader';
+import CountryDropdown from '../../components/FormControls/CountryDropdown';
 
 // @connect(
 //   state => ({
@@ -20,15 +21,15 @@ export default class Billing extends Component {
     return (
       <div>
 
-      <section>
-        <div className="container">
-          <div className="row">
-            <div className="col-xs-12">
-              <h1 className="title pull-left">Billing</h1>
+        <section>
+          <div className="container">
+            <div className="row">
+              <div className="col-xs-12">
+                <h1 className="title pull-left">Billing</h1>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
       <section>
 		<div className="container">
@@ -112,9 +113,7 @@ export default class Billing extends Component {
 										<input className="form-control" placeholder="Postal Code" data-stripe="address_zip" type="number" name="user_payment_profile[zip]" id="user_payment_profile_zip" />
 									</div>
 									<div className="col-sm-6">
-										<select name="user_payment_profile[country]" id="user_payment_profile_country" title="Select your country">
-											<option value="">The World</option>
-										</select>
+                    <CountryDropdown name="user_payment_profile[country]" id="user_payment_profile_country" title="Select your country" />
 									</div>
 								</div>
 							</fieldset>
