@@ -297,7 +297,7 @@ export function load(bucketId) {
 export function clear() {
   return {
     type: CLEAR
-  }
+  };
 }
 
 export function create(bucket) {
