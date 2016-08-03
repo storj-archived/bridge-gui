@@ -10,10 +10,10 @@ var file;
 var filetype;
 
 @connect(
-  state => ({
+  (state) => ({
     bucket: state.bucket
   }),
-  dispatch => ({
+  (dispatch) => ({
     create: (bucketObj) => dispatch(bucketActions.create(bucketObj)),
     clear: () => dispatch(bucketActions.clear())
   })

@@ -4,7 +4,20 @@ import AddCardPanel from '../../components/billing/add-card-panel';
 
 @reduxForm({
     form: 'CreditCard',
-    fields: ['firstName', 'lastName', '' ]
+    fields: [
+      'firstName',
+      'lastName',
+      'telephone',
+      'streetAddress',
+      'city',
+      'state',
+      'zip',
+      'country',
+      'ccNumber',
+      'ccExp',
+      'cvv',
+      'ccName',
+    ]
 })
 
 export default class AddCardForm extends Component {

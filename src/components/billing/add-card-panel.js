@@ -14,7 +14,7 @@ return (
       <div className="row">
         <div className="col-xs-12">
           <div className="content">
-            <form action="" accept-charset="UTF-8" method="post">
+            <form accept-charset="UTF-8">
               <input name="utf8" type="hidden" value="✓" />
               <input type="hidden" name="authenticity_token" value="" />
 
@@ -81,7 +81,7 @@ return (
                     <input className="form-control" placeholder="Credit Card Number" name="cc-number" type="text" />
                   </div>
                   <div className="col-sm-6">
-                    <input className="form-control" placeholder="CVV" name="cc-name" type="text" />
+                    <input className="form-control" placeholder="CVV" name="cvc" type="text" autoComplete="cc-csc"/>
                   </div>
                 </div>
                 <div className="row">
@@ -98,7 +98,7 @@ return (
 
               <div className="row">
                 <div className="col-xs-12">
-                  <input type="submit" name="submit" value="Save Credit Card" className="btn btn-block" />
+                  <button type="submit" name="submit" className="btn btn-block btn-default">Save Credit Card</button>
                 </div>
               </div>
 
