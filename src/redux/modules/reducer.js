@@ -4,10 +4,12 @@ import { combineReducers } from 'redux';
 import {reducer as formReducer} from 'redux-form';
 import bucketList from './bucketList';
 import bucket from './bucket';
+import billing from './billing';
 
 export default combineReducers({
   bucket,
   bucketList,
+  billing,
   form: formReducer
 });
 

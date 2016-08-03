@@ -1,5 +1,7 @@
 import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
 import {reduxForm} from 'redux-form';
+import * as billingActions from 'redux/modules/billing';
 import AddCardPanel from 'components/billing/add-card-panel';
 
 @reduxForm({
@@ -20,10 +22,37 @@ import AddCardPanel from 'components/billing/add-card-panel';
   ]
 })
 
+@connect(
+  (state) => {
+    return {
+      billing: state.billing
+    };
+  },
+  (dispatch) => {
+    return {
+      addCard: (cardData) => dispatch(billingActions.addCard(cardData))
+    };
+  }
+)
+
 export default class AddCardForm extends Component {
   static propTypes = {
     fields: PropTypes.object.isRequired,
-    handleSubmit: PropTypes.func.isRequired
+    addCard: PropTypes.func.isRequired
+  };
+
+  handleCardSubmit() {
+    const {
+      fields,
+      addCard
+    } = this.props;
+
+    const cardData = Object.keys(fields).reduce((result, fieldName) => {
+      result[fieldName] = fields[fieldName].value;
+      return result;
+    }, {});
+
+    addCard(cardData);
   }
 
   render() {
@@ -32,7 +61,7 @@ export default class AddCardForm extends Component {
     } = this.props;
 
     return (
-      <AddCardPanel fields={fields} />
-    )
+      <AddCardPanel fields={fields} handleCardSubmit={this.handleCardSubmit}/>
+    );
   }
 }

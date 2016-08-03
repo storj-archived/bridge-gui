@@ -1,7 +1,7 @@
 import React from 'react';
 import CountryDropdown from '../form-controls/country-dropdown';
 
-const AddCardPanel = () => {
+const AddCardPanel = ({handleCardSubmit}) => {
   return (
     <section>
       <div className="container">
@@ -105,8 +105,8 @@ const AddCardPanel = () => {
 
                 <div className="row">
                   <div className="col-xs-12">
+                    <button onClick={handleCardSubmit} type="submit" name="submit" className="btn btn-block btn-default">Save Credit Card</button>
                   </div>
-                  <button type="submit" name="submit" className="btn btn-block btn-default">Save Credit Card</button>
                 </div>
 
                 <div className="spacer10"></div>
