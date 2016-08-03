@@ -1,26 +1,16 @@
-import { createStore as _createStore, applyMiddleware, compose } from 'redux';
-import createMiddleware from './middleware/clientMiddleware';
+import {createStore as _createStore, applyMiddleware} from 'redux';
+import bridgeClientMiddleware from './middleware/bridgeClientMiddleware';
 import reducer from './modules/reducer';
 
-export default function createStore(client, data) {
-  const middleware = [createMiddleware(client)];
+export default function createStore(apolloClient) {
+  const middleware = [
+    bridgeClientMiddleware(),
+    apolloClient.middleware()
+  ];
 
-/*
-  let finalCreateStore;
-  if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {
-    const { persistState } = require('redux-devtools');
-    const DevTools = require('../containers/DevTools/index');
-    finalCreateStore = compose(
-      applyMiddleware(...middleware),
-      window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument(),
-      persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
-    )(_createStore);
-  } else {
-    finalCreateStore = applyMiddleware(...middleware)(_createStore);
-  }
-*/
-
-  const store = _createStore(reducer, applyMiddleware(...middleware));
+  const store = _createStore(reducer(apolloClient),
+    applyMiddleware(...middleware)
+  );
 
   return store;
 }

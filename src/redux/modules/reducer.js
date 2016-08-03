@@ -6,12 +6,15 @@ import bucketList from './bucketList';
 import bucket from './bucket';
 import billing from './billing';
 
-export default combineReducers({
-  bucket,
-  bucketList,
-  billing,
-  form: formReducer
-});
+export default (apolloClient) => {
+  return combineReducers({
+    bucket,
+    bucketList,
+    billing,
+    form: formReducer,
+    apollo: apolloClient.reducer()
+  });
+}
 
 /* multi-reducer example, for multiple same-schema reducers
 export default combineReducers({

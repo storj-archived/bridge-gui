@@ -1,10 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import * as bucketListActions from 'redux/modules/bucketList';
-import {Link, hashHistory} from 'react-router';
-import Loader from 'react-loader';
-import CountryDropdown from '../../components/form-controls/country-dropdown';
 import BalancePanel from '../../components/billing/balance-panel';
 import UsagePanel from '../../components/billing/usage-panel';
 import AddCardForm from './add-card-form';
@@ -20,7 +15,6 @@ import AddCardForm from './add-card-form';
 
 export default class Billing extends Component {
   render() {
-
     const addCreditHandler = () => {};
     const amount = '$32.48';
     const linkParams = '/dashboard/billing/usage';

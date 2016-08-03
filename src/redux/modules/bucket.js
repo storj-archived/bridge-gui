@@ -44,13 +44,13 @@ export default function Bucket(state = {}, action = {}) {
         ...state,
         loading: true,
         loaded: false,
-        //saving: false,
-        //saved: false,
+        // saving: false,
+        // saved: false,
         token: null,
         fileHash: null,
         fileURI: null,
         newKeyField: null
-      }
+      };
     case LOAD_FAIL:
       return {
         ...state,
