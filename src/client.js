@@ -17,7 +17,7 @@ function bootstrapClient() {
 }
 
 const dest = document.getElementById('content');
-const store = createStore(bootstrapClient(), window.__data, window.devToolsExtension && window.devToolsExtension());
+const store = createStore(bootstrapClient(), window.__data);
 
 ReactDOM.render(
   <Provider store={store} key="provider">
