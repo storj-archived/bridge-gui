@@ -1,8 +1,52 @@
 import React, {Component, PropTypes} from 'react';
-import {connect} from 'react-redux';
+// import {connect} from 'react-redux';
+import {connect} from 'react-apollo';
+import gql from 'graphql-tag';
 import {reduxForm} from 'redux-form';
 import * as billingActions from 'redux/modules/billing';
 import AddCardPanel from 'components/billing/add-card-panel';
+
+const mapStateToProps = (state) => {
+  return {
+    billing: state.billing
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addCard: (cardData) => dispatch(billingActions.addCard(cardData))
+  };
+};
+
+const mapQueriesToProps = () => {
+
+};
+
+const mapMutationsToProps = ({ownProps, state}) => {
+  return {
+    user: {
+      query: gql`
+        query user {
+          credits {
+            amount
+          },
+          debits {
+            amount
+          },
+          balance
+        }
+      `
+    },
+    // addCard: (raw) => {
+    //   return {
+    //     mutation: gql`
+    //      mutation addCard
+    //    `,
+    //     variables: {}
+    //   };
+    // },
+  };
+};
 
 @reduxForm({
   form: 'CreditCard',
@@ -22,18 +66,12 @@ import AddCardPanel from 'components/billing/add-card-panel';
   ]
 })
 
-@connect(
-  (state) => {
-    return {
-      billing: state.billing
-    };
-  },
-  (dispatch) => {
-    return {
-      addCard: (cardData) => dispatch(billingActions.addCard(cardData))
-    };
-  }
-)
+@connect({
+  mapStateToProps,
+  mapDispatchToProps,
+  mapQueriesToProps,
+  mapMutationsToProps
+})
 
 export default class AddCardForm extends Component {
   static propTypes = {

@@ -1,22 +1,4 @@
-import clientWrapper from 'utils/apiClient';
-
-export default function bridgeClientMiddleware() {
-  let privkey = localStorage.getItem('privkey');
-  if (privkey !== null) {
-    clientWrapper.useKeyPair(clientWrapper.createKeyPair(privkey));
-  }
-
-  window.addEventListener('storage', function(e) {
-    //for cross-tab state updating
-    if (e.key === 'privkey') {
-      if (e.oldValue && !e.newValue) {
-        clientWrapper.removeKeyPair();
-      }
-    }
-  });
-
-  const client = clientWrapper.api;
-
+export default function bridgeClientMiddleware({bridgeClient, apolloClient}) {
   return ({dispatch, getState}) => {
     return next => action => {
       if (typeof action === 'function') {
@@ -32,7 +14,7 @@ export default function bridgeClientMiddleware() {
       const [REQUEST, SUCCESS, FAILURE] = types;
       next({...rest, type: REQUEST});
 
-      const actionPromise = promise(client);
+      const actionPromise = promise(bridgeClient);
       actionPromise.then(
         (result) => {
           next({...rest, result, type: SUCCESS});
