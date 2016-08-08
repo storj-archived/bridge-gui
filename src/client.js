@@ -21,4 +21,3 @@ ReactDOM.render(
   </ApolloProvider>,
   dest
 );
-

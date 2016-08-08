@@ -1,8 +1,21 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import gql from 'graphql-tag';
 import {reduxForm} from 'redux-form';
 import * as billingActions from 'redux/modules/billing';
 import AddCardPanel from 'components/billing/add-card-panel';
+
+const mapStateToProps = (state) => {
+  return {
+    billing: state.billing
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addCard: (cardData) => dispatch(billingActions.addCard(cardData))
+  };
+};
 
 @reduxForm({
   form: 'CreditCard',
@@ -23,16 +36,8 @@ import AddCardPanel from 'components/billing/add-card-panel';
 })
 
 @connect(
-  (state) => {
-    return {
-      billing: state.billing
-    };
-  },
-  (dispatch) => {
-    return {
-      addCard: (cardData) => dispatch(billingActions.addCard(cardData))
-    };
-  }
+  mapStateToProps,
+  mapDispatchToProps
 )
 
 export default class AddCardForm extends Component {
