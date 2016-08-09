@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import BalancePanel from '../../components/billing/balance-panel';
-import UsagePanel from '../../components/billing/usage-panel';
-import AddCardForm from './add-card-form';
+import BalancePanel from 'components/billing/balance-panel';
+import UsagePanel from 'components/billing/usage-panel';
+import AddCardForm from 'containers/billing/add-card-form';
+import TransactionsContainer from 'containers/billing/transactions-container';
 
 // @connect(
 //   state => ({
@@ -48,70 +49,7 @@ export default class Billing extends Component {
 	</section>
 
   <AddCardForm />
-
-	<section>
-		<div className="container">
-			<div className="row">
-				<div className="col-xs-12">
-					<h2 className="title">Billing History</h2>
-	      		</div>
-	      	</div>
-	      	<div className="row">
-				<div className="col-xs-12">
-					<div className="table-responsive content">
-						<table className="table table-hover">
-							<thead>
-								<tr>
-									<th>Date</th>
-									<th>Description</th>
-									<th>Amount</th>
-								</tr>
-							</thead>
-								<tbody>
-								<tr className="clickable-row">
-									<td>
-										Jan 25, 2016
-									</td>
-									<td>
-										Add Credit
-									</td>
-									<td>
-										$50
-									</td>
-								</tr>
-
-								<tr className="clickable-row">
-									<td>
-										Jan 01, 2016
-									</td>
-									<td>
-										Invoice for December 2015
-									</td>
-									<td>
-										$15.41
-									</td>
-								</tr>
-
-								<tr className="clickable-row">
-									<td>
-										Dec 25, 2016
-									</td>
-									<td>
-										Add Credit
-									</td>
-									<td>
-										$100
-									</td>
-								</tr>
-
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
+  
       </div>
     );
   }
