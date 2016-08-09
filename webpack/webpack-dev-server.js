@@ -1,5 +1,3 @@
-// import '../server.babel';
-
 import path from 'path';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
@@ -10,6 +8,7 @@ import WebpackDevServer from 'webpack-dev-server';
 import Express from 'express';
 import config from '../src/config';
 import webpackConfig from './dev.config';
+import {graphiqlExpress} from 'apollo-server';
 
 const compiler = webpack(webpackConfig);
 
@@ -47,8 +46,16 @@ app
           css: '/dist/main.css'
         }
       })));
-  })
-  .get('*', (req, res) => {
+  });
+
+app.use('/graphiql', function(req, res, next) {
+  res.removeHeader('Content-Security-Policy');
+  graphiqlExpress({
+    endpointURL: 'http://localhost:6382/graphql'
+  })(req, res, next);
+});
+
+app.get('*', (req, res) => {
     res.status(404).redirect('/#/404');
   });
 
