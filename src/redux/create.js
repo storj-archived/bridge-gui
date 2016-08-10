@@ -51,7 +51,7 @@ export default function createStore() {
     return opts;
   };
 
-  const apolloNetworkInterface = createNetworkInterface('http://localhost:1234/graphql');
+  const apolloNetworkInterface = createNetworkInterface('http://localhost:6382/graphql');
   apolloNetworkInterface.use([{
     applyMiddleware(req, next) {
       // req.options.neaders
@@ -61,7 +61,7 @@ export default function createStore() {
   }]);
 
   const apolloClient = new ApolloClient({
-    apolloNetworkInterface
+    networkInterface: apolloNetworkInterface
   });
 
   const middleware = [

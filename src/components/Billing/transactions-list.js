@@ -2,7 +2,7 @@ import React from 'react';
 
 const TransactionsList = ({transactions}) => {
   return (
-    <section>
+    <section id="TransactionsListSection">
       <div className="container">
         <div className="row">
           <div className="col-xs-12">
@@ -24,9 +24,9 @@ const TransactionsList = ({transactions}) => {
                     {
                       transactions.map((transaction) => {
                         return (
-                          <tr className="clickable-row">
+                          <tr key={transaction.id} className="clickable-row">
                             <td>
-                              {transaction.date}
+                              {transaction.created}
                             </td>
                             <td>
                               {transaction.description}

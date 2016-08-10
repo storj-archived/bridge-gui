@@ -4,7 +4,6 @@ import BalancePanel from 'components/billing/balance-panel';
 import UsagePanel from 'components/billing/usage-panel';
 import AddCardForm from 'containers/billing/add-card-form';
 import TransactionsContainer from 'containers/billing/transactions-container';
-
 // @connect(
 //   state => ({
 //     buckets: state.bucketList
@@ -49,7 +48,9 @@ export default class Billing extends Component {
 	</section>
 
   <AddCardForm />
-  
+
+  <TransactionsContainer />
+
       </div>
     );
   }
