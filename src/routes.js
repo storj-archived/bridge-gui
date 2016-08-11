@@ -33,11 +33,10 @@ export default () => {
       { /* Routes requiring login */ }
       <Route path="/dashboard" component={App}>
         <IndexRoute components={{navComponent: Dashboard, mainComponent: Buckets}}/>
-        <Route path="billing" components={{navComponent: Dashboard, mainComponent: Billing}}/>
+        {/* <Route path="billing" components={{navComponent: Dashboard, mainComponent: Billing}}/> */}
         <Route path="bucket/new" components={{navComponent: Dashboard, mainComponent: NewBucket}}/>
         <Route path="bucket/:bucketId" components={{navComponent: Dashboard, mainComponent: EditBucket}}/>
         <Route path="bucket/:bucketId/files" components={{navComponent: Dashboard, mainComponent: FileBucket}}/>
-        {/* <Route path="billing" components={{navComponent: Dashboard, mainComponent: Billing}}/> */}
         <Route path="api-docs" components={{navComponent: Dashboard, mainComponent: ApiDocs}}/>
         <Route path="support" components={{navComponent: Dashboard, mainComponent: Support}}/>
       </Route>
