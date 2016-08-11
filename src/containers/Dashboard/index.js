@@ -54,7 +54,7 @@ export default class Dashboard extends Component {
         <Navbar.Collapse>
           <ul className="nav navbar-nav navbar-left">
             <li><IndexLink to='/dashboard'>Buckets</IndexLink></li>
-            {/* <li><Link to='/dashboard/billing'>Billing</Link></li> */}
+            <li><Link to='/dashboard/billing'>Billing</Link></li>
             <li><a href='https://storj.readme.io/'>Documentation</a></li>
             <li><Link to='/dashboard/api-docs'>API</Link></li>
             <li><a href='https://storj.readme.io/discuss'>Support</a></li>
