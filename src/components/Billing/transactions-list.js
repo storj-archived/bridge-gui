@@ -1,4 +1,5 @@
 import React from 'react';
+import Currency from 'components/billing/currency';
 
 const TransactionsList = ({transactions}) => {
   return (
@@ -32,10 +33,10 @@ const TransactionsList = ({transactions}) => {
                               {transaction.description}
                             </td>
                             <td>
-                              {transaction.amount}
+                              <Currency amount={transaction.amount} />
                             </td>
                           </tr>
-                        )
+                        );
                       })
                     }
                 </tbody>
