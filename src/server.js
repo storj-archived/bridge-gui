@@ -1,15 +1,15 @@
 import Express from 'express';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
-import config from './config';
 import favicon from 'serve-favicon';
 import compression from 'compression';
 import path from 'path';
-import Html from './helpers/Html';
+import Html from 'helpers/html';
 import PrettyError from 'pretty-error';
 import http from 'http';
+import config from 'config';
 
-import getRoutes from './routes';
+import getRoutes from 'routes';
 
 const targetUrl = 'http://' + config.apiHost + ':' + config.apiPort;
 const pretty = new PrettyError();
@@ -18,7 +18,7 @@ const server = new http.Server(app);
 
 function addSecurityHeaders(req, res, next) {
   res.set('X-Frame-Options', 'DENY');
-  res.set('Content-Security-Policy', "default-src 'self'; style-src 'unsafe-inline' 'self'; object-src 'none'; connect-src *; frame-src https://storj.github.io;")
+  res.set('Content-Security-Policy', "default-src 'self'; style-src 'unsafe-inline' 'self'; object-src 'none'; connect-src *; frame-src https://storj.github.io;");
   next();
 }
 

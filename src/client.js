@@ -3,58 +3,17 @@
  */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createStore from './redux/create';
-import client from 'utils/apiClient';
-import { Provider } from 'react-redux';
-import renderRoutes from './routes';
-
-function bootstrapClient() {
-  let privkey = localStorage.getItem('privkey');
-  if(privkey !== null) {
-    client.useKeyPair(client.createKeyPair(privkey));
-  }
-  return client.api;
-}
+import createStore from 'redux/create';
+import {Provider} from 'react-redux';
+import {ApolloProvider} from 'react-apollo';
+import renderRoutes from 'routes';
 
 const dest = document.getElementById('content');
-const store = createStore(bootstrapClient(), window.__data);
+const {store, apolloClient} = createStore();
 
 ReactDOM.render(
-  <Provider store={store} key="provider">
+  <ApolloProvider store={store} client={apolloClient}>
     {renderRoutes(store)}
-  </Provider>,
+  </ApolloProvider>,
   dest
 );
-
-window.addEventListener('storage', function(e) {
-  //for cross-tab state updating
-  if(e.key === 'privkey') {
-    if(e.oldValue && !e.newValue) {
-      client.removeKeyPair();
-    }
-  }
-});
-
-/*
-if (process.env.NODE_ENV !== 'production') {
-  window.React = React; // enable debugger
-
-  if (!dest || !dest.firstChild || !dest.firstChild.attributes || !dest.firstChild.attributes['data-react-checksum']) {
-    console.error('Server-side React render was discarded. Make sure that your initial render does not contain any client-side code.');
-  }
-}
-*/
-/*
-//if (__DEVTOOLS__ && !window.devToolsExtension) {
-  const DevTools = require('./containers/DevTools');
-  ReactDOM.render(
-    <Provider store={store} key="provider">
-      <div>
-        {renderRoutes(store)}
-        <DevTools />
-      </div>
-    </Provider>,
-    dest
-  );
-}
-*/

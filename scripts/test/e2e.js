@@ -66,7 +66,7 @@ const run = (next, suiteOptions) => {
   } else {
     console.info('starting mock-backend server...'.magenta);
     mockBackend = spawn('node', [
-      path.resolve(__dirname, './mockBackend/index.js')
+      path.resolve(__dirname, './mock-backend/index.js')
     ], {defaultSpawnOptions});
   }
 

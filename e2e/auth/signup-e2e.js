@@ -4,7 +4,7 @@ import 'colors';
 import {parallel, series} from 'async';
 // import request from '../helpers/superRequest';
 // import cleanerFactory from '../helpers/databaseCleaner';
-import {mockBackend, devServer} from '../helpers/pollServer';
+import {mockBackend, devServer} from '../helpers/poll-server';
 
 const devServerPort = Number(process.env.PORT) + 1 || 4001;
 const devServerBaseUrl = `http://localhost:${devServerPort}/`;

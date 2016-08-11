@@ -1,26 +1,77 @@
-import { createStore as _createStore, applyMiddleware, compose } from 'redux';
-import createMiddleware from './middleware/clientMiddleware';
-import reducer from './modules/reducer';
+import {createStore as _createStore, applyMiddleware} from 'redux';
+import bridgeClientMiddleware from 'redux/middleware/bridge-client-middleware';
+import reducer from 'redux/modules/reducer';
 
-export default function createStore(client, data) {
-  const middleware = [createMiddleware(client)];
+import ApolloClient, {createNetworkInterface} from 'apollo-client';
+import bridgeClientWrapper from 'utils/api-client';
 
-/*
-  let finalCreateStore;
-  if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {
-    const { persistState } = require('redux-devtools');
-    const DevTools = require('../containers/DevTools/index');
-    finalCreateStore = compose(
-      applyMiddleware(...middleware),
-      window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument(),
-      persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
-    )(_createStore);
-  } else {
-    finalCreateStore = applyMiddleware(...middleware)(_createStore);
+export default function createStore() {
+  let privkey = localStorage.getItem('privkey');
+  if (privkey !== null) {
+    bridgeClientWrapper.useKeyPair(bridgeClientWrapper.createKeyPair(privkey));
   }
-*/
 
-  const store = _createStore(reducer, applyMiddleware(...middleware));
+  window.addEventListener('storage', function(event) {
+    // for cross-tab state updating
+    if (event.key === 'privkey') {
+      if (event.oldValue && !event.newValue) {
+        bridgeClientWrapper.removeKeyPair();
+      }
+    }
+  });
 
-  return store;
+  const bridgeClient = bridgeClientWrapper.api;
+
+  /**
+   * Adds authentication headers to request object
+   * @private
+   * @param {Object} opts - Options parameter passed to request
+   * @return {Object}
+   */
+  const authenticate = (opts) => {
+    if (bridgeClient.keypair) {
+      const payload = ['GET', 'DELETE'].indexOf(opts.method) !== -1 ?
+        querystring.stringify(opts.qs) :
+        JSON.stringify(opts.json);
+
+      const contract = [opts.method, opts.uri, payload].join('\n');
+
+      opts.headers = opts.headers || {};
+      opts.headers['x-pubkey'] = bridgeClient.keypair.getPublicKey();
+      opts.headers['x-signature'] = bridgeClient.keypair.sign(contract, {
+        compact: false
+      });
+    } else if (bridgeClient.basicauth) {
+      opts.auth = {
+        user: bridgeClient.basicauth.email,
+        pass: utils.sha256(bridgeClient.basicauth.password, 'utf8')
+      };
+    }
+
+    return opts;
+  };
+
+  const apolloNetworkInterface = createNetworkInterface('http://localhost:6382/graphql');
+  apolloNetworkInterface.use([{
+    applyMiddleware(req, next) {
+      // req.options.neaders
+      authenticate(req.options);
+      next();
+    }
+  }]);
+
+  const apolloClient = new ApolloClient({
+    networkInterface: apolloNetworkInterface
+  });
+
+  const middleware = [
+    bridgeClientMiddleware({bridgeClient, apolloClient}),
+    apolloClient.middleware()
+  ];
+
+  const store = _createStore(reducer(apolloClient),
+    applyMiddleware(...middleware)
+  );
+
+  return {store, apolloClient};
 }
