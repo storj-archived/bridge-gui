@@ -35,11 +35,32 @@ const mapQueriesToProps = () => {
 })
 
 export default class Billing extends Component {
-  render() {
+  getBalance() {
+    const {loading, user} = this.props.data;
+
+    if (loading) {
+      return '';
+    }
+
+    const {credits, debits} = user;
+    const sum = (total, item) => {
+      return total + item.amount;
+    };
+    const creditSum = credits.reduce(sum, 0);
+    const debitSum = debits.reduce(sum, 0);
+    const balance = debitSum - creditSum;
+    return balance;
+  }
+
+  getTransactions() {
     const {user} = this.props.data;
     const transactions = user ?
       [...user.credits, ...user.debits] : [];
 
+    return transactions;
+  }
+
+  render() {
     const addCreditHandler = () => {
     };
     const amount = '$32.48';
@@ -63,7 +84,7 @@ export default class Billing extends Component {
             <div className="row">
               <div className="col-xs-12 col-sm-6">
 
-                <BalancePanel amount={amount} addCreditHandler={addCreditHandler}/>
+                <BalancePanel amount={this.getBalance()} addCreditHandler={addCreditHandler}/>
 
               </div>
               <div className="col-xs-12 col-sm-6">
@@ -75,7 +96,7 @@ export default class Billing extends Component {
 
         <AddCardForm />
 
-        <TransactionsList transactions={transactions}/>
+        <TransactionsList transactions={this.getTransactions()}/>
 
       </div>
     );
