@@ -83,6 +83,7 @@
     "shebang-loader": "0.0.1",
     "storj": "^2.0.0",
     "strip-loader": "^0.1.0",
+    "stripe": "^4.9.0",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.9"
