@@ -1,0 +1,20 @@
+.mimetype {
+  @extend .glyphicon-file;
+  margin-right:10px;
+}
+
+.mimetype.application {
+
+}
+
+.mimetype.text {
+
+}
+
+.mimetype.image{
+  @extend .glyphicon-picture;
+}
+
+.mimetype.video{
+  @extend .glyphicon-film;
+}

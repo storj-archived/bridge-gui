@@ -2,7 +2,7 @@ import path from 'path';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 import favicon from 'serve-favicon';
-import Html from '../src/helpers/Html';
+import Html from '../src/helpers/html';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import Express from 'express';
