@@ -45,13 +45,13 @@ const mapMutationsToProps = ({ownProps, state}) => {
     //     variables: {}
     //   };
     // },
-    createCustomer: () => {
+    addPaymentProcessor: () => {
       mutation: gql`
-        mutation createCustomer($token: String!) {
+        mutation addPaymentProcessor($data: String!) {
+        // TODO: determine what we want/need back
           status
           message
-        }
-      `
+        }`;
     }
   };
 };
@@ -105,14 +105,15 @@ export default class AddCardForm extends Component {
       exp_year
     ] = this.props.fields.ccExp.value.split('/');
 
+    // TODO: factor payment-processor-specific code out!
     Stripe.card.createToken({
       number: ccNumber.value,
       exp_month,
       exp_year,
       cvc: cvv.value
-    }, function(status, response){
-      const token = response.id
-      this.props.mutations.createCustomer({token})
+    }, (status, response) => {
+      const token = response.id;
+      this.props.mutations.addPaymentProcessor(JSON.stringify(token));
       // Stripe.customers.create({
       //   source: stripeToken,
       //   plan: "gold_member",
@@ -123,8 +124,7 @@ export default class AddCardForm extends Component {
       //   }
       //   console.log("Stripe customer: ", customer);
       // });
-
-    })
+    });
 
     const {
       fields,
@@ -135,8 +135,7 @@ export default class AddCardForm extends Component {
       result[fieldName] = fields[fieldName].value;
       return result;
     }, {});
-
-  }
+  };
 
   render() {
     const {
