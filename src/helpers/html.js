@@ -43,6 +43,7 @@ export default class Html extends Component {
           {/* can smoothen the initial style flash (flicker) on page load in development mode. */}
           {/* ideally one could also include here the style for the current page (Home.scss, About.scss, etc) */}
           {/* Object.keys(assets.css).length === 0 ? <style dangerouslySetInnerHTML={{__html: require('../theme/bootstrap.config.js') + require('../containers/App/App.scss')._style}}/> : null */}
+          <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
         </head>
         <body>
           <div id="content" dangerouslySetInnerHTML={{__html: content}}/>

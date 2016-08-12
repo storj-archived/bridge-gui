@@ -36,6 +36,7 @@ const mapMutationsToProps = ({ownProps, state}) => {
         }
       `
     },
+
     // addCard: (raw) => {
     //   return {
     //     mutation: gql`
@@ -44,6 +45,14 @@ const mapMutationsToProps = ({ownProps, state}) => {
     //     variables: {}
     //   };
     // },
+    createCustomer: () => {
+      mutation: gql`
+        mutation createCustomer($token: String!) {
+          status
+          message
+        }
+      `
+    }
   };
 };
 
@@ -78,7 +87,45 @@ export default class AddCardForm extends Component {
     addCard: PropTypes.func.isRequired
   };
 
-  handleCardSubmit() {
+  testFunction(e) {
+    console.log(this);
+  }
+
+  handleCardSubmit(e) {
+    e.preventDefault();
+
+    const {
+      ccNumber,
+      ccExp,
+      cvv
+    } = this.props.fields;
+
+    const [
+      exp_month,
+      exp_year
+    ] = this.props.fields.ccExp.value.split('/');
+
+    Stripe.card.createToken({
+      number: ccNumber.value,
+      exp_month,
+      exp_year,
+      cvc: cvv.value
+    }, function(status, response){
+      const token = response.id
+      this.props.mutations.createCustomer({token})
+      // Stripe.customers.create({
+      //   source: stripeToken,
+      //   plan: "gold_member",
+      //   email: "dylan@storj.io"
+      // }, function(err, customer) {
+      //   if(err){
+      //     console.error("Error creating customer: ", err);
+      //   }
+      //   console.log("Stripe customer: ", customer);
+      // });
+
+    })
+
     const {
       fields,
       addCard
@@ -89,16 +136,14 @@ export default class AddCardForm extends Component {
       return result;
     }, {});
 
-    addCard(cardData);
   }
 
   render() {
     const {
       fields,
     } = this.props;
-
     return (
-      <AddCardPanel fields={fields} handleCardSubmit={this.handleCardSubmit}/>
+      <AddCardPanel fields={fields} handleCardSubmit={this.handleCardSubmit.bind(this)}/>
     );
   }
 }

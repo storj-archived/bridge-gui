@@ -30,7 +30,7 @@ const app = WDS.app;
 
 const addSecurityHeaders = (req, res, next) => {
   res.set('X-Frame-Options', 'DENY');
-  res.set('Content-Security-Policy', "default-src 'self'; style-src 'unsafe-inline' 'self'; object-src 'none'; connect-src *; frame-src https://storj.github.io;");
+  // res.set('Content-Security-Policy', "default-src 'self'; style-src 'unsafe-inline' 'self'; object-src 'none'; connect-src *; frame-src https://storj.github.io;");
   next();
 };
 
