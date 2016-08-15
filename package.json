@@ -66,6 +66,7 @@
     "json-loader": "^0.5.4",
     "multireducer": "^2.0.0",
     "node-sass": "^3.4.2",
+    "node-uuid": "^1.4.7",
     "pretty-error": "^1.2.0",
     "react": "^0.14.7",
     "react-apollo": "^0.3.20",

@@ -18,25 +18,25 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapQueriesToProps = () => {
-
+  // return {
+  //   user: {
+  //     query: gql`
+  //       query user {
+  //         credits {
+  //           amount
+  //         },
+  //         debits {
+  //           amount
+  //         },
+  //         balance
+  //       }
+  //     `
+  //   }
+  // };
 };
 
 const mapMutationsToProps = ({ownProps, state}) => {
   return {
-    user: {
-      query: gql`
-        query user {
-          credits {
-            amount
-          },
-          debits {
-            amount
-          },
-          balance
-        }
-      `
-    },
-
     // addCard: (raw) => {
     //   return {
     //     mutation: gql`
@@ -45,13 +45,20 @@ const mapMutationsToProps = ({ownProps, state}) => {
     //     variables: {}
     //   };
     // },
-    addPaymentProcessor: () => {
-      mutation: gql`
-        mutation addPaymentProcessor($data: String!) {
+    addPaymentProcessor: (data) => {
+      return {
         // TODO: determine what we want/need back
-          status
-          message
-        }`;
+        mutation: gql`
+        mutation ($data: String!) {
+          addPaymentProcessor(data: $data) {
+            status
+            message
+          }
+        }`,
+        variables: {
+          data
+        }
+      };
     }
   };
 };
@@ -87,10 +94,6 @@ export default class AddCardForm extends Component {
     addCard: PropTypes.func.isRequired
   };
 
-  testFunction(e) {
-    console.log(this);
-  }
-
   handleCardSubmit(e) {
     e.preventDefault();
 
@@ -103,7 +106,7 @@ export default class AddCardForm extends Component {
     const [
       exp_month,
       exp_year
-    ] = this.props.fields.ccExp.value.split('/');
+    ] = ccExp.value.split('/');
 
     // TODO: factor payment-processor-specific code out!
     Stripe.card.createToken({
