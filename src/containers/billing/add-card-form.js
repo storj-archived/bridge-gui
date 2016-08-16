@@ -49,13 +49,14 @@ const mapMutationsToProps = ({ownProps, state}) => {
       return {
         // TODO: determine what we want/need back
         mutation: gql`
-        mutation ($data: String!) {
-          addPaymentProcessor(data: $data) {
+        mutation ($data: String!, $name: PaymentProcessorEnum!) {
+          addPaymentProcessor(data: $data, name: $name) {
             status
             message
           }
         }`,
         variables: {
+          name: 'STRIPE',
           data
         }
       };
