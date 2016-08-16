@@ -2,6 +2,7 @@ import {createStore as _createStore, applyMiddleware, compose} from 'redux';
 import bridgeClientMiddleware from 'redux/middleware/bridge-client-middleware';
 import reducer from 'redux/modules/reducer';
 import uuid from 'node-uuid';
+import { print as graphqlTagPrint } from 'graphql-tag/printer';
 
 import ApolloClient, {createNetworkInterface} from 'apollo-client';
 import bridgeClientWrapper from 'utils/api-client';
@@ -33,9 +34,12 @@ export default function createStore() {
       opts.uri = basePath;
       opts.method = 'POST';
 
+      // Add `__nonce` param to request body
       req.request.__nonce = uuid.v4();
 
-      opts.json = req.request;
+      // Copy by value so we can `print` the query
+      opts.json = {...req.request};
+      opts.json.query = graphqlTagPrint(opts.json.query);
 
       bridgeClient._authenticate(opts);
       next();
