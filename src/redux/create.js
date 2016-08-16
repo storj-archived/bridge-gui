@@ -23,60 +23,11 @@ export default function createStore() {
 
   const bridgeClient = bridgeClientWrapper.api;
 
-  /**
-   * Adds authentication headers to request object
-   * @private
-   * @param {Object} opts - Options parameter passed to request
-   * @return {Object}
-   */
-  // const authenticate = (opts) => {
-  //   debugger;
-  //
-  //   bridgeClient._authenticate(opts);
-  //
-  //   // var opts = {
-  //   //   baseUrl: this._options.baseURI,
-  //   //   uri: path,
-  //   //   method: method
-  //   // };
-  //   //
-  //   // params.__nonce = uuid.v4();
-  //   //
-  //   // if (['GET', 'DELETE'].indexOf(method) !== -1) {
-  //   //   opts.qs = params;
-  //   //   opts.json = true;
-  //   // } else {
-  //   //   opts.json = params;
-  //   // }
-  //
-  //   // if (bridgeClient._options.keypair) {
-  //   //   const payload = ['GET', 'DELETE'].indexOf(opts.method) !== -1 ?
-  //   //     querystring.stringify(opts.qs) :
-  //   //     JSON.stringify(opts.json);
-  //   //
-  //   //   const contract = [opts.method, opts.uri, payload].join('\n');
-  //   //
-  //   //   opts.headers = opts.headers || {};
-  //   //   opts.headers['x-pubkey'] = bridgeClient._options.keypair.getPublicKey();
-  //   //   opts.headers['x-signature'] = bridgeClient._options.keypair.sign(contract, {
-  //   //     compact: false
-  //   //   });
-  //   // } else if (bridgeClient._options.basicauth) {
-  //   //   opts.auth = {
-  //   //     user: bridgeClient._options.basicauth.email,
-  //   //     pass: utils.sha256(bridgeClient._options.basicauth.password, 'utf8')
-  //   //   };
-  //   // }
-  //
-  //   return opts;
-  // };
-
   const baseUrl = 'http://localhost:6382';
   const basePath = '/graphql';
   const apolloNetworkInterface = createNetworkInterface(`${baseUrl}${basePath}`);
   apolloNetworkInterface.use([{
     applyMiddleware(req, next) {
-      debugger;
       const opts = req.options;
       opts.baseUrl = baseUrl;
       opts.uri = basePath;
