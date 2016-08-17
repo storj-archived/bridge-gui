@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-apollo';
 import gql from 'graphql-tag';
+import moment from 'moment-timezone';
 import BalancePanel from 'components/billing/balance-panel';
 import UsagePanel from 'components/billing/usage-panel';
 import AddCardForm from 'containers/billing/add-card-form';
@@ -54,10 +55,36 @@ export default class Billing extends Component {
 
   getTransactions() {
     const {user} = this.props.data;
-    const transactions = user ?
-      [...user.credits, ...user.debits] : [];
+    let transactions;
 
-    return transactions;
+    if (!user) {
+      return [];
+    }
+
+    let {credits, debits} = user;
+
+    credits = credits.map((credit) => {
+      const transaction = {...credit};
+      transaction.amount = -transaction.amount;
+      transaction.description = 'Payment - Thank you!';
+      transaction.timestamp = Date.parse(transaction.created);
+      transaction.created = moment(transaction.created)
+        .format('MMM DD, YYYY - h:mma');
+      return transaction;
+    });
+
+    debits = debits.map((debit) => {
+      const transaction = {...debit};
+      transaction.description = 'Usage charge';
+      transaction.timestamp = Date.parse(transaction.created);
+      transaction.created = moment(transaction.created)
+        .format('MMM DD, YYYY - h:mma');
+      return transaction;
+    });
+
+    transactions = [...credits, ...debits];
+
+    return transactions.sort((t1, t2) => (t1.timestamp - t2.timestamp));
   }
 
   render() {

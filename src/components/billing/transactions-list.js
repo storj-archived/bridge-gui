@@ -24,6 +24,7 @@ const TransactionsList = ({transactions}) => {
                   <tbody>
                     {
                       transactions.map((transaction) => {
+                        const isNegative = (transaction.amount < 0);
                         return (
                           <tr key={transaction.id} className="clickable-row">
                             <td>
@@ -33,7 +34,10 @@ const TransactionsList = ({transactions}) => {
                               {transaction.description}
                             </td>
                             <td>
-                              <Currency amount={transaction.amount} />
+                              <span className={isNegative ? 'text-success' : ''}>
+                                {isNegative ? '-' : ''}
+                                <Currency amount={isNegative ? -transaction.amount : transaction.amount} />
+                              </span>
                             </td>
                           </tr>
                         );
