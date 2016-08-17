@@ -5,6 +5,7 @@ import BalancePanel from 'components/billing/balance-panel';
 import UsagePanel from 'components/billing/usage-panel';
 import AddCardForm from 'containers/billing/add-card-form';
 import TransactionsList from 'components/billing/transactions-list';
+import 'containers/billing/billing.scss';
 
 const mapQueriesToProps = () => {
   return {
@@ -52,6 +53,12 @@ export default class Billing extends Component {
     return balance;
   }
 
+  getCardInfo() {
+    const cardToken = "id_asdf12asdf90";
+    console.log("CARD TOKEN: ", cardToken);
+    return cardToken;
+  }
+
   getTransactions() {
     const {user} = this.props.data;
     const transactions = user ?
@@ -68,7 +75,6 @@ export default class Billing extends Component {
 
     return (
       <div>
-
         <section>
           <div className="container">
             <div className="row">
@@ -94,7 +100,7 @@ export default class Billing extends Component {
           </div>
         </section>
 
-        <AddCardForm />
+        { this.getCardInfo() ? null : <AddCardForm /> }
 
         <TransactionsList transactions={this.getTransactions()}/>
 
