@@ -58,13 +58,11 @@ export default class LoginForm extends Component {
     return new Promise((resolve, reject) => {
       const keypair = client.createKeyPair();
       client.useBasicAuth(this.props.fields.email.value, this.props.fields.password.value);
-      if (window && window.localStorage) {
-        window.localStorage.setItem('email', this.props.fields.email.value); 
-      }
       client.api.addPublicKey(keypair.getPublicKey()).then(
         function success() {
           client.removeBasicAuth();
           if (window && window.localStorage) {
+            window.localStorage.setItem('email', this.props.fields.email.value);
             window.localStorage.setItem('privkey', keypair.getPrivateKey());
           }
           client.useKeyPair(keypair);

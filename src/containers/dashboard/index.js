@@ -24,6 +24,7 @@ export default class Dashboard extends Component {
     function logout(){
       if(window && window.localStorage) {
         window.localStorage.removeItem('privkey');
+        window.localStorage.removeItem('email');
       }
       client.removeKeyPair();
       hashHistory.push('/');
