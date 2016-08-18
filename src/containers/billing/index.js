@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-apollo';
 import gql from 'graphql-tag';
+import moment from 'moment-timezone';
 import BalancePanel from 'components/billing/balance-panel';
 import UsagePanel from 'components/billing/usage-panel';
 import AddCardForm from 'containers/billing/add-card-form';
@@ -15,12 +16,14 @@ const mapQueriesToProps = () => {
           credits {
             id,
             amount,
-            created
+            created,
+            type
           },
           debits {
             id,
             amount,
-            created
+            created,
+            type
           }
         }
       }`,
@@ -61,10 +64,37 @@ export default class Billing extends Component {
 
   getTransactions() {
     const {user} = this.props.data;
-    const transactions = user ?
-      [...user.credits, ...user.debits] : [];
+    let transactions;
 
-    return transactions;
+    if (!user) {
+      return [];
+    }
+
+    let {credits, debits} = user;
+
+    const convert = (item, descriptionSuffix, negateAmount) => {
+      const transaction = {...item};
+      if (negateAmount) transaction.amount = -item.amount;
+      const titleizedType = item.type
+        .replace(/^\w/, (w) => (w.toUpperCase()));
+      transaction.description = `${titleizedType} ${descriptionSuffix}`;
+      transaction.timestamp = Date.parse(item.created);
+      transaction.created = `${moment(item.created)
+        .utc().format('MMM DD, YYYY - hh:mma')} UTC`;
+      return transaction;
+    };
+
+    credits = credits.map((credit) => {
+      return convert(credit, 'payment - Thank you!', true);
+    });
+
+    debits = debits.map((debit) => {
+      return convert(debit, 'successful');
+    });
+
+    transactions = [...credits, ...debits];
+
+    return transactions.sort((t1, t2) => (t1.timestamp - t2.timestamp));
   }
 
   render() {

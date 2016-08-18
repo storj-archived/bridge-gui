@@ -11,6 +11,7 @@
   "homepage": "https://app.storj.io/",
   "main": "bin/server.js",
   "scripts": {
+    "mock-backend": "node ./scripts/test/mock-backend/index.js",
     "start": "concurrent --kill-others \"npm run start-prod\" \"npm run start-prod-api\"",
     "start-prod": "better-npm-run start-prod",
     "build": "webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
@@ -64,6 +65,8 @@
     "extract-text-webpack-plugin": "^0.9.1",
     "file-loader": "^0.8.5",
     "json-loader": "^0.5.4",
+    "moment": "^2.14.1",
+    "moment-timezone": "^0.5.5",
     "multireducer": "^2.0.0",
     "node-sass": "^3.4.2",
     "node-uuid": "^1.4.7",
