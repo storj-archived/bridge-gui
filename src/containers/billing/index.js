@@ -15,12 +15,14 @@ const mapQueriesToProps = () => {
           credits {
             id,
             amount,
-            created
+            created,
+            type
           },
           debits {
             id,
             amount,
-            created
+            created,
+            type
           }
         }
       }`,
@@ -66,7 +68,9 @@ export default class Billing extends Component {
     credits = credits.map((credit) => {
       const transaction = {...credit};
       transaction.amount = -transaction.amount;
-      transaction.description = 'Payment - Thank you!';
+      const titleizedType = transaction.type
+        .replace(/^\w/, (w) => (w.toUpperCase()));
+      transaction.description = `${titleizedType} payment - Thank you!`;
       transaction.timestamp = Date.parse(transaction.created);
       transaction.created = moment(transaction.created)
         .format('MMM DD, YYYY - h:mma');
@@ -75,7 +79,9 @@ export default class Billing extends Component {
 
     debits = debits.map((debit) => {
       const transaction = {...debit};
-      transaction.description = 'Usage charge';
+      const titleizedType = transaction.type
+        .replace(/^\w/, (w) => (w.toUpperCase()));
+      transaction.description = `${titleizedType} successful`;
       transaction.timestamp = Date.parse(transaction.created);
       transaction.created = moment(transaction.created)
         .format('MMM DD, YYYY - h:mma');
