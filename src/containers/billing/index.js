@@ -65,27 +65,24 @@ export default class Billing extends Component {
 
     let {credits, debits} = user;
 
-    credits = credits.map((credit) => {
-      const transaction = {...credit};
-      transaction.amount = -transaction.amount;
-      const titleizedType = transaction.type
+    const convert = (item, descriptionSuffix, negateAmount) => {
+      const transaction = {...item};
+      if (negateAmount) transaction.amount = -item.amount;
+      const titleizedType = item.type
         .replace(/^\w/, (w) => (w.toUpperCase()));
-      transaction.description = `${titleizedType} payment - Thank you!`;
-      transaction.timestamp = Date.parse(transaction.created);
-      transaction.created = moment(transaction.created)
-        .format('MMM DD, YYYY - h:mma');
+      transaction.description = `${titleizedType} ${descriptionSuffix}`;
+      transaction.timestamp = Date.parse(item.created);
+      transaction.created = `${moment(item.created)
+        .utc().format('MMM DD, YYYY - hh:mma')} UTC`;
       return transaction;
+    };
+
+    credits = credits.map((credit) => {
+      return convert(credit, 'payment - Thank you!', true);
     });
 
     debits = debits.map((debit) => {
-      const transaction = {...debit};
-      const titleizedType = transaction.type
-        .replace(/^\w/, (w) => (w.toUpperCase()));
-      transaction.description = `${titleizedType} successful`;
-      transaction.timestamp = Date.parse(transaction.created);
-      transaction.created = moment(transaction.created)
-        .format('MMM DD, YYYY - h:mma');
-      return transaction;
+      return convert(debit, 'successful');
     });
 
     transactions = [...credits, ...debits];
