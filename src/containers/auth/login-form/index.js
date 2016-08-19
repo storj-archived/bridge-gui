@@ -1,11 +1,18 @@
 import React, {Component, PropTypes} from 'react';
 import {Link, hashHistory} from 'react-router';
+import {reduxForm} from 'redux-form';
+import {connect} from 'react-redux';
 
 import client from 'utils/api-client';
 import formLabelError from 'components/error-views/form-label-error';
 import loginValidation from 'containers/auth/login-form/login-validation';
+import {storeEmail} from 'redux/modules/local-storage';
 
-import {reduxForm} from 'redux-form';
+const mapDispatchToProps = {
+  storeEmail
+}
+
+@connect(null, mapDispatchToProps)
 
 @reduxForm({
   form: 'primeLogin',
@@ -57,10 +64,15 @@ export default class LoginForm extends Component {
   submit() {
     return new Promise((resolve, reject) => {
       const keypair = client.createKeyPair();
-      client.useBasicAuth(this.props.fields.email.value, this.props.fields.password.value);
+      const email = this.props.fields.email.value;
+      const password = this.props.fields.password.value;
+
+      client.useBasicAuth(email, password);
+
       if (window && window.localStorage) {
-        window.localStorage.setItem('email', this.props.fields.email.value);
+        this.props.storeEmail(email);
       }
+
       client.api.addPublicKey(keypair.getPublicKey()).then(
         function success() {
           client.removeBasicAuth();
