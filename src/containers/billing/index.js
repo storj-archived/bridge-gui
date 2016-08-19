@@ -120,7 +120,9 @@ export default class Billing extends Component {
             <div className="row">
               <div className="col-xs-12 col-sm-6">
 
-                <BalancePanel amount={this.getBalance()} addCreditHandler={addCreditHandler}/>
+                <BalancePanel amount={this.getBalance()}
+                  addCreditHandler={addCreditHandler}
+                  cardData={this.getCardInfo()}/>
 
               </div>
               <div className="col-xs-12 col-sm-6">
