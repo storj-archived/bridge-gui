@@ -4,11 +4,17 @@ import {Link, IndexLink, hashHistory} from 'react-router';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import client from 'utils/api-client';
 
+const mapStateToProps = (state) => ({
+    userEmail: state.localStorage.email
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  logout: (pubkey) => dispatch(authActions.logout(pubkey))
+})
+
 @connect(
-  null,
-  dispatch => ({
-    logout: (pubkey) => dispatch(authActions.logout(pubkey))
-  })
+  mapStateToProps,
+  mapDispatchToProps
 )
 
 export default class Dashboard extends Component {
@@ -24,6 +30,7 @@ export default class Dashboard extends Component {
     function logout(){
       if(window && window.localStorage) {
         window.localStorage.removeItem('privkey');
+        window.localStorage.removeItem('email');
       }
       client.removeKeyPair();
       hashHistory.push('/');
@@ -31,6 +38,7 @@ export default class Dashboard extends Component {
   };
 
   render() {
+    const email = this.props.userEmail;
     const styles = require('./dashboard.scss');
     return (
       <Navbar className="navbar-default">
@@ -47,6 +55,7 @@ export default class Dashboard extends Component {
             <a href="/" className="navbar-brand">
               <img src="img/logo-blue.svg" alt="Storj" className="logo"/>
             </a>
+            <p>{email}</p>
           </Navbar.Brand>
 
         </Navbar.Header>
