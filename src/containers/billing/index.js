@@ -3,6 +3,7 @@ import {connect} from 'react-apollo';
 import gql from 'graphql-tag';
 import moment from 'moment-timezone';
 import BalancePanel from 'components/billing/balance-panel';
+import PaymentInfoPanel from 'components/billing/payment-info-panel';
 import UsagePanel from 'components/billing/usage-panel';
 import AddCardForm from 'containers/billing/add-card-form';
 import TransactionsList from 'components/billing/transactions-list';
@@ -10,7 +11,23 @@ import 'containers/billing/billing.scss';
 
 const mapQueriesToProps = () => {
   return {
-    data: {
+    paymentProcessor: {
+      query: gql`query  getPaymentProcessor($id: String!) {
+        user(id: $id) {
+          paymentProcessor {
+            name,
+            defaultCard {
+              merchant,
+              lastFour
+            }
+          }
+        }
+      }`,
+      variables: {
+        id: 'user1@example.com'
+      }
+    },
+    transactions: {
       query: gql`query getTransactions($id: String!) {
         user(id: $id) {
           credits {
@@ -40,7 +57,7 @@ const mapQueriesToProps = () => {
 
 export default class Billing extends Component {
   getBalance() {
-    const {loading, user} = this.props.data;
+    const {loading, user} = this.props.transactions;
 
     if (loading) {
       return '';
@@ -63,7 +80,7 @@ export default class Billing extends Component {
   }
 
   getTransactions() {
-    const {user} = this.props.data;
+    const {user} = this.props.transactions;
     let transactions;
 
     if (!user) {
@@ -97,12 +114,20 @@ export default class Billing extends Component {
     return transactions.sort((t1, t2) => (t2.timestamp - t1.timestamp));
   }
 
+  getCardData() {
+    const {user} = this.props.paymentProcessor;
+    if(!user){
+      return {};
+    }
+    return user.cardData;
+
+  }
+
   render() {
     const addCreditHandler = () => {
     };
     const amount = '$32.48';
     const linkParams = '/dashboard/billing/usage';
-
     return (
       <div>
         <section>
@@ -114,19 +139,22 @@ export default class Billing extends Component {
             </div>
           </div>
         </section>
-
         <section>
           <div className="container">
             <div className="row">
               <div className="col-xs-12 col-sm-6">
-
                 <BalancePanel amount={this.getBalance()}
                   addCreditHandler={addCreditHandler}
                   cardData={this.getCardInfo()}/>
-
               </div>
               <div className="col-xs-12 col-sm-6">
                 <UsagePanel amount={amount} linkParams={linkParams}/>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-xs-12">
+                <PaymentInfoPanel
+                  cardData={{}}/>
               </div>
             </div>
           </div>
