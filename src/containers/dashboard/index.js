@@ -55,7 +55,6 @@ export default class Dashboard extends Component {
             <a href="/" className="navbar-brand">
               <img src="img/logo-blue.svg" alt="Storj" className="logo"/>
             </a>
-            <p>{email}</p>
           </Navbar.Brand>
 
         </Navbar.Header>
