@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-apollo';
 import gql from 'graphql-tag';
-import moment from 'moment-timezone';
+import moment from 'moment';
+import momenttz from 'moment-timezone';
 import BalancePanel from 'components/billing/balance-panel';
 import PaymentInfoPanel from 'components/billing/payment-info-panel';
 import UsagePanel from 'components/billing/usage-panel';
@@ -13,39 +14,49 @@ const mapQueriesToProps = () => {
   return {
     paymentProcessor: {
       query: gql`query  getPaymentProcessor($id: String!) {
-        user(id: $id) {
-          paymentProcessor {
-            name,
-            defaultCard {
-              merchant,
-              lastFour
-            }
+        paymentProcessor {
+          name,
+          defaultCard {
+            merchant,
+            lastFour
           }
         }
-      }`,
-      variables: {
-        id: 'user1@example.com'
-      }
+      }`
     },
     transactions: {
       query: gql`query getTransactions($id: String!) {
-        user(id: $id) {
-          credits {
-            id,
-            amount,
-            created,
-            type
-          },
-          debits {
-            id,
-            amount,
-            created,
-            type
-          }
+        credits {
+          id,
+          amount,
+          created,
+          type
+        },
+        debits {
+          id,
+          amount,
+          created,
+          type
+        }
+      }`
+    },
+    usage: {
+      query: gql`query getUsage($startDate: String!, $endDate: String!) {
+        debits(start: $startDate, end: $endDate) {
+          id,
+          amount,
+          created,
+          type
+        },
+        credits(start: $startDate, end: $endDate) {
+          id,
+          amount,
+          created,
+          type
         }
       }`,
       variables: {
-        id: 'user1@example.com'
+        startDate: moment().subtract('30', 'days').unix(),
+        endDate: moment().unix()
       }
     }
   };
@@ -64,6 +75,20 @@ export default class Billing extends Component {
     }
 
     const {credits, debits} = user;
+    return this.calculateBalance(credits, debits);
+  }
+
+  getUsage() {
+    const {loading, credits, debits} = this.props.usage;
+
+    if(loading) {
+      return null;
+    }
+
+    return this.calculateBalance(credits, debits);
+  }
+
+  calculateBalance(credits, debits) {
     const sum = (total, item) => {
       return total + item.amount;
     };
@@ -96,7 +121,7 @@ export default class Billing extends Component {
         .replace(/^\w/, (w) => (w.toUpperCase()));
       transaction.description = `${titleizedType} ${descriptionSuffix}`;
       transaction.timestamp = Date.parse(item.created);
-      transaction.created = `${moment(item.created)
+      transaction.created = `${momenttz(item.created)
         .utc().format('MMM DD, YYYY - HH:mm')} UTC`;
       return transaction;
     };
@@ -124,10 +149,15 @@ export default class Billing extends Component {
   }
 
   render() {
+    const usage = this.getUsage();
     const addCreditHandler = () => {
     };
     const amount = '$32.48';
     const linkParams = '/dashboard/billing/usage';
+    const cardData = {
+      "merchant":"stripe",
+      "lastFour":"4242"
+    }
     return (
       <div>
         <section>
@@ -148,22 +178,23 @@ export default class Billing extends Component {
                   cardData={this.getCardInfo()}/>
               </div>
               <div className="col-xs-12 col-sm-6">
-                <UsagePanel amount={amount} linkParams={linkParams}/>
+                <UsagePanel amount={usage} linkParams={linkParams}/>
               </div>
             </div>
             <div className="row">
               <div className="col-xs-12">
                 <PaymentInfoPanel
-                  cardData={{}}/>
+                  cardData={cardData}/>
               </div>
             </div>
           </div>
         </section>
-
-        { this.getCardInfo() ? null : <AddCardForm /> }
-
-        <TransactionsList transactions={this.getTransactions()}/>
-
+        <section>
+          { this.getCardInfo() ? null : <AddCardForm /> }
+        </section>
+        <section>
+          <TransactionsList transactions={this.getTransactions()}/>
+        </section>
       </div>
     );
   }
