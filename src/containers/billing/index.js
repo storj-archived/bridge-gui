@@ -97,7 +97,7 @@ export default class Billing extends Component {
       transaction.description = `${titleizedType} ${descriptionSuffix}`;
       transaction.timestamp = Date.parse(item.created);
       transaction.created = `${moment(item.created)
-        .utc().format('MMM DD, YYYY - hh:mma')} UTC`;
+        .utc().format('MMM DD, YYYY - HH:mm')} UTC`;
       return transaction;
     };
 
@@ -111,7 +111,7 @@ export default class Billing extends Component {
 
     transactions = [...credits, ...debits];
 
-    return transactions.sort((t1, t2) => (t1.timestamp - t2.timestamp));
+    return transactions.sort((t1, t2) => (t2.timestamp - t1.timestamp));
   }
 
   getCardData() {
