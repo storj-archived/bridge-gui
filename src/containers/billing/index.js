@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {connect} from 'react-apollo';
 import gql from 'graphql-tag';
 import moment from 'moment';
-import momenttz from 'moment-timezone';
 import BalancePanel from 'components/billing/balance-panel';
 import PaymentInfoPanel from 'components/billing/payment-info-panel';
 import UsagePanel from 'components/billing/usage-panel';
@@ -13,7 +12,7 @@ import 'containers/billing/billing.scss';
 const mapQueriesToProps = () => {
   return {
     paymentProcessor: {
-      query: gql`query  getPaymentProcessor($id: String!) {
+      query: gql`query {
         paymentProcessor {
           name,
           defaultCard {
@@ -24,7 +23,7 @@ const mapQueriesToProps = () => {
       }`
     },
     transactions: {
-      query: gql`query getTransactions($id: String!) {
+      query: gql`query {
         credits {
           id,
           amount,
@@ -41,22 +40,42 @@ const mapQueriesToProps = () => {
     },
     usage: {
       query: gql`query getUsage($startDate: String!, $endDate: String!) {
-        debits(start: $startDate, end: $endDate) {
-          id,
-          amount,
-          created,
-          type
-        },
-        credits(start: $startDate, end: $endDate) {
+        credits(startDate: $startDate, endDate: $endDate) {
           id,
           amount,
           created,
           type
         }
+        debits(startDate: $startDate, endDate: $endDate) {
+          id,
+          amount,
+          created,
+          type
+        },
       }`,
       variables: {
-        startDate: moment().subtract('30', 'days').unix(),
-        endDate: moment().unix()
+        startDate: (moment([moment().year(), moment().month()]).unix() * 1000),
+        endDate: (moment([moment().year(), moment().month()]).add('1', 'month').subtract('1', 'day').unix() * 1000)
+      }
+    },
+    balance: {
+      query: gql`query getUsage($startDate: String!, $endDate: String!) {
+        credits(startDate: $startDate, endDate: $endDate) {
+          id,
+          amount,
+          created,
+          type
+        }
+        debits(startDate: $startDate, endDate: $endDate) {
+          id,
+          amount,
+          created,
+          type
+        },
+      }`,
+      variables: {
+        startDate: (moment([moment().year(), moment().month() - 1]).unix() * 1000),
+        endDate: (moment([moment().year(), moment().month()]).subtract('1', 'day').unix() * 1000)
       }
     }
   };
@@ -68,23 +87,24 @@ const mapQueriesToProps = () => {
 
 export default class Billing extends Component {
   getBalance() {
-    const {loading, user} = this.props.transactions;
+    const {loading, user} = this.props.balance;
 
     if (loading) {
       return '';
     }
 
-    const {credits, debits} = user;
+    const {credits, debits} = this.props.balance;
     return this.calculateBalance(credits, debits);
   }
 
   getUsage() {
-    const {loading, credits, debits} = this.props.usage;
+    const {loading} = this.props.usage;
 
     if(loading) {
       return null;
     }
 
+    const {credits, debits} = this.props.usage;
     return this.calculateBalance(credits, debits);
   }
 
@@ -105,14 +125,14 @@ export default class Billing extends Component {
   }
 
   getTransactions() {
-    const {user} = this.props.transactions;
+    const {loading} = this.props.transactions;
     let transactions;
 
-    if (!user) {
+    if (loading) {
       return [];
     }
 
-    let {credits, debits} = user;
+    let {credits, debits} = this.props.transactions;
 
     const convert = (item, descriptionSuffix, negateAmount) => {
       const transaction = {...item};
@@ -121,7 +141,7 @@ export default class Billing extends Component {
         .replace(/^\w/, (w) => (w.toUpperCase()));
       transaction.description = `${titleizedType} ${descriptionSuffix}`;
       transaction.timestamp = Date.parse(item.created);
-      transaction.created = `${momenttz(item.created)
+      transaction.created = `${moment(item.created)
         .utc().format('MMM DD, YYYY - HH:mm')} UTC`;
       return transaction;
     };
@@ -144,20 +164,20 @@ export default class Billing extends Component {
     if(!user){
       return {};
     }
-    return user.cardData;
 
+    return user.cardData;
   }
 
   render() {
     const usage = this.getUsage();
     const addCreditHandler = () => {
     };
-    const amount = '$32.48';
     const linkParams = '/dashboard/billing/usage';
     const cardData = {
       "merchant":"stripe",
       "lastFour":"4242"
-    }
+    };
+
     return (
       <div>
         <section>
