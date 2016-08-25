@@ -17,24 +17,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const mapQueriesToProps = () => {
-  // return {
-  //   user: {
-  //     query: gql`
-  //       query user {
-  //         credits {
-  //           amount
-  //         },
-  //         debits {
-  //           amount
-  //         },
-  //         balance
-  //       }
-  //     `
-  //   }
-  // };
-};
-
 const mapMutationsToProps = ({ownProps, state}) => {
   return {
     // addCard: (raw) => {
@@ -51,8 +33,11 @@ const mapMutationsToProps = ({ownProps, state}) => {
         mutation: gql`
         mutation ($data: String!, $name: PaymentProcessorEnum!) {
           addPaymentProcessor(data: $data, name: $name) {
-            status
-            message
+            name,
+            defaultCard {
+              merchant,
+              lastFour
+            }
           }
         }`,
         variables: {
@@ -85,7 +70,6 @@ const mapMutationsToProps = ({ownProps, state}) => {
 @connect({
   mapStateToProps,
   mapDispatchToProps,
-  mapQueriesToProps,
   mapMutationsToProps
 })
 
@@ -117,17 +101,10 @@ export default class AddCardForm extends Component {
       cvc: cvv.value
     }, (status, response) => {
       const token = response.id;
-      this.props.mutations.addPaymentProcessor(JSON.stringify(token));
-      // Stripe.customers.create({
-      //   source: stripeToken,
-      //   plan: "gold_member",
-      //   email: "dylan@storj.io"
-      // }, function(err, customer) {
-      //   if(err){
-      //     console.error("Error creating customer: ", err);
-      //   }
-      //   console.log("Stripe customer: ", customer);
-      // });
+      this.props.mutations.addPaymentProcessor(JSON.stringify(token))
+        .then(() => {
+          this.props.updatePaymentInfo();
+        });
     });
 
     const {

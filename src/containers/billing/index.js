@@ -90,7 +90,7 @@ export default class Billing extends Component {
     const {loading, user} = this.props.balance;
 
     if (loading) {
-      return '';
+      return null;
     }
 
     const {credits, debits} = this.props.balance;
@@ -100,7 +100,7 @@ export default class Billing extends Component {
   getUsage() {
     const {loading} = this.props.usage;
 
-    if(loading) {
+    if (loading) {
       return null;
     }
 
@@ -118,10 +118,17 @@ export default class Billing extends Component {
     return balance;
   }
 
-  getCardInfo() {
-    const cardToken = "id_asdf12asdf90";
-    console.log("CARD TOKEN: ", cardToken);
-    return cardToken;
+  getPaymentInfo() {
+    // return {merchant: 'Mastercard', lastFour: 1234};
+
+    const {loading} = this.props.paymentProcessor;
+
+    if (loading || !this.props.paymentProcessor.paymentProcessor) {
+      return null;
+    }
+
+    const {defaultCard} = this.props.paymentProcessor.paymentProcessor;
+    return defaultCard;
   }
 
   getTransactions() {
@@ -159,24 +166,11 @@ export default class Billing extends Component {
     return transactions.sort((t1, t2) => (t2.timestamp - t1.timestamp));
   }
 
-  getCardData() {
-    const {user} = this.props.paymentProcessor;
-    if(!user){
-      return {};
-    }
-
-    return user.cardData;
-  }
-
   render() {
     const usage = this.getUsage();
     const addCreditHandler = () => {
     };
     const linkParams = '/dashboard/billing/usage';
-    const cardData = {
-      "merchant":"stripe",
-      "lastFour":"4242"
-    };
 
     return (
       <div>
@@ -194,8 +188,8 @@ export default class Billing extends Component {
             <div className="row">
               <div className="col-xs-12 col-sm-6">
                 <BalancePanel amount={this.getBalance()}
-                  addCreditHandler={addCreditHandler}
-                  cardData={this.getCardInfo()}/>
+                              addCreditHandler={addCreditHandler}
+                              cardData={this.getPaymentInfo()}/>
               </div>
               <div className="col-xs-12 col-sm-6">
                 <UsagePanel amount={usage} linkParams={linkParams}/>
@@ -203,14 +197,15 @@ export default class Billing extends Component {
             </div>
             <div className="row">
               <div className="col-xs-12">
-                <PaymentInfoPanel
-                  cardData={cardData}/>
+                { !this.getPaymentInfo() ? null : <PaymentInfoPanel
+                  paymentInfo={this.getPaymentInfo()}/> }
               </div>
             </div>
           </div>
         </section>
         <section>
-          { this.getCardInfo() ? null : <AddCardForm /> }
+          { !!this.getPaymentInfo() ? null : <AddCardForm
+            updatePaymentInfo={this.props.paymentProcessor.refetch} /> }
         </section>
         <section>
           <TransactionsList transactions={this.getTransactions()}/>
