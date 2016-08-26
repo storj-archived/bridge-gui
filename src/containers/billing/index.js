@@ -81,8 +81,24 @@ const mapQueriesToProps = () => {
   };
 };
 
+const mapMutationsToProps = () => {
+  return {
+    removeCard: () => {
+      return {
+        mutation: gql`
+        mutation {
+          removePaymentProcessor {
+            success
+          }
+        }`
+      };
+    }
+  };
+};
+
 @connect({
-  mapQueriesToProps
+  mapQueriesToProps,
+  mapMutationsToProps
 })
 
 export default class Billing extends Component {
@@ -166,6 +182,13 @@ export default class Billing extends Component {
     return transactions.sort((t1, t2) => (t2.timestamp - t1.timestamp));
   }
 
+  removeCard() {
+    const {removeCard} = this.props.mutations;
+    const {refetch} = this.props.paymentProcessor;
+
+    removeCard().then(() => (refetch()));
+  }
+
   render() {
     const usage = this.getUsage();
     const addCreditHandler = () => {
@@ -197,15 +220,19 @@ export default class Billing extends Component {
             </div>
             <div className="row">
               <div className="col-xs-12">
-                { !this.getPaymentInfo() ? null : <PaymentInfoPanel
-                  paymentInfo={this.getPaymentInfo()}/> }
+                { !this.getPaymentInfo() ? null :
+                  <PaymentInfoPanel
+                    removeCardHandler={this.removeCard.bind(this)}
+                    paymentInfo={this.getPaymentInfo()}
+                  />
+                }
               </div>
             </div>
           </div>
         </section>
         <section>
           { !!this.getPaymentInfo() ? null : <AddCardForm
-            updatePaymentInfo={this.props.paymentProcessor.refetch} /> }
+            updatePaymentInfo={this.props.paymentProcessor.refetch}/> }
         </section>
         <section>
           <TransactionsList transactions={this.getTransactions()}/>

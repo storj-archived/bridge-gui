@@ -16,7 +16,7 @@ const host = config.host || 'localhost';
 const port = (config.port + 1) || 3001;
 const serverOptions = {
   contentBase: '../src/',
-  quiet: true,
+  quiet: false,
   noInfo: true,
   hot: true,
   lazy: false,
