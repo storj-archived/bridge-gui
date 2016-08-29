@@ -103,24 +103,22 @@ const mapMutationsToProps = () => {
 
 export default class Billing extends Component {
   getBalance() {
-    const {loading, user} = this.props.balance;
+    const {loading, credits, debits} = this.props.balance;
 
-    if (loading) {
+    if (loading || !credits || !debits) {
       return null;
     }
 
-    const {credits, debits} = this.props.balance;
     return this.calculateBalance(credits, debits);
   }
 
   getUsage() {
-    const {loading} = this.props.usage;
+    const {loading, credits, debits} = this.props.usage;
 
-    if (loading) {
+    if (loading || !credits || !debits) {
       return null;
     }
 
-    const {credits, debits} = this.props.usage;
     return this.calculateBalance(credits, debits);
   }
 
@@ -148,14 +146,14 @@ export default class Billing extends Component {
   }
 
   getTransactions() {
-    const {loading} = this.props.transactions;
+    const {loading, credits, debits} = this.props.transactions;
     let transactions;
 
-    if (loading) {
+    if (loading || !credits || !debits) {
       return [];
     }
 
-    let {credits, debits} = this.props.transactions;
+    // let {credits, debits} = this.props.transactions;
 
     const convert = (item, descriptionSuffix, negateAmount) => {
       const transaction = {...item};
@@ -169,15 +167,15 @@ export default class Billing extends Component {
       return transaction;
     };
 
-    credits = credits.map((credit) => {
+    const convertedCredits = credits.map((credit) => {
       return convert(credit, 'payment - Thank you!', true);
     });
 
-    debits = debits.map((debit) => {
+    const convertedDebits = debits.map((debit) => {
       return convert(debit, 'successful');
     });
 
-    transactions = [...credits, ...debits];
+    transactions = [...convertedCredits, ...convertedDebits];
 
     return transactions.sort((t1, t2) => (t2.timestamp - t1.timestamp));
   }
