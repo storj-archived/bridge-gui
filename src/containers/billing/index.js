@@ -88,7 +88,7 @@ const mapMutationsToProps = () => {
         mutation: gql`
         mutation {
           removePaymentProcessor {
-            success
+            status
           }
         }`
       };
