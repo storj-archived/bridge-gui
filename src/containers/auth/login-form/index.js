@@ -10,7 +10,7 @@ import {storeEmail} from 'redux/modules/local-storage';
 
 const mapDispatchToProps = {
   storeEmail
-}
+};
 
 @connect(null, mapDispatchToProps)
 

@@ -5,7 +5,7 @@ const getInitState = (state) => {
   if (window && window.localStorage) {
     email = window.localStorage.getItem('email');
   }
-  return {...state, email}
+  return {...state, email};
 };
 
 export default function LocalStorage(state = {}, action = {}) {

@@ -8,17 +8,37 @@ import UsagePanel from 'components/billing/usage-panel';
 import AddCardForm from 'containers/billing/add-card-form';
 import TransactionsList from 'components/billing/transactions-list';
 import 'containers/billing/billing.scss';
+import {setBalance, setUsage} from 'redux/modules/transaction-group';
+
+const transactionRangeQuery =
+  gql`query usageTransactions($startDate: String!, $endDate: String!) {
+      credits(startDate: $startDate, endDate: $endDate) {
+        id,
+        amount,
+        created,
+        type
+      }
+      debits(startDate: $startDate, endDate: $endDate) {
+        id,
+        amount,
+        created,
+        type
+      },
+    }`;
 
 const mapQueriesToProps = () => {
   return {
     paymentProcessor: {
       query: gql`query {
         paymentProcessor {
+          id,
           name,
+          billingDate,
           defaultCard {
             merchant,
             lastFour
-          }
+          },
+          error
         }
       }`
     },
@@ -37,46 +57,6 @@ const mapQueriesToProps = () => {
           type
         }
       }`
-    },
-    usage: {
-      query: gql`query getUsage($startDate: String!, $endDate: String!) {
-        credits(startDate: $startDate, endDate: $endDate) {
-          id,
-          amount,
-          created,
-          type
-        }
-        debits(startDate: $startDate, endDate: $endDate) {
-          id,
-          amount,
-          created,
-          type
-        },
-      }`,
-      variables: {
-        startDate: (moment([moment().year(), moment().month()]).unix() * 1000),
-        endDate: (moment([moment().year(), moment().month()]).add('1', 'month').subtract('1', 'day').unix() * 1000)
-      }
-    },
-    balance: {
-      query: gql`query getUsage($startDate: String!, $endDate: String!) {
-        credits(startDate: $startDate, endDate: $endDate) {
-          id,
-          amount,
-          created,
-          type
-        }
-        debits(startDate: $startDate, endDate: $endDate) {
-          id,
-          amount,
-          created,
-          type
-        },
-      }`,
-      variables: {
-        startDate: (moment([moment().year(), moment().month() - 1]).unix() * 1000),
-        endDate: (moment([moment().year(), moment().month()]).subtract('1', 'day').unix() * 1000)
-      }
     }
   };
 };
@@ -85,10 +65,11 @@ const mapMutationsToProps = () => {
   return {
     removeCard: () => {
       return {
+        // TODO: maybe add `id,` to get query update?
         mutation: gql`
         mutation {
           removePaymentProcessor {
-            status
+            error
           }
         }`
       };
@@ -96,30 +77,110 @@ const mapMutationsToProps = () => {
   };
 };
 
+const mapDispatchToProps = {
+  setBalance,
+  setUsage
+};
+
+const mapStateToProps = ({transactionGroup: {balance, usage}}) => {
+  return {balance, usage};
+};
+
 @connect({
   mapQueriesToProps,
-  mapMutationsToProps
+  mapMutationsToProps,
+  mapDispatchToProps,
+  mapStateToProps
 })
 
 export default class Billing extends Component {
-  getBalance() {
-    const {loading, credits, debits} = this.props.balance;
+  componentWillReceiveProps(nextProps) {
+    const {balance, usage} = nextProps;
 
-    if (loading || !credits || !debits) {
+    if (balance || usage) {
+      return;
+    }
+
+    const {startDate: balanceStartDate, endDate: balanceEndDate} = this.getBalanceRange();
+    const {startDate: usageStartDate, endDate: usageEndDate} = this.getUsageRange();
+
+    if (!balanceStartDate || !balanceEndDate || !usageStartDate || !usageEndDate) {
       return null;
     }
 
-    return this.calculateBalance(credits, debits);
+    const balancePromise = this.props.query({
+      query: transactionRangeQuery,
+      variables: {
+        startDate: balanceStartDate,
+        endDate: balanceEndDate
+      }
+    });
+
+    const usagePromise = this.props.query({
+      query: transactionRangeQuery,
+      variables: {
+        startDate: usageStartDate,
+        endDate: usageEndDate
+      }
+    });
+
+    balancePromise.then(({data: {credits, debits}}) => {
+      const balance = this.calculateBalance(credits, debits);
+      this.props.setBalance(balance);
+    });
+
+    usagePromise.then(({data: {credits, debits}}) => {
+      const usage = this.calculateBalance(credits, debits);
+      this.props.setUsage(usage);
+    });
   }
 
-  getUsage() {
-    const {loading, credits, debits} = this.props.usage;
+  getBalanceRange() {
+    const {loading, paymentProcessor} = this.props.paymentProcessor;
 
-    if (loading || !credits || !debits) {
-      return null;
+    if (loading || !paymentProcessor) {
+      return {};
     }
 
-    return this.calculateBalance(credits, debits);
+    const {billingDate} = paymentProcessor;
+    const today = new Date();
+    const daysInMonth = (new Date(today.getFullYear(), (today.getMonth() - 1), 0)).getDate();
+    const startDayOfMonth = (billingDate > daysInMonth) ? daysInMonth : billingDate;
+    const startDate = Date.parse(new Date(
+      today.getFullYear(),
+      (today.getMonth() - 2),
+      startDayOfMonth
+    ));
+    const endDate = (moment(startDate).add('1', 'month').unix() * 1000);
+
+    return {
+      startDate,
+      endDate
+    };
+  }
+
+  getUsageRange() {
+    const {loading, paymentProcessor} = this.props.paymentProcessor;
+
+    if (loading || !paymentProcessor) {
+      return {};
+    }
+
+    const {billingDate} = paymentProcessor;
+    const today = new Date();
+    const daysInMonth = (new Date(today.getFullYear(), today.getMonth(), 0)).getDate();
+    const startDayOfMonth = (billingDate > daysInMonth) ? daysInMonth : billingDate;
+    const startDate = Date.parse(new Date(
+      today.getFullYear(),
+      (today.getMonth() - 1),
+      startDayOfMonth
+    ));
+    const endDate = (moment(startDate).add('1', 'month').unix() * 1000);
+
+    return {
+      startDate,
+      endDate
+    };
   }
 
   calculateBalance(credits, debits) {
@@ -133,8 +194,6 @@ export default class Billing extends Component {
   }
 
   getPaymentInfo() {
-    // return {merchant: 'Mastercard', lastFour: 1234};
-
     const {loading} = this.props.paymentProcessor;
 
     if (loading || !this.props.paymentProcessor.paymentProcessor) {
@@ -152,8 +211,6 @@ export default class Billing extends Component {
     if (loading || !credits || !debits) {
       return [];
     }
-
-    // let {credits, debits} = this.props.transactions;
 
     const convert = (item, descriptionSuffix, negateAmount) => {
       const transaction = {...item};
@@ -182,13 +239,13 @@ export default class Billing extends Component {
 
   removeCard() {
     const {removeCard} = this.props.mutations;
+    // TODO: use apollo watchquery correctly so we don't have to call `refetch`
     const {refetch} = this.props.paymentProcessor;
 
     removeCard().then(() => (refetch()));
   }
 
   render() {
-    const usage = this.getUsage();
     const addCreditHandler = () => {
     };
     const linkParams = '/dashboard/billing/usage';
@@ -208,12 +265,12 @@ export default class Billing extends Component {
           <div className="container">
             <div className="row">
               <div className="col-xs-12 col-sm-6">
-                <BalancePanel amount={this.getBalance()}
+                <BalancePanel amount={this.props.balance}
                               addCreditHandler={addCreditHandler}
                               cardData={this.getPaymentInfo()}/>
               </div>
               <div className="col-xs-12 col-sm-6">
-                <UsagePanel amount={usage} linkParams={linkParams}/>
+                <UsagePanel amount={this.props.usage} linkParams={linkParams}/>
               </div>
             </div>
             <div className="row">
@@ -230,6 +287,7 @@ export default class Billing extends Component {
         </section>
         <section>
           { !!this.getPaymentInfo() ? null : <AddCardForm
+            // TODO: use apollo watchquery correctly so we don't have to call `refetch`
             updatePaymentInfo={this.props.paymentProcessor.refetch}/> }
         </section>
         <section>

@@ -33,11 +33,14 @@ const mapMutationsToProps = ({ownProps, state}) => {
         mutation: gql`
         mutation ($data: String!, $name: PaymentProcessorEnum!) {
           addPaymentProcessor(data: $data, name: $name) {
+            id,
             name,
+            billingDate,
             defaultCard {
               merchant,
               lastFour
-            }
+            },
+            error
           }
         }`,
         variables: {
