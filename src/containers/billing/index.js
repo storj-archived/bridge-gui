@@ -14,11 +14,14 @@ const mapQueriesToProps = () => {
     paymentProcessor: {
       query: gql`query {
         paymentProcessor {
+          id,
           name,
+          billingDate,
           defaultCard {
             merchant,
             lastFour
-          }
+          },
+          error
         }
       }`
     },
@@ -39,40 +42,40 @@ const mapQueriesToProps = () => {
       }`
     },
     usage: {
-      query: gql`query getUsage($startDate: String!, $endDate: String!) {
-        credits(startDate: $startDate, endDate: $endDate) {
-          id,
-          amount,
-          created,
-          type
-        }
-        debits(startDate: $startDate, endDate: $endDate) {
-          id,
-          amount,
-          created,
-          type
-        },
-      }`,
+      query: gql`query usageTransactions($startDate: String!, $endDate: String!) {
+          credits(startDate: $startDate, endDate: $endDate) {
+            id,
+            amount,
+            created,
+            type
+          }
+          debits(startDate: $startDate, endDate: $endDate) {
+            id,
+            amount,
+            created,
+            type
+          },
+        }`,
       variables: {
         startDate: (moment([moment().year(), moment().month()]).unix() * 1000),
         endDate: (moment([moment().year(), moment().month()]).add('1', 'month').subtract('1', 'day').unix() * 1000)
       }
     },
     balance: {
-      query: gql`query getUsage($startDate: String!, $endDate: String!) {
-        credits(startDate: $startDate, endDate: $endDate) {
-          id,
-          amount,
-          created,
-          type
-        }
-        debits(startDate: $startDate, endDate: $endDate) {
-          id,
-          amount,
-          created,
-          type
-        },
-      }`,
+      query: gql`query balanceTransactions($startDate: String!, $endDate: String!) {
+          credits(startDate: $startDate, endDate: $endDate) {
+            id,
+            amount,
+            created,
+            type
+          }
+          debits(startDate: $startDate, endDate: $endDate) {
+            id,
+            amount,
+            created,
+            type
+          },
+        }`,
       variables: {
         startDate: (moment([moment().year(), moment().month() - 1]).unix() * 1000),
         endDate: (moment([moment().year(), moment().month()]).subtract('1', 'day').unix() * 1000)
@@ -85,10 +88,11 @@ const mapMutationsToProps = () => {
   return {
     removeCard: () => {
       return {
+        // TODO: maybe add `id,` to get query update?
         mutation: gql`
         mutation {
           removePaymentProcessor {
-            status
+            error
           }
         }`
       };

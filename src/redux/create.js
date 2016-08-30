@@ -2,7 +2,7 @@ import {createStore as _createStore, applyMiddleware, compose} from 'redux';
 import bridgeClientMiddleware from 'redux/middleware/bridge-client-middleware';
 import reducer from 'redux/modules/reducer';
 import uuid from 'node-uuid';
-import { print as graphqlTagPrint } from 'graphql-tag/printer';
+import {print as graphqlTagPrint} from 'graphql-tag/printer';
 
 import ApolloClient, {createNetworkInterface} from 'apollo-client';
 import bridgeClientWrapper from 'utils/api-client';
@@ -47,6 +47,7 @@ export default function createStore() {
   }]);
 
   const apolloClient = new ApolloClient({
+    // shouldBatch: true,
     networkInterface: apolloNetworkInterface
   });
 
