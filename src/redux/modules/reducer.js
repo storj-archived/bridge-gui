@@ -6,7 +6,6 @@ import bucketList from './bucket-list';
 import bucket from './bucket';
 import billing from './billing';
 import localStorage from './local-storage';
-import transactionGroup from './transaction-group';
 
 export default (apolloClient) => {
   return combineReducers({
@@ -14,7 +13,6 @@ export default (apolloClient) => {
     bucketList,
     billing,
     localStorage,
-    transactionGroup,
     form: formReducer,
     apollo: apolloClient.reducer()
   });
