@@ -29,7 +29,7 @@ const mapQueriesToProps = () => {
       query: gql`query {
         credits {
           id,
-          amount,
+          paid_amount,
           created,
           type
         },
@@ -45,7 +45,7 @@ const mapQueriesToProps = () => {
       query: gql`query usageTransactions($startDate: String!, $endDate: String!) {
           credits(startDate: $startDate, endDate: $endDate) {
             id,
-            amount,
+            paid_amount,
             created,
             type
           }
@@ -65,7 +65,7 @@ const mapQueriesToProps = () => {
       query: gql`query balanceTransactions($startDate: String!, $endDate: String!) {
           credits(startDate: $startDate, endDate: $endDate) {
             id,
-            amount,
+            paid_amount,
             created,
             type
           }
@@ -107,10 +107,14 @@ const mapMutationsToProps = () => {
 
 export default class Billing extends Component {
   getBalance() {
+    console.log("this.props.balance: ", this.props.balance);
     const {loading, credits, debits} = this.props.balance;
-
-    if (loading || !credits || !debits) {
+    if (loading) {
       return null;
+    }
+
+    if (!credits || !debits) {
+      return 0;
     }
 
     return this.calculateBalance(credits, debits);
@@ -118,7 +122,6 @@ export default class Billing extends Component {
 
   getUsage() {
     const {loading, credits, debits} = this.props.usage;
-
     if (loading || !credits || !debits) {
       return null;
     }
@@ -127,18 +130,17 @@ export default class Billing extends Component {
   }
 
   calculateBalance(credits, debits) {
-    const sum = (total, item) => {
+    const creditSum = credits.reduce((total, item) => {
+      return total + item.paid_amount;
+    }, 0);
+    const debitSum = debits.reduce(() => {
       return total + item.amount;
-    };
-    const creditSum = credits.reduce(sum, 0);
-    const debitSum = debits.reduce(sum, 0);
+    }, 0);
     const balance = debitSum - creditSum;
     return balance;
   }
 
   getPaymentInfo() {
-    // return {merchant: 'Mastercard', lastFour: 1234};
-
     const {loading} = this.props.paymentProcessor;
 
     if (loading || !this.props.paymentProcessor.paymentProcessor) {
@@ -150,6 +152,7 @@ export default class Billing extends Component {
   }
 
   getTransactions() {
+    console.log('transactions: ', this.props.transactions);
     const {loading, credits, debits} = this.props.transactions;
     let transactions;
 
@@ -157,11 +160,9 @@ export default class Billing extends Component {
       return [];
     }
 
-    // let {credits, debits} = this.props.transactions;
-
     const convert = (item, descriptionSuffix, negateAmount) => {
       const transaction = {...item};
-      if (negateAmount) transaction.amount = -item.amount;
+      if (negateAmount) transaction.amount = -item.paid_amount;
       const titleizedType = item.type
         .replace(/^\w/, (w) => (w.toUpperCase()));
       transaction.description = `${titleizedType} ${descriptionSuffix}`;
