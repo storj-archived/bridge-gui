@@ -19,8 +19,6 @@ const validation = function(values) {
   const jcb = /^(?:2131|1800|35\d{3})\d{11}$/.test(values.ccNumber);
   const dinersclub = /^3(?:0[0-5]|[68][0-9])[0-9]{11}$/.test(values.ccNumber);
 
-  console.log(visa, mastercard, amex, discover, jcb, dinersclub);
-
   if(!visa && !mastercard && !amex && !discover && !jcb && !dinersclub) {
     errors.ccNumber = "Enter a valid credit card number."
   }
@@ -38,7 +36,6 @@ const validation = function(values) {
     errors.cvv = "Please enter a valid CVV."
   }
 
-  console.log(errors);
   return errors;
 };
 
