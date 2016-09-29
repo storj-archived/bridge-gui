@@ -1,3 +1,15 @@
+// TODO Connect these variables to the main style sheet
+
+$brand-warning: #f0ad4e;
+$brand-danger: #d9534f;
+$brand-success: #91D127;
+
 .hidden {
   display: none !important;
+}
+.has-error {
+  color: $brand-danger;
+}
+.has-success {
+  border-color: $brand-success;
 }

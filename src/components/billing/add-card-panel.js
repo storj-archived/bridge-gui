@@ -84,18 +84,21 @@ const AddCardPanel = ({handleCardSubmit, fields}) => {
                   <legend>Credit Card Details</legend>
                   <div className="row">
                     <div className="col-sm-6">
-                      <input className="form-control"  placeholder="Credit Card Number" name="cc-number" type="text" {...fields.ccNumber}/>
+                      <input className="form-control {!fields.ccNumber.error ? 'has-success' : ''}"  placeholder="Credit card number" name="cc-number" type="text" {...fields.ccNumber}/>
+                      <div className="help-block has-error">{fields.ccNumber.touched ? fields.ccNumber.error : ''}</div>
                     </div>
                     <div className="col-sm-6">
-                      <input className="form-control" placeholder="CVV" name="cvc" type="text" autoComplete="cc-csc" {...fields.cvv}/>
+                      <input className="form-control {!fields.cvv.error ? 'has-success' : ''}" placeholder="CVV" name="cvc" type="text" autoComplete="cc-csc" {...fields.cvv}/>
+                      <div className="help-block has-error">{fields.cvv.touched ? fields.cvv.error : ''}</div>
                     </div>
                   </div>
                   <div className="row">
                     <div className="col-sm-6">
-                      <input className="form-control" placeholder="Expires MM / YYYY" name="cc-exp" type="text" {...fields.ccExp}/>
+                      <input className="form-control {!fields.ccExp.error ? 'has-success' : ''}" placeholder="Expires MM / YYYY" name="cc-exp" type="text" {...fields.ccExp}/>
+                      <div className="help-block has-error">{fields.ccExp.touched ? fields.ccExp.error : ''}</div>
                     </div>
                     <div className="col-sm-6">
-                      <input className="form-control" placeholder="Please enter a name for this credit card" type="text"
+                      <input className="form-control {!fields.ccName.error ? 'has-success' : ''}" placeholder="Please enter a name for this credit card" type="text"
                              name="cc-name" {...fields.ccName}/>
                     </div>
                   </div>
@@ -105,7 +108,8 @@ const AddCardPanel = ({handleCardSubmit, fields}) => {
 
                 <div className="row">
                   <div className="col-xs-12">
-                    <button onClick={handleCardSubmit} type="submit" name="submit" className="btn btn-block btn-default">Save Credit Card</button>
+                    <button onClick={handleCardSubmit}
+                      type="submit" name="submit" className="btn btn-block btn-default" {...fields.submitButton}>Save Credit Card</button>
                   </div>
                 </div>
 
