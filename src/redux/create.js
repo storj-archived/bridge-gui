@@ -24,7 +24,7 @@ export default function createStore() {
 
   const bridgeClient = bridgeClientWrapper.api;
 
-  const baseUrl = 'http://localhost:6382';
+  const baseUrl = process.env.APOLLO_CLIENT_URL || 'http://localhost:3000';
   const basePath = '/graphql';
   const apolloNetworkInterface = createNetworkInterface(`${baseUrl}${basePath}`);
   apolloNetworkInterface.use([{

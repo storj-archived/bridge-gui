@@ -51,7 +51,7 @@ app
 app.use('/graphiql', function(req, res, next) {
   res.removeHeader('Content-Security-Policy');
   graphiqlExpress({
-    endpointURL: 'http://localhost:6382/graphql'
+    endpointURL: 'http://localhost:3000/graphql'
   })(req, res, next);
 });
 

@@ -42,7 +42,7 @@
     }
   },
   "dependencies": {
-    "@bryanchriswhite/apollo-client": "^0.4.12",
+    "apollo-client": "^0.4.19",
     "assets-webpack-plugin": "^3.4.0",
     "async": "^2.0.0-rc.2",
     "autoprefixer-loader": "^3.1.0",

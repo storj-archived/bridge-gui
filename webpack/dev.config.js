@@ -48,8 +48,7 @@ module.exports = {
     alias: {
       dgram: `${__dirname}/stubs/dgram`,
       bufferutil: `${__dirname}/stubs/blank`,
-      'utf-8-validate': `${__dirname}/stubs/blank`,
-      'apollo-client': '@bryanchriswhite/apollo-client'
+      'utf-8-validate': `${__dirname}/stubs/blank`
     },
     modulesDirectories: [
       'src',
