@@ -96,11 +96,9 @@ const mapStateToProps = ({transactionGroup: {balance, usage}}) => {
 export default class Billing extends Component {
   componentWillReceiveProps(nextProps) {
     const {balance, usage} = nextProps;
-
-    if (balance || usage) {
-      return;
+    if (typeof balance !== 'undefined' || typeof usage !== 'undefined') {
+        return;
     }
-
     const {startDate: balanceStartDate, endDate: balanceEndDate} = this.getBalanceRange();
     const {startDate: usageStartDate, endDate: usageEndDate} = this.getUsageRange();
 
@@ -124,7 +122,7 @@ export default class Billing extends Component {
       }
     });
 
-    balancePromise.then(({data: {credits, debits}}) => {
+    balancePromise.then(({data: {credits, debits}, loading}) => {
       const balance = this.calculateBalance(credits, debits);
       this.props.setBalance(balance);
     });
@@ -137,12 +135,7 @@ export default class Billing extends Component {
 
   getBalanceRange() {
     const {loading, paymentProcessor} = this.props.paymentProcessor;
-
-    if (loading || !paymentProcessor) {
-      return {};
-    }
-
-    const {billingDate} = paymentProcessor;
+    const billingDate = (loading || !paymentProcessor) ? (new Date).getDate() : paymentProcessor.billingDate;
     const today = new Date();
     const daysInMonth = (new Date(today.getFullYear(), (today.getMonth() - 1), 0)).getDate();
     const startDayOfMonth = (billingDate > daysInMonth) ? daysInMonth : billingDate;
@@ -161,12 +154,7 @@ export default class Billing extends Component {
 
   getUsageRange() {
     const {loading, paymentProcessor} = this.props.paymentProcessor;
-
-    if (loading || !paymentProcessor) {
-      return {};
-    }
-
-    const {billingDate} = paymentProcessor;
+    const billingDate = (loading || !paymentProcessor) ? (new Date).getDate() : paymentProcessor.billingDate;
     const today = new Date();
     const daysInMonth = (new Date(today.getFullYear(), today.getMonth(), 0)).getDate();
     const startDayOfMonth = (billingDate > daysInMonth) ? daysInMonth : billingDate;
@@ -206,7 +194,6 @@ export default class Billing extends Component {
   }
 
   getTransactions() {
-    console.log('transactions: ', this.props.transactions);
     const {loading, credits, debits} = this.props.transactions;
     let transactions;
 
