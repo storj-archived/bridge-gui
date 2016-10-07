@@ -7,6 +7,9 @@ import {print as graphqlTagPrint} from 'graphql-tag/printer';
 import ApolloClient, {createNetworkInterface} from 'apollo-client';
 import bridgeClientWrapper from 'utils/api-client';
 
+// NB: for testing only
+window.wrappedBridgeClient = bridgeClientWrapper;
+
 export default function createStore() {
   let privkey = localStorage.getItem('privkey');
   if (privkey !== null) {

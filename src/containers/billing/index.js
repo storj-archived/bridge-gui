@@ -96,6 +96,7 @@ const mapStateToProps = ({transactionGroup: {balance, usage}}) => {
 export default class Billing extends Component {
   componentWillReceiveProps(nextProps) {
     const {balance, usage} = nextProps;
+    // TODO: Use apollo query observables instead of promises
     if (typeof balance !== 'undefined' || typeof usage !== 'undefined') {
         return;
     }
@@ -105,7 +106,8 @@ export default class Billing extends Component {
     if (!balanceStartDate || !balanceEndDate || !usageStartDate || !usageEndDate) {
       return null;
     }
-
+    // TODO: Use Apollo query observables instead of promises
+    // to check for loading true/false
     const balancePromise = this.props.query({
       query: transactionRangeQuery,
       variables: {
