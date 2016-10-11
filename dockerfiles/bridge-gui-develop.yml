@@ -19,6 +19,7 @@ services:
     volumes:
       - ../bridge/bin:/bridge/bin
       - ../bridge/lib:/bridge/lib
+      - ../../core:/core
     links:
       - mongo
       - rabbitmq
