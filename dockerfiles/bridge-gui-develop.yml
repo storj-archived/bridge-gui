@@ -19,6 +19,7 @@ services:
     volumes:
       - ../bridge/bin:/bridge/bin
       - ../bridge/lib:/bridge/lib
+      - ../../core:/core
     links:
       - mongo
       - rabbitmq
@@ -35,6 +36,8 @@ services:
     volumes:
       - ../billing/bin:/billing/bin
       - ../billing/lib:/billing/lib
+      - ../../service-storage-models:/service-storage-models
+      - ../../core:/core
     links:
       - mongo
       - rabbitmq
