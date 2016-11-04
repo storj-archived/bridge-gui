@@ -22,6 +22,7 @@ export default () => {
 
           <div className="row">
             <div className="col-xs-12 col-md-10 col-md-push-1">
+
               <p>By clicking to agree to these Storage Terms of Service (&ldquo;
               <b>Storage Terms</b>&rdquo;) during the account setup process,
               or by otherwise accessing or using the Storage Services of Storj
