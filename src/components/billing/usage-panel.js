@@ -13,14 +13,14 @@ const UsagePanel = ({ amount, linkParams }) => {
             <p className="text-muted"> Current Usage </p>
             <h2 className="mb0 blue">
               <b>
-                <Currency amount={ amount } />
+                <Currency amount={amount} />
               </b>
             </h2>
           </div>
           <div className="col-xs-6 text-right">
             <Link
-              className="btn btn-blue btn-action"
-              to={ linkParams }
+              className = "btn btn-blue btn-action"
+              to        = {linkParams}
             >
               View Usage
             </Link>
