@@ -9,9 +9,9 @@ const BucketList = (props) => {
       return buckets.map((bucket) => {
         return (
           <BucketListItem
-            key     = { bucket.id }
-            onClick = { () => props.onBucketClick(bucket.id) }
-            { ...bucket }
+            key     = {bucket.id}
+            onClick = {() => props.onBucketClick(bucket.id)}
+            {...bucket}
           />
         );
       });
@@ -37,7 +37,7 @@ const BucketList = (props) => {
         </tr>
       </thead>
       <tbody>
-        { renderBucketListItems(props.buckets) }
+        {renderBucketListItems(props.buckets)}
       </tbody>
     </table>
   );
