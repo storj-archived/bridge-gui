@@ -11,15 +11,15 @@ const BalancePanel = ({ amount, addCreditHandler, cardData }) => {
             <p className="text-muted"> Current Balance </p>
             <h2 className="mb0 blue">
               <b>
-                <Currency amount={ amount } />
+                <Currency amount={amount} />
               </b>
             </h2>
           </div>
           <div className="col-xs-6 text-right">
             <button
-              disabled={ !cardData }
-              onClick={ addCreditHandler }
-              className="btn btn-green btn-action"
+              disabled  = {!cardData}
+              onClick   = {addCreditHandler}
+              className = "btn btn-green btn-action"
             >
               Pay Balance
             </button>
