@@ -9,22 +9,25 @@ const FileListItem = (props) => {
 
   return (
     <tr>
-
       <td>
-        <FileIcon mimetype={props.mimetype}/>
-        <a href="#noop" onClick={handleClick}>{props.filename}</a>
+        <FileIcon mimetype={props.mimetype} />
+        <a href="#noop" onClick={handleClick}> {props.filename} </a>
       </td>
-
       <td>
-        <span>{props.size}B</span>
+        <span> {props.size}B </span>
       </td>
-
       <td>
-        <span>{props.mimetype}</span>
+        <span> {props.mimetype} </span>
       </td>
-
     </tr>
   );
+};
+
+FileListItem.propTypes = {
+  filename : React.PropTypes.string,
+  hash     : React.PropTypes.string, // ???
+  mimetype : React.PropTypes.string,
+  size     : React.PropTypes.number // ???
 };
 
 export default FileListItem;
