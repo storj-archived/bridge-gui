@@ -26,23 +26,23 @@ const TransactionsList = ({ transactions }) => {
                       transactions.map((transaction) => {
                         const isNegative = (transaction.amount < 0);
                         return (
-                          <tr key={ transaction.id } className="clickable-row">
+                          <tr key={transaction.id} className="clickable-row">
                             <td>
-                              { transaction.created }
+                              {transaction.created}
                             </td>
                             <td>
-                              { transaction.description }
+                              {transaction.description}
                             </td>
                             <td>
                               <span
-                                className={ isNegative ? 'text-success' : '' }
+                                className={isNegative ? 'text-success' : ''}
                               >
-                                { isNegative ? '-' : '' }
+                                {isNegative ? '-' : ''}
                                 <Currency
                                   amount={
-                                    isNegative ?
-                                    -transaction.amount :
-                                    transaction.amount
+                                    isNegative
+                                      ? -transaction.amount
+                                      : transaction.amount
                                   }
                                 />
                               </span>
