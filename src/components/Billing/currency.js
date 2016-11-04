@@ -7,12 +7,14 @@ import React from 'react';
  * This may likely be done based on locale.
  */
 
-const Currency = ({amount}) => {
-  const value = (typeof(amount) !== 'number') ?
-    '' : (amount / 100).toPrecision(String(amount).length);
+const Currency = ({ amount }) => {
+  const value =
+    (typeof(amount) !== 'number') ?
+    '' :
+    (amount / 100).toPrecision(String(amount).length);
 
   return (
-    <span>${value}</span>
+    <span> ${ value } </span>
   );
 };
 

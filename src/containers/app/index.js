@@ -1,11 +1,9 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { IndexLink } from 'react-router';
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import config from 'config';
 import 'containers/app/app.scss';
 
-export default class App extends Component {
+class App extends Component {
   render() {
     // const styles = require('./app.scss');
     return (
@@ -19,3 +17,10 @@ export default class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  navComponent: React.propTypes.element,
+  mainComponent: React.propTypes.element
+};
+
+export default App;
