@@ -11,16 +11,16 @@ const PaymentInfoPanel = ({
         <div className="row">
           <div className="col-xs-4">
             <p className="text-muted"> Merchant </p>
-            <h2> { merchant } </h2>
+            <h2> {merchant} </h2>
           </div>
           <div className="col-xs-4">
             <p className="text-muted"> Card Number </p>
-            <h2> **** **** **** { lastFour } </h2>
+            <h2> **** **** **** {lastFour} </h2>
           </div>
           <div className="col-xs-4 text-right">
             <button
-              onClick={ removeCardHandler }
-              className="btn btn-action btn-red"
+              onClick   = {removeCardHandler}
+              className = "btn btn-action btn-red"
             >
               Remove Card
             </button>
