@@ -6,19 +6,28 @@ const PubKeyListItem = (props) => {
       <td>
         <input
           type    = "checkbox"
-          onClick = {(e) => props.itemSelectAction(props.rowItem)}
-          checked = {props.isSelected}/>
+          onClick = {() => props.itemSelectAction(props.rowItem)}
+          checked = {props.isSelected}
+        />
+    </td>
+      <td
+        onClick = {(event) => {
+          event.preventDefault();
+          props.editRowItemAction(props.rowItem);
+        }}
+      >
+        <a href="#noop"> {props.rowItem} </a>
+        <span className="glyphicon glyphicon-pencil pull-right" />
       </td>
-
-      <td onClick = {(e) => {e.preventDefault(); props.editRowItemAction(props.rowItem)}}>
-        <a href="#noop">
-          {props.rowItem}
-        </a>
-        <span className="glyphicon glyphicon-pencil pull-right"></span>
-      </td>
-
     </tr>
   );
+};
+
+PubKeyListItem.propTypes = {
+  editRowItemAction : React.PropTypes.func,
+  isSelected        : React.PropTypes.bool, // ???
+  itemSelectAction  : React.PropTypes.func,
+  rowItem           : React.PropTypes.string // ???
 };
 
 export default PubKeyListItem;
