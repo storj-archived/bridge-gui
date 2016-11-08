@@ -14,7 +14,7 @@ module.exports = Object.assign({
   apiPort: Number(process.env.APIPORT) || '',
   apiProtocol:
     (/develop(?:ment)?|test/.test(process.env.NODE_ENV))
-    ? 'http'
+    ? 'https'
     : 'https',
   app: {
     title: 'Storj',
