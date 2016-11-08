@@ -1,7 +1,6 @@
 import React from 'react';
-import {Link} from 'react-router';
+import { Link } from 'react-router';
 import Currency from 'components/billing/currency';
-
 
 const UsagePanel = ({ amount, linkParams }) => {
   return (
