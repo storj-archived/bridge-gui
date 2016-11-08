@@ -1,7 +1,7 @@
-import {methods} from 'http';
+import { methods } from 'http';
 import express from 'express';
 import {json as jsonBodyParser, urlencoded as urlEncodedParser} from 'body-parser';
-import 'colors';
+import colors from 'colors';
 
 console.log('HELLO FROM MOCK BACKEND');
 

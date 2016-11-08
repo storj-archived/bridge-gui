@@ -1,5 +1,5 @@
 import http from 'http';
-import 'colors';
+import colors from 'colors';
 
 /*
  * POLL UNTIL SERVERS HAVE STARTED

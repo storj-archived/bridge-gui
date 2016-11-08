@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import program from 'commander';
 import {eachSeries} from 'async';
-import 'colors';
+import colors from 'colors';
 
 import unitSuite from './unit';
 import e2eSuite from './e2e';
@@ -88,4 +88,3 @@ eachSeries(typeSuites,
     console.info('ALL SUITES FINISHED'.cyan);
   }
 );
-

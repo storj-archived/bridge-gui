@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import nightwatch from 'nightwatch';
-import 'colors';
+import colors from 'colors';
 import {parallel, series} from 'async';
 // import request from '../helpers/superRequest';
 // import cleanerFactory from '../helpers/databaseCleaner';
