@@ -9,8 +9,10 @@ const noop = () => {};
  */
 export const killOnExit = (exitingProcess, processesToKill) => {
   const handler = () => {
-    const processes = Array.isArray(processesToKill) ?
-      processesToKill : [processesToKill];
+    const processes =
+      Array.isArray(processesToKill)
+        ? processesToKill
+        : [processesToKill];
 
     processes.forEach(doomed => doomed.kill('SIGTERM'));
     exitingProcess.exit();

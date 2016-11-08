@@ -1,4 +1,4 @@
-import {ensureLogsDir, ensureLogsDirSync} from './utils';
+import { ensureLogsDir, ensureLogsDirSync } from './utils';
 import seleniumLogger from './selenium';
 
 export {
