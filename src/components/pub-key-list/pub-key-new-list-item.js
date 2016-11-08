@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
 class PubKeyNewListItem extends Component {
@@ -62,9 +62,9 @@ class PubKeyNewListItem extends Component {
 }
 
 PubKeyNewListItem.propTypes = {
-  newRowItem             : React.PropTypes.string, // ???
-  newRowItemCancelAction : React.PropTypes.func,
-  newRowItemSaveAction   : React.PropTypes.func
+  newRowItem             : PropTypes.string, // ???
+  newRowItemCancelAction : PropTypes.func,
+  newRowItemSaveAction   : PropTypes.func
 };
 
 export default PubKeyNewListItem;

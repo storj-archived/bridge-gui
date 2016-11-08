@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import PubKeyListItem from 'components/pub-key-list/pub-key-list-item';
 import PubKeyEditListItem from 'components/pub-key-list/pub-key-edit-list-item';
 import PubKeyNewListItem from 'components/pub-key-list/pub-key-new-list-item';
@@ -104,17 +104,17 @@ const PubKeyList = (props) => {
 };
 
 PubKeyList.propTypes = {
-  editRowItemAction       : React.PropTypes.func,
-  editRowItemCancelAction : React.PropTypes.func,
-  editRowItemSaveAction   : React.PropTypes.func,
-  isEditing               : React.PropTypes.bool,
-  itemSelectAction        : React.PropTypes.func,
-  newRowItem              : React.PropTypes.any, // ???
-  newRowItemCancelAction  : React.PropTypes.func,
-  newRowItemSaveAction    : React.PropTypes.func,
-  rowItems                : React.PropTypes.array,
-  selectAllAction         : React.PropTypes.func,
-  selectedItems           : React.PropTypes.array
+  editRowItemAction       : PropTypes.func,
+  editRowItemCancelAction : PropTypes.func,
+  editRowItemSaveAction   : PropTypes.func,
+  isEditing               : PropTypes.bool,
+  itemSelectAction        : PropTypes.func,
+  newRowItem              : PropTypes.any, // ???
+  newRowItemCancelAction  : PropTypes.func,
+  newRowItemSaveAction    : PropTypes.func,
+  rowItems                : PropTypes.array,
+  selectAllAction         : PropTypes.func,
+  selectedItems           : PropTypes.array
 };
 
 export default PubKeyList;

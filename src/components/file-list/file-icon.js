@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
-const FileIcon = (props) => {
-  const mimeTypeArr = props.mimetype.split('/');
+const FileIcon = ({ mimetype }) => {
+  const mimeTypeArr = mimetype.split('/');
   if (/[_\w]+[_\w\d-]*/.test(mimeTypeArr[0]) &&
       /[_\w]+[_\w\d-]*/.test(mimeTypeArr[1])) {
     return (
@@ -17,7 +17,7 @@ const FileIcon = (props) => {
 };
 
 FileIcon.propTypes = {
-  mimetype: React.PropTypes.string
+  mimetype: PropTypes.string
 };
 
 export default FileIcon;

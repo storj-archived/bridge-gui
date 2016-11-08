@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import Currency from 'components/billing/currency';
 
@@ -28,6 +28,11 @@ const UsagePanel = ({ amount, linkParams }) => {
       </div>
     </div>
   );
+};
+
+UsagePanel.propTypes = {
+  amount: PropTypes.number,
+  linkParams: PropTypes.string
 };
 
 export default UsagePanel;

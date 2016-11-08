@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import BucketListItem from 'components/bucket-list/bucket-list-item';
 
-const BucketList = (props) => {
+const BucketList = ({ onBucketClick, buckets }) => {
   // const styles = require('./bucket-list.scss');
 
   function renderBucketListItems(buckets) {
@@ -10,7 +10,7 @@ const BucketList = (props) => {
         return (
           <BucketListItem
             key     = {bucket.id}
-            onClick = {() => props.onBucketClick(bucket.id)}
+            onClick = {() => onBucketClick(bucket.id)}
             {...bucket}
           />
         );
@@ -37,14 +37,15 @@ const BucketList = (props) => {
         </tr>
       </thead>
       <tbody>
-        {renderBucketListItems(props.buckets)}
+        {renderBucketListItems(buckets)}
       </tbody>
     </table>
   );
 };
 
 BucketList.propTypes = {
-  buckets: React.PropTypes.array.isRequired
+  onBucketClick: PropTypes.func,
+  buckets: PropTypes.array.isRequired
 };
 
 export default BucketList;

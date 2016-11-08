@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Currency from 'components/billing/currency';
 
 const TransactionsList = ({ transactions }) => {
@@ -59,6 +59,10 @@ const TransactionsList = ({ transactions }) => {
       </div>
     </section>
   );
+};
+
+TransactionsList.propTypes = {
+  transactions: PropTypes.array
 };
 
 export default TransactionsList;

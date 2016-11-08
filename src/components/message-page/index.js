@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 const MessagePage = ({ title, message }) => {
   return (
@@ -20,6 +20,11 @@ const MessagePage = ({ title, message }) => {
       </div>
     </div>
   );
+};
+
+MessagePage.propTypes = {
+  title: PropTypes.string,
+  message: PropTypes.string
 };
 
 export default MessagePage;

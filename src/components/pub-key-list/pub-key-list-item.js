@@ -1,22 +1,24 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
-const PubKeyListItem = (props) => {
+const PubKeyListItem = ({
+  editRowItemAction, isSelected, itemSelectAction, rowItem
+}) => {
   return (
     <tr>
       <td>
         <input
           type    = "checkbox"
-          onClick = {() => props.itemSelectAction(props.rowItem)}
-          checked = {props.isSelected}
+          onClick = {() => itemSelectAction(rowItem)}
+          checked = {isSelected}
         />
     </td>
       <td
         onClick = {(event) => {
           event.preventDefault();
-          props.editRowItemAction(props.rowItem);
+          editRowItemAction(rowItem);
         }}
       >
-        <a href="#noop"> {props.rowItem} </a>
+        <a href="#noop"> {rowItem} </a>
         <span className="glyphicon glyphicon-pencil pull-right" />
       </td>
     </tr>
@@ -24,10 +26,10 @@ const PubKeyListItem = (props) => {
 };
 
 PubKeyListItem.propTypes = {
-  editRowItemAction : React.PropTypes.func,
-  isSelected        : React.PropTypes.bool, // ???
-  itemSelectAction  : React.PropTypes.func,
-  rowItem           : React.PropTypes.string // ???
+  editRowItemAction : PropTypes.func,
+  isSelected        : PropTypes.bool, // ???
+  itemSelectAction  : PropTypes.func,
+  rowItem           : PropTypes.string // ???
 };
 
 export default PubKeyListItem;

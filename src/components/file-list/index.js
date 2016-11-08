@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import FileListItem from 'components/file-list/file-list-item';
 
 const FileList = (props) => {
@@ -47,8 +47,8 @@ const FileList = (props) => {
 };
 
 FileList.propTypes = {
-  files            : React.PropTypes.array.isRequired,
-  fileSelectAction : React.PropTypes.func // ???
+  files            : PropTypes.array.isRequired,
+  fileSelectAction : PropTypes.func // ???
 };
 
 export default FileList;

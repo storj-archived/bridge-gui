@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PropTypes, Component } from 'react';
 import ReactDOM from 'react-dom';
 
 class PubKeyEditListItem extends Component {
@@ -73,10 +73,10 @@ class PubKeyEditListItem extends Component {
 }
 
 PubKeyEditListItem.propTypes = {
-  editRowItemCancelAction : React.PropTypes.func,
-  editRowItemSaveAction   : React.PropTypes.func,
-  rowItem                 : React.PropTypes.string, // ???
-  isSelected              : React.PropTypes.bool // ???
+  editRowItemCancelAction : PropTypes.func,
+  editRowItemSaveAction   : PropTypes.func,
+  rowItem                 : PropTypes.string, // ???
+  isSelected              : PropTypes.bool // ???
 };
 
 export default PubKeyEditListItem;
