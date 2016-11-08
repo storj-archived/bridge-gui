@@ -8,7 +8,7 @@ import WebpackDevServer from 'webpack-dev-server';
 import Express from 'express';
 import config from '../src/config';
 import webpackConfig from './dev.config';
-import {graphiqlExpress} from 'apollo-server';
+import { graphiqlExpress } from 'apollo-server';
 
 const compiler = webpack(webpackConfig);
 
@@ -22,7 +22,7 @@ const serverOptions = {
   lazy: false,
   publicPath: webpackConfig.output.publicPath,
   headers: {'Access-Control-Allow-Origin': '*'},
-  stats: {colors: true}
+  stats: { colors: true }
 };
 
 const WDS = new WebpackDevServer(compiler, serverOptions);
