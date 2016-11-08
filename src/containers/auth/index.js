@@ -1,9 +1,9 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component } from 'react';
 import 'containers/auth//auth.scss';
 
 export default class Login extends Component {
   render() {
-    return(
+    return (
       <section className="auth">
         <div className="container">
           <div className="row">

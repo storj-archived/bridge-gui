@@ -1,12 +1,12 @@
-import React, {Component, PropTypes} from 'react';
-import {Link, hashHistory} from 'react-router';
-import {reduxForm} from 'redux-form';
-import {connect} from 'react-redux';
+import React, { Component, PropTypes } from 'react';
+import { Link, hashHistory } from 'react-router';
+import { reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
 
 import client from 'utils/api-client';
 import formLabelError from 'components/error-views/form-label-error';
 import loginValidation from 'containers/auth/login-form/login-validation';
-import {storeEmail} from 'redux/modules/local-storage';
+import { storeEmail } from 'redux/modules/local-storage';
 
 const mapDispatchToProps = {
   storeEmail
