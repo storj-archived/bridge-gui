@@ -18,12 +18,4 @@ const BucketListItem = (props) => {
   );
 };
 
-BucketListItem.propTypes = {
-  storage  : React.PropTypes.number.isRequired,
-  transfer : React.PropTypes.number.isRequired,
-  name     : React.PropTypes.string.isRequired,
-  status   : React.PropTypes.string.isRequired,
-  onClick  : React.PropTypes.func
-};
-
 export default BucketListItem;
