@@ -19,21 +19,21 @@ const validation = function(values) {
   const jcb = /^(?:2131|1800|35\d{3})\d{11}$/.test(values.ccNumber);
   const dinersclub = /^3(?:0[0-5]|[68][0-9])[0-9]{11}$/.test(values.ccNumber);
 
-  if(!visa && !mastercard && !amex && !discover && !jcb && !dinersclub) {
-    errors.ccNumber = "Enter a valid credit card number."
+  if (!visa && !mastercard && !amex && !discover && !jcb && !dinersclub) {
+    errors.ccNumber = "Enter a valid credit card number.";
   }
 
-  if(!values.cvv){
-    errors.cvv = "No CVV number provided."
+  if (!values.cvv) {
+    errors.cvv = "No CVV number provided.";
   }
 
   if (!values.ccExp) {
-    errors.ccExp = "Enter an expiration date."
+    errors.ccExp = "Enter an expiration date.";
   }
 
   const cvv = /^([0-9]{3,4})$/.test(values.cvv);
   if (!cvv) {
-    errors.cvv = "Please enter a valid CVV."
+    errors.cvv = 'Please enter a valid CVV.';
   }
 
   return errors;
@@ -51,10 +51,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const mapMutationsToProps = ({
-  ownProps,
-  state
-}) => {
+const mapMutationsToProps = () => {
   return {
     addPaymentProcessor: (data) => {
       return {
@@ -111,8 +108,8 @@ export default class AddCardForm extends Component {
     addCard: PropTypes.func.isRequired
   };
 
-  handleCardSubmit(e) {
-    e.preventDefault();
+  handleCardSubmit(event) {
+    event.preventDefault();
 
     const {
       ccNumber,

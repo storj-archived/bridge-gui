@@ -19,7 +19,7 @@ import bucketFormValidation from 'containers/buckets/bucket-form-validation';
     editPubKey            : (keyId) => dispatch(bucketActions.editPubKey(keyId)),
     addNewPubKey          : () => dispatch(bucketActions.addNewPubKey()),
     removeNewPubKey       : () => dispatch(bucketActions.removeNewPubKey()),
-    saveNewPubKey         : (newKey, bucketId, bucket) => dispatch(bucketActions.saveNewPubKey(newKey, bucketId, bucket)),
+    saveNewPubKey         : (newKey, bucketId, bucket) =>   dispatch(bucketActions.saveNewPubKey(newKey, bucketId, bucket)),
     saveEditedPubKey      : (prevKey, newKey, bucketId, bucket) => dispatch(bucketActions.saveEditedPubKey(prevKey, newKey, bucketId, bucket)),
     stopEditPubKey        : () => dispatch(bucketActions.stopEditPubKey()),
     selectPubKey          : (keyId) => dispatch(bucketActions.selectPubKey(keyId)),
