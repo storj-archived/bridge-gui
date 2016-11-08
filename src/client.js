@@ -7,7 +7,6 @@ import ReactDOM from 'react-dom';
 import createStore from 'redux/create';
 import { ApolloProvider } from 'react-apollo';
 import renderRoutes from 'routes';
-import Stripe from 'stripe';
 
 const dest = document.getElementById('content');
 const { store, apolloClient } = createStore();
