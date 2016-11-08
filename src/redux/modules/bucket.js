@@ -38,7 +38,7 @@ const LISTFILES_SUCCESS = 'storj/bucket/LISTFILES_SUCCESS';
 const LISTFILES_FAIL = 'storj/bucket/LISTFILES_FAIL';
 
 export default function Bucket(state = {}, action = {}) {
-  switch(action.type) {
+  switch (action.type) {
     case LOAD:
       return {
         ...state,
@@ -95,13 +95,13 @@ export default function Bucket(state = {}, action = {}) {
     case SELECTKEYFIELDS:
       return {
         ...state,
-        selectedKeys: SelectedPubKeys(state, action)
+        selectedKeys: selectedPubKeys(state, action)
       };
 
     case SELECTALLKEYFIELDS:
       return {
         ...state,
-        selectedKeys: SelectedPubKeys(state, action)
+        selectedKeys: selectedPubKeys(state, action)
       };
 
     case CLEAR:
@@ -151,7 +151,7 @@ export default function Bucket(state = {}, action = {}) {
         updated: true,
         newKeyField: null,
         ...action.result,
-        selectedKeys: SelectedPubKeys(state, action)
+        selectedKeys: selectedPubKeys(state, action)
 
       };
 
@@ -244,43 +244,43 @@ export default function Bucket(state = {}, action = {}) {
   }
 }
 
-export function SelectedPubKeys(state, action) {
-  switch(action.type) {
+export function selectedPubKeys(state, action) {
+  switch (action.type) {
     case SELECTKEYFIELDS:
-      return (function() {
-      let keys = [...state.selectedKeys];
-      let keyInd = keys.indexOf(action.keyId);
-      let isAlreadySelected = keyInd !== -1;
-      if(isAlreadySelected) {
-        keys.splice(keyInd, 1);
-      } else {
-        keys.push(action.keyId);
-      }
-      return keys;
-    })();
+      return (function selectKeyFields() {
+        const keys = [...state.selectedKeys];
+        const keyInd = keys.indexOf(action.keyId);
+        const isAlreadySelected = keyInd !== -1;
+        if (isAlreadySelected) {
+          keys.splice(keyInd, 1);
+        } else {
+          keys.push(action.keyId);
+        }
+        return keys;
+      })();
 
     case SELECTALLKEYFIELDS:
-      return (function() {
+      return (function selectAllKeyFields() {
         let keys;
-        if(state.selectedKeys.length === state.pubkeys.length) {
+        if (state.selectedKeys.length === state.pubkeys.length) {
           keys = [];
         } else {
           keys = [...state.pubkeys];
         }
         return keys;
-    })();
+      })();
 
     case UPDATE_SUCCESS:
-      return (function() {
-      var sKeys = [...state.selectedKeys];
-      state.selectedKeys.forEach((sElem, sInd, arr) => {
-        let hasBeenRemoved = action.result.pubkeys.indexOf(sElem) === -1;
-        if(hasBeenRemoved) {
-          sKeys.splice(sKeys.indexOf(sElem), 1);
-        }
-      });
-      return sKeys;
-    })();
+      return (function updateSuccess() {
+        const sKeys = [...state.selectedKeys];
+        state.selectedKeys.forEach((sElem) => {
+          const hasBeenRemoved = action.result.pubkeys.indexOf(sElem) === -1;
+          if (hasBeenRemoved) {
+            sKeys.splice(sKeys.indexOf(sElem), 1);
+          }
+        });
+        return sKeys;
+      })();
 
     default:
       return state;
@@ -290,7 +290,7 @@ export function SelectedPubKeys(state, action) {
 export function load(bucketId) {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: ({bridgeClient}) => bridgeClient.getBucketById(bucketId)
+    promise: ({ bridgeClient }) => bridgeClient.getBucketById(bucketId)
   };
 }
 
@@ -310,7 +310,7 @@ export function create(bucket) {
 export function update(bucketId, bucket) {
   return {
     types: [UPDATE, UPDATE_SUCCESS, UPDATE_FAIL],
-    promise: ({bridgeClient}) => bridgeClient.updateBucketById(bucketId, {
+    promise: ({ bridgeClient }) => bridgeClient.updateBucketById(bucketId, {
       storage  : bucket.storage,
       transfer : bucket.transfer,
       name     : bucket.name,
