@@ -58,6 +58,7 @@
     "bootstrap-sass-loader": "^1.0.9",
     "camelcase": "^3.0.0",
     "clean-webpack-plugin": "^0.1.4",
+    "colors": "^1.1.2",
     "compression": "^1.6.0",
     "css-loader": "^0.23.1",
     "escape-string-regexp": "^1.0.5",
