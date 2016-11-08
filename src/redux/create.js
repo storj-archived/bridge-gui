@@ -1,22 +1,27 @@
-import {createStore as _createStore, applyMiddleware, compose} from 'redux';
+import {
+  createStore as _createStore,
+  applyMiddleware,
+  compose
+} from 'redux';
 import bridgeClientMiddleware from 'redux/middleware/bridge-client-middleware';
 import reducer from 'redux/modules/reducer';
 import uuid from 'node-uuid';
-import {print as graphqlTagPrint} from 'graphql-tag/printer';
+import { print as graphqlTagPrint } from 'graphql-tag/printer';
 
-import ApolloClient, {createNetworkInterface} from 'apollo-client';
+import ApolloClient, { createNetworkInterface } from 'apollo-client';
 import bridgeClientWrapper from 'utils/api-client';
 
 // NB: for testing only
 window.wrappedBridgeClient = bridgeClientWrapper;
 
 export default function createStore() {
-  let privkey = localStorage.getItem('privkey');
+  const privkey = localStorage.getItem('privkey');
   if (privkey !== null) {
-    bridgeClientWrapper.useKeyPair(bridgeClientWrapper.createKeyPair(privkey));
+    const newKeyPair = bridgeClientWrapper.createKeyPair(privkey);
+    bridgeClientWrapper.useKeyPair(newKeyPair);
   }
 
-  window.addEventListener('storage', function(event) {
+  window.addEventListener('storage', function storageListener(event) {
     // for cross-tab state updating
     if (event.key === 'privkey') {
       if (event.oldValue && !event.newValue) {
@@ -29,7 +34,8 @@ export default function createStore() {
 
   const baseUrl = process.env.APOLLO_CLIENT_URL || 'http://localhost:3000';
   const basePath = '/graphql';
-  const apolloNetworkInterface = createNetworkInterface(`${baseUrl}${basePath}`);
+  const apolloNetworkInterface =
+    createNetworkInterface(`${baseUrl}${basePath}`);
   apolloNetworkInterface.use([{
     applyMiddleware(req, next) {
       const opts = req.options;
@@ -55,7 +61,7 @@ export default function createStore() {
   });
 
   const middleware = [
-    bridgeClientMiddleware({bridgeClient, apolloClient}),
+    bridgeClientMiddleware({ bridgeClient, apolloClient }),
     apolloClient.middleware()
   ];
 
@@ -66,5 +72,5 @@ export default function createStore() {
     )
   );
 
-  return {store, apolloClient};
+  return { store, apolloClient };
 }
