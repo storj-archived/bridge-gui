@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import config from 'config';
 import 'containers/app/app.scss';
 
 class App extends Component {
   static propTypes = {
-    navComponent: React.propTypes.element,
-    mainComponent: React.propTypes.element
+    navComponent: PropTypes.element,
+    mainComponent: PropTypes.element
   }
 
   render() {
