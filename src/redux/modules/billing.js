@@ -33,6 +33,6 @@ export function addCard(cardData) {
   return {
     types: [ADD_CARD, ADD_CARD_SUCCESS, ADD_CARD_FAIL],
     // TODO: use a real `client` mehtod
-    promise: ({bridgeClient}) => bridgeClient.addCard(cardData)
+    promise: ({ bridgeClient }) => bridgeClient.addCard(cardData)
   };
 }
