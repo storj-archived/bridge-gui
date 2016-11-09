@@ -100,7 +100,9 @@ export default class Billing extends Component {
     setUsage: PropTypes.func,
     paymentProcessor: PropTypes.object,
     transactions: PropTypes.object,
-    mutations: PropTypes.func
+    mutations: PropTypes.func,
+    balance: PropTypes.number,
+    usage: PropTypes.number
   }
 
   componentWillReceiveProps(nextProps) {
@@ -269,7 +271,7 @@ export default class Billing extends Component {
             <div className="row">
               <div className="col-xs-12">
                 { !this.getPaymentInfo()
-                  ? nulll
+                  ? null
                   : <PaymentInfoPanel
                       removeCardHandler={this.removeCard.bind(this)}
                       paymentInfo={this.getPaymentInfo()}
@@ -280,12 +282,17 @@ export default class Billing extends Component {
           </div>
         </section>
         <section>
-          { !!this.getPaymentInfo() ? null : <AddCardForm
-            // TODO: use apollo watchquery correctly so we don't have to call `refetch`
-            updatePaymentInfo={this.props.paymentProcessor.refetch}/> }
+          {
+            /* TODO: use apollo watchquery correctly so we don't have to call `refetch`*/
+            !!this.getPaymentInfo()
+            ? null
+            : <AddCardForm
+                updatePaymentInfo={this.props.paymentProcessor.refetch}
+              />
+          }
         </section>
         <section>
-          <TransactionsList transactions={this.getTransactions()}/>
+          <TransactionsList transactions={this.getTransactions()} />
         </section>
       </div>
     );
