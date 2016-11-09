@@ -1,11 +1,9 @@
-import React, {Component, PropTypes} from 'react';
-import {Link, hashHistory} from 'react-router';
-
+import React, { Component, PropTypes } from 'react';
+import { Link, hashHistory } from 'react-router';
+import { reduxForm } from 'redux-form';
 import client from 'utils/api-client';
 import formLabelError from 'components/error-views/form-label-error';
 import loginValidation from 'containers/auth/login-form/login-validation';
-
-import {reduxForm} from 'redux-form';
 
 @reduxForm({
   form: 'PasswordReset',
@@ -29,20 +27,20 @@ export default class PasswordReset extends Component {
   submit() {
     const email    = this.props.fields.email.value;
     const password = this.props.fields.password.value;
-    const {protocol, host} = window.location;
+    const { protocol, host } = window.location;
     return new Promise((resolve, reject) => {
       return client.resetPassword({
         email,
         password,
         redirect: `${protocol}//${host}/#/?passwordReset`
       }).then(
-        function success(data) {
+        function success() {
           resolve();
           hashHistory.push('/password-reset-pending');
         },
         function fail(err) {
           if (err && err.message) {
-            reject({_error: err.message});
+            reject({ _error: err.message });
           }
         }
       );
@@ -50,7 +48,15 @@ export default class PasswordReset extends Component {
   }
 
   render() {
-    const {fields: {email, password}, error, handleSubmit, submitFailed} = this.props;
+    const {
+      fields: {
+        email,
+        password
+      },
+      error,
+      handleSubmit,
+      submitFailed
+    } = this.props;
     return (
       <div className="container auth">
         <div className="row">
@@ -59,25 +65,52 @@ export default class PasswordReset extends Component {
               <div className="col-sm-12">
                 <div className="content">
 
-                  <h1 className="title text-center form-group">Forgot your password?</h1>
+                  <h1 className="title text-center form-group">
+                    Forgot your password?
+                  </h1>
 
                   <form>
+                    <p>
+                      Enter your email address and a new password below and
+                      we'll send you instructions on how to complete your
+                      password reset.
+                    </p>
 
-                    <p>Enter your email address and a new password below and we'll send you instructions on how to
-                      complete your password reset.</p>
-
-                    <div className={'form-group ' + (submitFailed && email.error ? 'has-error' : '')}>
+                    <div className={`
+                        form-group
+                        ${submitFailed && email.error ? 'has-error' : ''}
+                      `}
+                    >
                       {submitFailed && formLabelError(email)}
-                      <input type="email" className="form-control" name="email" placeholder="Email Address" {...email}/>
+                      <input
+                        type="email"
+                        className="form-control"
+                        name="email"
+                        placeholder="Email Address"
+                        {...email}
+                      />
                     </div>
-                    <div className={'form-group ' + (submitFailed && password.error ? 'has-error' : '')}>
+                    <div className={`
+                        form-group
+                        ${submitFailed && password.error ? 'has-error' : ''}
+                      `}
+                    >
                       {submitFailed && formLabelError(password)}
-                      <input type="password" className="form-control" name="password"
-                             placeholder="Password" {...password}/>
+                      <input
+                        type="password"
+                        className="form-control"
+                        name="password"
+                        placeholder="Password"
+                        {...password}
+                      />
                     </div>
                     <div className="form-group">
-                      <button type="submit" onClick={handleSubmit(this.submit.bind(this))}
-                              className="btn btn-block btn-green">Reset My Password
+                      <button
+                        type="submit"
+                        onClick={handleSubmit(this.submit.bind(this))}
+                        className="btn btn-block btn-green"
+                      >
+                        Reset My Password
                       </button>
                     </div>
                     {error && <div><span className="text-danger">{error}</span></div>}
