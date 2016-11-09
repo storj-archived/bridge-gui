@@ -68,7 +68,7 @@ export default function createStore() {
   const store = _createStore(reducer(apolloClient),
     compose(
       applyMiddleware(...middleware),
-      window.devToolsExtension ? window.devToolsExtension() : f => f
+      window.devToolsExtension ? window.devToolsExtension() : func => func
     )
   );
 
