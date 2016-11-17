@@ -8,7 +8,7 @@ export default () => {
           <div className="row">
             <div className="col-xs-12 text-center">
               <h3>Storage Terms of Service</h3>
-              <p className="text-center">Last Updated: July 7, 2016</p>
+              <p className="text-center">Last Updated: July 21, 2016</p>
               <p>
                 <a href="https://storj.io/terms-of-service.html" target="_blank">
                   (a static copy of this document is available here)
@@ -156,6 +156,15 @@ export default () => {
                 are payable by you to Company. You will not be entitled to a refund or other payment from Company
                 in connection with any Credits you accrue. In no event will the total amount of Credits exceed 20%
                 of the Fees payable by you for the corresponding month.
+              </p>
+
+              <p><b>8. Promotional Credits</b></p>
+
+              <p>(a) The Company may also provide credits against fees payable to the company in relation to marketing, referrals, or other events ("Promotional Credits"). All credits not deemed to be Service Credits will be considered Promotional Credits.
+              </p>
+              <p>(b) Promotional Credits must be redeemed within 12 months of issuance unless otherwise stated.
+              </p>
+              <p>(c) After redemption, Promotional Credits are valid for a period of 12 months. Promotional Credits that have not been used at that time will expire.
               </p>
             </div>
           </div>
