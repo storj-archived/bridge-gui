@@ -1,6 +1,0 @@
-[submodule "billing"]
-	path = billing
-	url = git@github.com:Storj/billing.git
-[submodule "bridge"]
-	path = bridge
-	url = git@github.com:Storj/bridge.git
