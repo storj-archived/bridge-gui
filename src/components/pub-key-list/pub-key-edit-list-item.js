@@ -1,14 +1,10 @@
-import React, {Component, PropTypes} from 'react';
-import ReactDOM from'react-dom';
+import React, { PropTypes, Component } from 'react';
+import ReactDOM from 'react-dom';
 
-export default class PubKeyEditListItem extends Component {
+class PubKeyEditListItem extends Component {
   constructor(props) {
     super(props);
     this.state = { itemKey: props.rowItem };
-  }
-
-  handleKeyChange(e) {
-    this.setState({ itemKey: e.target.value });
   }
 
   componentDidMount() {
@@ -16,12 +12,16 @@ export default class PubKeyEditListItem extends Component {
   }
 
   componentDidUpdate() {
-    //this.focusAndSetCursor(this.refs.pubKeyInput);
+    // this.focusAndSetCursor(this.refs.pubKeyInput);
+  }
+
+  handleKeyChange(event) {
+    this.setState({ itemKey: event.target.value });
   }
 
   focusAndSetCursor(inputRef) {
-    let dNode = ReactDOM.findDOMNode(inputRef);
-    let InputFieldValLength = dNode.value.length;
+    const dNode = ReactDOM.findDOMNode(inputRef);
+    const InputFieldValLength = dNode.value.length;
     dNode.focus();
     dNode.setSelectionRange(InputFieldValLength, InputFieldValLength);
   }
@@ -31,9 +31,10 @@ export default class PubKeyEditListItem extends Component {
       <tr>
         <td>
           <input
-            type    = "checkbox"
-            checked = {this.props.isSelected}
-            disbled = "true"/>
+            type     = "checkbox"
+            checked  = {this.props.isSelected}
+            disabled = "true"
+          />
         </td>
         <td>
           <input
@@ -42,19 +43,40 @@ export default class PubKeyEditListItem extends Component {
             ref         = "pubKeyInput"
             onChange    = {this.handleKeyChange.bind(this)}
             value       = {this.state.itemKey}
-            placeholder = "Enter Public Key"/>
+            placeholder = "Enter Public Key"
+          />
           <button
             className = "btn btn-link btn-sm pull-right"
-            onClick   = {(event) => {event.preventDefault(); this.props.editRowItemSaveAction(this.props.rowItem, this.state.itemKey)}}>
-            <span>Save</span>
+            onClick   = {(event) => {
+              event.preventDefault();
+              this.props.editRowItemSaveAction(
+                this.props.rowItem,
+                this.state.itemKey
+              );
+            }}
+          >
+            <span> Save </span>
           </button>
           <button
             className = "btn btn-link btn-sm pull-right"
-            onClick   = {(event) => {event.preventDefault(); this.props.editRowItemCancelAction()}}>
-            <span>Cancel</span>
+            onClick   = {(event) => {
+              event.preventDefault();
+              this.props.editRowItemCancelAction();
+            }}
+          >
+            <span> Cancel </span>
           </button>
         </td>
       </tr>
     );
   }
+}
+
+PubKeyEditListItem.propTypes = {
+  editRowItemCancelAction : PropTypes.func,
+  editRowItemSaveAction   : PropTypes.func,
+  rowItem                 : PropTypes.string, // ???
+  isSelected              : PropTypes.bool // ???
 };
+
+export default PubKeyEditListItem;

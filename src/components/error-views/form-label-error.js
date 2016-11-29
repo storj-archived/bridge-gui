@@ -1,9 +1,9 @@
 import React from 'react';
 
-const formLabelError = (field) => {
+const FormLabelError = (field) => {
   if (field.touched && field.error) {
-    return <label className="text-danger">{field.error}</label>;
+    return <label className="text-danger"> {field.error} </label>;
   }
 };
 
-export default formLabelError;
+export default FormLabelError;

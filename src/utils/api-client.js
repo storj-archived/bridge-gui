@@ -7,11 +7,10 @@ import config from 'config';
 
 /* isArray Pollyfill, if not present */
 if (!Array.isArray) {
-  Array.isArray = function(arg) {
+  Array.isArray = function isArray(arg) {
     return Object.prototype.toString.call(arg) === '[object Array]';
   };
 }
-
 
 class WrappedClient extends Client {
   constructor(uri, options) {
@@ -36,8 +35,8 @@ class WrappedClient extends Client {
 
     this._authenticate(opts);
 
-    const requestPromise = new Promise(function(resolve, reject) {
-      request(opts, function(err, res, body) {
+    const requestPromise = new Promise((resolve, reject) => {
+      request(opts, (err, res, body) => {
         if (err) {
           return reject(err);
         }
@@ -60,13 +59,13 @@ class WrappedClient extends Client {
 
   resolveFileFromPointers(pointers) {
     const chunks = [];
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject) => {
       async.forEachOfLimit(pointers, 6,
         function iteratee(pointer, key, callback) {
           const uri = pointer.channel;
           const client = new WebSocket(uri);
 
-          client.onopen = function() {
+          client.onopen = function onopen() {
             client.send(JSON.stringify({
               token: pointer.token,
               hash: pointer.hash,
@@ -74,7 +73,7 @@ class WrappedClient extends Client {
             }));
           };
 
-          client.onmessage = function(event) {
+          client.onmessage = function onmessage(event) {
             const data = event.data;
             let json = null;
             // create a multidimensional Array if Array not found at index
@@ -93,14 +92,14 @@ class WrappedClient extends Client {
             }
           };
 
-          client.onclose = function(event) {
+          client.onclose = function onclose(event) {
             if (event.code > 1000) {
               return callback(new Error('Error Connecting to Farmer'));
             }
             return callback();
           };
 
-          client.onerror = function(err) {
+          client.onerror = function onerror(err) {
             callback(err);
           };
         },

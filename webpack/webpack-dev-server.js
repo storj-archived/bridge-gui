@@ -8,7 +8,7 @@ import WebpackDevServer from 'webpack-dev-server';
 import Express from 'express';
 import config from '../src/config';
 import webpackConfig from './dev.config';
-import {graphiqlExpress} from 'apollo-server';
+import { graphiqlExpress } from 'apollo-server';
 
 const compiler = webpack(webpackConfig);
 
@@ -16,13 +16,13 @@ const host = config.host || 'localhost';
 const port = (config.port + 1) || 3001;
 const serverOptions = {
   contentBase: '../src/',
-  quiet: true,
+  quiet: false,
   noInfo: true,
   hot: true,
   lazy: false,
   publicPath: webpackConfig.output.publicPath,
   headers: {'Access-Control-Allow-Origin': '*'},
-  stats: {colors: true}
+  stats: { colors: true }
 };
 
 const WDS = new WebpackDevServer(compiler, serverOptions);
@@ -30,7 +30,7 @@ const app = WDS.app;
 
 const addSecurityHeaders = (req, res, next) => {
   res.set('X-Frame-Options', 'DENY');
-  res.set('Content-Security-Policy', "default-src 'self'; style-src 'unsafe-inline' 'self'; object-src 'none'; connect-src *; frame-src https://storj.github.io;");
+  // res.set('Content-Security-Policy', "default-src 'self'; style-src 'unsafe-inline' 'self'; object-src 'none'; connect-src *; frame-src https://storj.github.io;");
   next();
 };
 
@@ -51,7 +51,7 @@ app
 app.use('/graphiql', function(req, res, next) {
   res.removeHeader('Content-Security-Policy');
   graphiqlExpress({
-    endpointURL: 'http://localhost:6382/graphql'
+    endpointURL: 'http://localhost:3000/graphql'
   })(req, res, next);
 });
 

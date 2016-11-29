@@ -1,11 +1,18 @@
-import React, {Component, PropTypes} from 'react';
-import {Link, hashHistory} from 'react-router';
+import React, { Component, PropTypes } from 'react';
+import { Link, hashHistory } from 'react-router';
+import { reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
 
 import client from 'utils/api-client';
 import formLabelError from 'components/error-views/form-label-error';
 import loginValidation from 'containers/auth/login-form/login-validation';
+import { storeEmail } from 'redux/modules/local-storage';
 
-import {reduxForm} from 'redux-form';
+const mapDispatchToProps = {
+  storeEmail
+};
+
+@connect(null, mapDispatchToProps)
 
 @reduxForm({
   form: 'primeLogin',
@@ -19,6 +26,7 @@ export default class LoginForm extends Component {
     error: PropTypes.string,
     handleSubmit: PropTypes.func.isRequired,
     submitFailed: PropTypes.bool.isRequired,
+    storeEmail: PropTypes.func,
     location: PropTypes.shape({
       query: PropTypes.object
     })
@@ -32,7 +40,8 @@ export default class LoginForm extends Component {
   componentWillMount() {
     const privkey = window.localStorage.getItem('privkey');
     if (privkey) {
-      client.api.getPublicKeys()
+      client.api
+        .getPublicKeys()
         .then(function success() {
           hashHistory.push('/dashboard');
         });
@@ -40,7 +49,13 @@ export default class LoginForm extends Component {
   }
 
   header() {
-    const {location: {query: {passwordReset}}} = this.props;
+    const {
+      location: {
+        query: {
+          passwordReset
+        }
+      }
+    } = this.props;
 
     if (typeof(passwordReset) === 'undefined') {
       return <h1 className="title text-center form-group">Login</h1>;
@@ -57,10 +72,18 @@ export default class LoginForm extends Component {
   submit() {
     return new Promise((resolve, reject) => {
       const keypair = client.createKeyPair();
-      client.useBasicAuth(this.props.fields.email.value, this.props.fields.password.value);
+      const email = this.props.fields.email.value;
+      const password = this.props.fields.password.value;
 
-      client.api.addPublicKey(keypair.getPublicKey()).then(
-        function success() {
+      client.useBasicAuth(email, password);
+
+      if (window && window.localStorage) {
+        this.props.storeEmail(email);
+      }
+
+      client.api
+        .addPublicKey(keypair.getPublicKey())
+        .then(function success() {
           client.removeBasicAuth();
           if (window && window.localStorage) {
             window.localStorage.setItem('privkey', keypair.getPrivateKey());
@@ -78,7 +101,16 @@ export default class LoginForm extends Component {
   }
 
   render() {
-    const {fields: {email, password, rememberUser}, error, handleSubmit, submitFailed} = this.props;
+    const {
+      fields: {
+        email,
+        password
+      },
+      error,
+      handleSubmit,
+      submitFailed
+    } = this.props;
+
     return (
       <div className="container auth">
         <div className="row">
@@ -90,20 +122,43 @@ export default class LoginForm extends Component {
                   {this.header()}
 
                   <form>
-                    <div className={'form-group ' + (submitFailed && email.error ? 'has-error' : '')}>
+                    <div className={`
+                        form-group
+                        ${submitFailed && email.error ? 'has-error' : ''}
+                      `}
+                    >
                       {submitFailed && formLabelError(email)}
-                      <input type="email" className="form-control" name="email" placeholder="Email Address" {...email}/>
+                      <input
+                        type="email"
+                        className="form-control"
+                        name="email"
+                        placeholder="Email Address"
+                        {...email}
+                      />
                     </div>
 
-                    <div className={'form-group ' + (submitFailed && password.error ? 'has-error' : '')}>
+                    <div className={`
+                        form-group
+                        ${submitFailed && password.error ? 'has-error' : ''}
+                      `}
+                    >
                       {submitFailed && formLabelError(password)}
-                      <input type="password" className="form-control" name="password"
-                             placeholder="Password" {...password}/>
+                      <input
+                        type="password"
+                        className="form-control"
+                        name="password"
+                        placeholder="Password"
+                        {...password}
+                      />
                     </div>
 
                     <div className="form-group">
-                      <button type="submit" onClick={handleSubmit(this.submit.bind(this))}
-                              className="btn btn-block btn-green">Login
+                      <button
+                        type="submit"
+                        onClick={handleSubmit(this.submit.bind(this))}
+                        className="btn btn-block btn-green"
+                      >
+                        Login
                       </button>
                     </div>
                     {error && <div><span className="text-danger">{error}</span></div>}
@@ -117,12 +172,19 @@ export default class LoginForm extends Component {
                      </div>
                      */}
                     <div className="col-sm-6 text-right pull-right">
-                      <Link to="/password-reset" className="forgot-password">Forgot Password?</Link>
+                      <Link to="/password-reset" className="forgot-password">
+                        Forgot Password?
+                      </Link>
                     </div>
 
                   </div>
                 </div>
-                <p>Don't have an account? <Link to="/signup" className="login">Sign Up</Link></p>
+                <p>
+                  Don't have an account?
+                  <Link to="/signup" className="login">
+                    Sign Up
+                  </Link>
+                </p>
               </div>
             </div>
           </div>

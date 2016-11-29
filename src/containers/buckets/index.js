@@ -1,30 +1,31 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import * as bucketListActions from 'redux/modules/bucket-list';
-import {Link, hashHistory} from 'react-router';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { Link, hashHistory } from 'react-router';
 import Loader from 'react-loader';
 import BucketList from 'components/bucket-list/bucket-list';
+import { load } from 'redux/modules/bucket-list';
 
-/*
-@connect(
-  state => ({
+const mapStateToProps = (state) => {
+  return {
     buckets: state.bucketList
-  }),
-  dispatch => bindActionCreators(bucketListActions, dispatch)
-)
-*/
+  };
+};
+
+const mapDispatchToProps = {
+  load
+};
 
 @connect(
-  state => ({
-    buckets: state.bucketList
-  }),
-  dispatch => ({
-    load: () => dispatch(bucketListActions.load())
-  })
+  mapStateToProps,
+  mapDispatchToProps
 )
 
 export default class Buckets extends Component {
+  static propTypes = {
+    load: PropTypes.func,
+    buckets: PropTypes.element
+  }
+
   componentDidMount() {
     this.props.load();
   }
@@ -37,24 +38,35 @@ export default class Buckets extends Component {
     return (
       <section>
         <div className="container">
-
           <div className="row">
             <div className="col-xs-12">
               <h1 className="title pull-left">Buckets</h1>
-              <Link to={{ pathname: 'dashboard/bucket/new'}} className="btn btn-green btn-action pull-right">Create Bucket</Link>
+              <Link
+                to={{ pathname: 'dashboard/bucket/new' }}
+                className="btn btn-green btn-action pull-right"
+              >
+                Create Bucket
+              </Link>
             </div>
           </div>
-
           <div className="row">
             <div className="col-xs-12">
               <div className="table-responsive content">
-                <Loader loaded={this.props && this.props.buckets && this.props.buckets.loaded}>
-                  <BucketList onBucketClick={this.handleBucketClick} {...this.props.buckets}/>
+                <Loader loaded=
+                  {
+                    this.props
+                    && this.props.buckets
+                    && this.props.buckets.loaded
+                  }
+                >
+                  <BucketList onBucketClick=
+                    {this.handleBucketClick}
+                    {...this.props.buckets}
+                  />
                 </Loader>
               </div>
             </div>
           </div>
-
         </div>
       </section>
     );

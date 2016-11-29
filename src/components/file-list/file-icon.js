@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
-const FileIcon = (props) => {
-  var mimeTypeArr = props.mimetype.split('/')
-  if (/[_a-zA-Z]+[_a-zA-Z0-9-]*/.test(mimeTypeArr[0]) && /[_a-zA-Z]+[_a-zA-Z0-9-]*/.test(mimeTypeArr[0])) {
+const FileIcon = ({ mimetype }) => {
+  const mimeTypeArr = mimetype.split('/');
+  if (/[_\w]+[_\w\d-]*/.test(mimeTypeArr[0]) &&
+      /[_\w]+[_\w\d-]*/.test(mimeTypeArr[1])) {
     return (
-      <i className={'mimetype glyphicon ' + mimeTypeArr[0] + ' ' + mimeTypeArr[1]}></i>
-    );
-  } else {
-    return (
-      <i className='mimetype glyphicon'></i>
+      <i className="
+        mimetype
+        glyphicon
+        {mimeTypeArr[0]}
+        {mimeTypeArr[1]}
+      "/>
     );
   }
+  return <i className="mimetype glyphicon" />;
+};
+
+FileIcon.propTypes = {
+  mimetype: PropTypes.string
 };
 
 export default FileIcon;

@@ -7,7 +7,7 @@ const CountryDropdown = (props) => {
       {
         Object.keys(countryMap).map((value) => {
           const text = countryMap[value];
-          return <option value={value} key={value}>{text}</option>;
+          return <option value={value} key={value}> {text} </option>;
         })
       }
     </select>

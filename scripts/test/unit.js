@@ -1,5 +1,5 @@
 import path from 'path';
-import 'colors';
+import colors from 'colors';
 
 const typeName = path.basename(__filename, '.js');
 

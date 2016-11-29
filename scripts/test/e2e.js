@@ -1,4 +1,4 @@
-import 'colors';
+import colors from 'colors';
 import path from 'path';
 import {spawn} from 'child_process';
 import {sync as glob} from 'glob';

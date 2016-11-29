@@ -5,24 +5,26 @@ import favicon from 'serve-favicon';
 import compression from 'compression';
 import path from 'path';
 import Html from 'helpers/html';
-import PrettyError from 'pretty-error';
+// import PrettyError from 'pretty-error';
 import http from 'http';
 import config from 'config';
 
-import getRoutes from 'routes';
+// import getRoutes from 'routes';
 
-const targetUrl = 'http://' + config.apiHost + ':' + config.apiPort;
-const pretty = new PrettyError();
+// const targetUrl = 'http://' + config.apiHost + ':' + config.apiPort;
+// const pretty = new PrettyError();
 const app = new Express();
 const server = new http.Server(app);
 
 function addSecurityHeaders(req, res, next) {
   res.set('X-Frame-Options', 'DENY');
-  res.set('Content-Security-Policy', "default-src 'self'; style-src 'unsafe-inline' 'self'; object-src 'none'; connect-src *; frame-src https://storj.github.io;");
+  res.set('Content-Security-Policy',
+    "default-src 'self'; style-src 'unsafe-inline' 'self'; object-src 'none'; connect-src *; frame-src https://storj.github.io;");
   next();
 }
 
-app.use(compression())
+app
+  .use(compression())
   .use(favicon(path.join(__dirname, '..', 'static/img/favicon', 'favicon.ico')))
   .use(addSecurityHeaders)
   .use(Express.static(path.join(__dirname, '..', 'static')))

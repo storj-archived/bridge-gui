@@ -1,23 +1,23 @@
-import React, {Component, PropTypes} from 'react';
-import ReactDOM from'react-dom';
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
-export default class PubKeyNewListItem extends Component {
-  constructor (props) {
+class PubKeyNewListItem extends Component {
+  constructor(props) {
     super(props);
-    this.state = { itemKey: props.newRowItem }
-  }
-
-  handleKeyChange(e) {
-    this.setState({ itemKey: e.target.value })
+    this.state = { itemKey: props.newRowItem };
   }
 
   componentDidMount() {
     this.focusAndSetCursor(this.refs.pubKeyInput);
   }
 
+  handleKeyChange(event) {
+    this.setState({ itemKey: event.target.value });
+  }
+
   focusAndSetCursor(inputRef) {
-    let dNode = ReactDOM.findDOMNode(inputRef);
-    let InputFieldValLength = dNode.value.length;
+    const dNode = ReactDOM.findDOMNode(inputRef);
+    const InputFieldValLength = dNode.value.length;
     dNode.focus();
     dNode.setSelectionRange(InputFieldValLength, InputFieldValLength);
   }
@@ -26,9 +26,7 @@ export default class PubKeyNewListItem extends Component {
     return (
       <tr>
         <td>
-          <input
-            type    = "checkbox"
-            disabled = "true"/>
+          <input type="checkbox" disabled="true" />
         </td>
         <td>
           <input
@@ -37,19 +35,36 @@ export default class PubKeyNewListItem extends Component {
             ref         = "pubKeyInput"
             onChange    = {this.handleKeyChange.bind(this)}
             value       = {this.state.itemKey}
-            placeholder = "Enter Public Key"/>
+            placeholder = "Enter Public Key"
+          />
           <button
             className = "btn btn-link btn-sm pull-right"
-            onClick   = {(e) => {e.preventDefault(); this.props.newRowItemSaveAction(this.state.itemKey)}}>
-            <span>Save</span>
+            onClick   = {(event) => {
+              event.preventDefault();
+              this.props.newRowItemSaveAction(this.state.itemKey);
+            }}
+          >
+            <span> Save </span>
           </button>
           <button
             className = "btn btn-link btn-sm pull-right"
-            onClick   = {(e) => {e.preventDefault(); this.props.newRowItemCancelAction()}}>
-            <span>Cancel</span>
+            onClick   = {(event) => {
+              event.preventDefault();
+              this.props.newRowItemCancelAction();
+            }}
+          >
+            <span> Cancel </span>
           </button>
         </td>
       </tr>
     );
   }
+}
+
+PubKeyNewListItem.propTypes = {
+  newRowItem             : PropTypes.string, // ???
+  newRowItemCancelAction : PropTypes.func,
+  newRowItemSaveAction   : PropTypes.func
 };
+
+export default PubKeyNewListItem;

@@ -10,6 +10,6 @@ export PubKeyListItem from 'components/pub-key-list/pub-key-list-item';
 export PubKeyList from 'components/pub-key-list/pub-key-list';
 export ErrorViews from 'components/error-views';
 export FileListItem from 'components/file-list/file-list-item';
-export FileList from 'components/file-list/index';
+export FileList from 'components/file-list';
 export SignupSuccess from 'components/message-page/signup-success';
 export ApiDocs from 'components/api-docs/index';

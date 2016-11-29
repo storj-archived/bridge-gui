@@ -1,7 +1,8 @@
-import {methods} from 'http';
 import express from 'express';
-import {json as jsonBodyParser, urlencoded as urlEncodedParser} from 'body-parser';
-import 'colors';
+import {
+  json as jsonBodyParser,
+  urlencoded as urlEncodedParser
+} from 'body-parser';
 
 console.log('HELLO FROM MOCK BACKEND');
 
@@ -50,6 +51,7 @@ mockApp
         res.removeHeader('Accesss-Control-Allow-Credentials');
         res.removeHeader('Accesss-Control-Allow-Methods');
         res.removeHeader('Accesss-Control-Allow-Headers');
+        break;
       default:
         result = {
           activated: false,

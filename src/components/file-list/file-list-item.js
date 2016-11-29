@@ -1,30 +1,33 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import FileIcon from 'components/file-list/file-icon';
 
-const FileListItem = (props) => {
+const FileListItem = ({ hash, mimetype, filename, size, fileSelectAction }) => {
   function handleClick(event) {
     event.preventDefault();
-    props.fileSelectAction(props.hash, props.mimetype, props.filename);
+    fileSelectAction(hash, mimetype, filename);
   }
 
   return (
     <tr>
-
       <td>
-        <FileIcon mimetype={props.mimetype}/>
-        <a href="#noop" onClick={handleClick}>{props.filename}</a>
+        <FileIcon mimetype={mimetype} />
+        <a href="#noop" onClick={handleClick}> {filename} </a>
       </td>
-
       <td>
-        <span>{props.size}B</span>
+        <span> {size}B </span>
       </td>
-
       <td>
-        <span>{props.mimetype}</span>
+        <span> {mimetype} </span>
       </td>
-
     </tr>
   );
+};
+
+FileListItem.propTypes = {
+  filename : PropTypes.string,
+  hash     : PropTypes.string, // ???
+  mimetype : PropTypes.string,
+  size     : PropTypes.number // ???
 };
 
 export default FileListItem;

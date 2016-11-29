@@ -38,7 +38,7 @@ const LISTFILES_SUCCESS = 'storj/bucket/LISTFILES_SUCCESS';
 const LISTFILES_FAIL = 'storj/bucket/LISTFILES_FAIL';
 
 export default function Bucket(state = {}, action = {}) {
-  switch(action.type) {
+  switch (action.type) {
     case LOAD:
       return {
         ...state,
@@ -72,13 +72,13 @@ export default function Bucket(state = {}, action = {}) {
       return {
         ...state,
         newKeyField: ''
-      }
+      };
 
     case REMOVENEWKEYFIELD:
       return {
         ...state,
         newKeyField: null
-      }
+      };
 
     case EDITKEYFIELD:
       return {
@@ -95,13 +95,13 @@ export default function Bucket(state = {}, action = {}) {
     case SELECTKEYFIELDS:
       return {
         ...state,
-        selectedKeys: SelectedPubKeys(state, action)
+        selectedKeys: selectedPubKeys(state, action)
       };
 
     case SELECTALLKEYFIELDS:
       return {
         ...state,
-        selectedKeys: SelectedPubKeys(state, action)
+        selectedKeys: selectedPubKeys(state, action)
       };
 
     case CLEAR:
@@ -112,7 +112,7 @@ export default function Bucket(state = {}, action = {}) {
         ...state,
         saving: true,
         saved: false,
-      }
+      };
     case CREATE_FAIL:
       return {
         ...state,
@@ -136,7 +136,7 @@ export default function Bucket(state = {}, action = {}) {
         ...state,
         updating: true,
         updated: false,
-      }
+      };
     case UPDATE_FAIL:
       return {
         ...state,
@@ -151,7 +151,7 @@ export default function Bucket(state = {}, action = {}) {
         updated: true,
         newKeyField: null,
         ...action.result,
-        selectedKeys: SelectedPubKeys(state, action)
+        selectedKeys: selectedPubKeys(state, action)
 
       };
 
@@ -160,7 +160,7 @@ export default function Bucket(state = {}, action = {}) {
         ...state,
         destroying: true,
         destroyed: false,
-      }
+      };
     case DEL_FAIL:
       return {
         ...state,
@@ -179,7 +179,7 @@ export default function Bucket(state = {}, action = {}) {
         ...state,
         stored: false,
         storing: true,
-      }
+      };
     case STORE_FAIL:
       return {
         ...state,
@@ -193,7 +193,7 @@ export default function Bucket(state = {}, action = {}) {
         stored: true,
         storing: false,
         listFileLoaded: false
-        //fileHash: action.result.hash
+        // fileHash: action.result.hash
       };
 
     case GETFILE:
@@ -201,7 +201,7 @@ export default function Bucket(state = {}, action = {}) {
         ...state,
         getFilePending: true,
         getFileLoaded: false
-      }
+      };
     case GETFILE_FAIL:
       return {
         ...state,
@@ -244,43 +244,43 @@ export default function Bucket(state = {}, action = {}) {
   }
 }
 
-export function SelectedPubKeys(state, action) {
-  switch(action.type) {
+export function selectedPubKeys(state, action) {
+  switch (action.type) {
     case SELECTKEYFIELDS:
-      return (function() {
-      let keys = [...state.selectedKeys];
-      let keyInd = keys.indexOf(action.keyId);
-      let isAlreadySelected = keyInd !== -1;
-      if(isAlreadySelected) {
-        keys.splice(keyInd, 1);
-      } else {
-        keys.push(action.keyId);
-      }
-      return keys;
-    })();
+      return (function selectKeyFields() {
+        const keys = [...state.selectedKeys];
+        const keyInd = keys.indexOf(action.keyId);
+        const isAlreadySelected = keyInd !== -1;
+        if (isAlreadySelected) {
+          keys.splice(keyInd, 1);
+        } else {
+          keys.push(action.keyId);
+        }
+        return keys;
+      })();
 
     case SELECTALLKEYFIELDS:
-      return (function() {
+      return (function selectAllKeyFields() {
         let keys;
-        if(state.selectedKeys.length === state.pubkeys.length) {
+        if (state.selectedKeys.length === state.pubkeys.length) {
           keys = [];
         } else {
           keys = [...state.pubkeys];
         }
         return keys;
-    })();
+      })();
 
     case UPDATE_SUCCESS:
-      return (function() {
-      var sKeys = [...state.selectedKeys];
-      state.selectedKeys.forEach((sElem, sInd, arr) => {
-        let hasBeenRemoved = action.result.pubkeys.indexOf(sElem) === -1;
-        if(hasBeenRemoved) {
-          sKeys.splice(sKeys.indexOf(sElem), 1);
-        }
-      });
-      return sKeys;
-    })();
+      return (function updateSuccess() {
+        const sKeys = [...state.selectedKeys];
+        state.selectedKeys.forEach((sElem) => {
+          const hasBeenRemoved = action.result.pubkeys.indexOf(sElem) === -1;
+          if (hasBeenRemoved) {
+            sKeys.splice(sKeys.indexOf(sElem), 1);
+          }
+        });
+        return sKeys;
+      })();
 
     default:
       return state;
@@ -290,7 +290,7 @@ export function SelectedPubKeys(state, action) {
 export function load(bucketId) {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.getBucketById(bucketId)
+    promise: ({ bridgeClient }) => bridgeClient.getBucketById(bucketId)
   };
 }
 
@@ -303,14 +303,14 @@ export function clear() {
 export function create(bucket) {
   return {
     types: [CREATE, CREATE_SUCCESS, CREATE_FAIL],
-    promise: (client) => client.createBucket(bucket)
+    promise: ({bridgeClient}) => bridgeClient.createBucket(bucket)
   };
 }
 
 export function update(bucketId, bucket) {
   return {
     types: [UPDATE, UPDATE_SUCCESS, UPDATE_FAIL],
-    promise: (client) => client.updateBucketById(bucketId, {
+    promise: ({ bridgeClient }) => bridgeClient.updateBucketById(bucketId, {
       storage  : bucket.storage,
       transfer : bucket.transfer,
       name     : bucket.name,
@@ -322,20 +322,20 @@ export function update(bucketId, bucket) {
 export function destroy(bucketId) {
   return {
     types: [DEL, DEL_SUCCESS, DEL_FAIL],
-    promise: (client) => client.destroyBucketById(bucketId)
+    promise: ({bridgeClient}) => bridgeClient.destroyBucketById(bucketId)
   };
 }
 
 export function storeFile(bucketId, file) {
   return {
     types: [STORE, STORE_SUCCESS, STORE_FAIL],
-    promise: (client) => client.createToken(bucketId, "PUSH")
+    promise: ({bridgeClient}) => bridgeClient.createToken(bucketId, "PUSH")
       .then(function(result) {
         return new Promise(function(resolve, reject) {
           var fileReq = new XMLHttpRequest();
           var formData = new FormData();
           formData.append('data', file);
-          fileReq.open('PUT', client._options.baseURI + '/buckets/' + bucketId + '/files');
+          fileReq.open('PUT', bridgeClient._options.baseURI + '/buckets/' + bucketId + '/files');
           fileReq.setRequestHeader('x-token', result.token);
           fileReq.setRequestHeader('x-filesize', file.size);
           fileReq.send(formData);
@@ -370,14 +370,14 @@ export function getFile(bucketId, filehash, type, name) {
   return {
     types: [GETFILE, GETFILE_SUCCESS, GETFILE_FAIL],
     filename: name,
-    promise: (client) => client.createToken(bucketId, "PULL")
+    promise: ({bridgeClient}) => bridgeClient.createToken(bucketId, "PULL")
       .then(function(result) {
-        return client.getFilePointer(bucketId, result.token, filehash);
+        return bridgeClient.getFilePointer(bucketId, result.token, filehash);
       })
       .then(function(pointers) {
         return new Promise(function(resolve, reject) {
           var chunks = [];
-          client.resolveFileFromPointers(pointers).then(
+          bridgeClient.resolveFileFromPointers(pointers).then(
             function success(chunks) {
               let blob = new Blob(chunks, {
                 type: type
@@ -397,7 +397,7 @@ export function getFile(bucketId, filehash, type, name) {
 export function listFiles(bucketId) {
   return {
     types: [LISTFILES, LISTFILES_SUCCESS, LISTFILES_FAIL],
-    promise: (client) => client.listFilesInBucket(bucketId)
+    promise: ({bridgeClient}) => bridgeClient.listFilesInBucket(bucketId)
   };
 }
 
@@ -405,7 +405,7 @@ export function editPubKey(id) {
   return {
     type: EDITKEYFIELD,
     keyId: id
-  }
+  };
 }
 
 export function deleteSelectedPubKeys(selectedKeys, bucketId, bucket) {
@@ -419,13 +419,13 @@ export function deleteSelectedPubKeys(selectedKeys, bucketId, bucket) {
 export function addNewPubKey() {
   return {
     type: ADDNEWKEYFIELD
-  }
+  };
 }
 
 export function removeNewPubKey() {
   return {
     type: REMOVENEWKEYFIELD
-  }
+  };
 }
 
 export function saveEditedPubKey(prevKey, newKey, bucketId, bucket) {
@@ -451,27 +451,27 @@ export function saveNewPubKey(newKey, bucketId, bucket) {
 export function stopEditPubKey() {
   return {
     type: STOPEDITKEYFIELD
-  }
+  };
 }
 
 export function selectPubKey(id) {
   return {
     type: SELECTKEYFIELDS,
     keyId: id
-  }
+  };
 }
 
 export function selectAllPubKey() {
   return {
     type: SELECTALLKEYFIELDS
-  }
+  };
 }
 
 /*
 export function storeFile(bucketId, tokenStr, file) {
   return {
     types: [STORE, STORE_SUCCESS, STORE_FAIL],
-    promise: (client) => client.storeFileInBucket(bucketId, tokenStr, file)
+    promise: ({bridgeClient}) => bridgeClient.storeFileInBucket(bucketId, tokenStr, file)
   };
 }
 */
