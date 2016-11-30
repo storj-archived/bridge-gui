@@ -18,7 +18,7 @@ module.exports = {
     'webpack/hot/only-dev-server',
     'bootstrap-sass!./src/theme/bootstrap.config.prod.js',
     './src/client.js',
-    './src/theme/shame.scss'
+    './src/theme/shame.sc'
   ],
   output: {
     path: assetsPath,
@@ -48,7 +48,8 @@ module.exports = {
     alias: {
       dgram: `${__dirname}/stubs/dgram`,
       bufferutil: `${__dirname}/stubs/blank`,
-      'utf-8-validate': `${__dirname}/stubs/blank`
+      'utf-8-validate': `${__dirname}/stubs/blank`,
+      'graceful-fs': `${__dirname}/stubs/blank`
     },
     modulesDirectories: [
       'src',
