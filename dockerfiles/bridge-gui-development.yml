@@ -1,0 +1,64 @@
+version: '2'
+services:
+  mongo:
+    image: mongo
+    ports:
+      - '27017:27017'
+  rabbitmq:
+    image: rabbitmq
+  bridge:
+    privileged: true
+    build:
+      context: ../../
+      dockerfile: ./bridge/dockerfiles/bridge-development.dockerfile
+    ports:
+      - '6382:6382'
+    working_dir: '/bridge'
+    command: /usr/bin/env npm run start-dev
+    environment:
+      NODE_ENV: 'develop'
+      MONGO_URL:  'mongodb://mongo:27017/__storj-bridge-development'
+    volumes:
+      - ../bridge/bin:/storj-base/bridge/bin
+      - ../bridge/lib:/storj-base/bridge/lib
+      - ../bridge/index.js:/storj-base/bridge/index.js
+      - ../bridge/package.json:/storj-base/bridge/package.json
+      - ../bridge/.nvmrc:/storj-base/bridge/.nvmrc
+    links:
+      - mongo
+      - rabbitmq
+  billing:
+    privileged: true
+    image: storjlabs/billing
+    build:
+      context: ../../
+      dockerfile: ./billing/dockerfiles/billing-development.dockerfile
+    volumes:
+      - ../billing/lib:/storj-base/billing/lib
+      - ../billing/bin:/storj-base/billing/bin
+      - ../billing/index.js:/storj-base/billing/index.js
+      - ../billing/package.json:/storj-base/billing/package.json
+      - ../billing/.nvmrc:/storj-base/billing/.nvmrc
+    environment:
+      STAGE: development
+      MONGO_URL: 'mongodb://mongo:27017/__storj-bridge-development'
+    links:
+      - mongo
+    ports:
+      - '3000:3000'
+  bridge-gui:
+    privileged: true
+    build:
+      context: ../
+      dockerfile: ./dockerfiles/bridge-gui-development.dockerfile
+    volumes:
+      - ../package.json:/bridge-gui/package.json
+      - ../index.js:/bridge-gui/index.js
+      - ../.nvmrc:/bridge-gui/.nvmrc
+      - ../lib/:/bridge-gui/lib
+      - ../bin/:/bridge-gui/bin
+      - ../webpack:/bridge-gui/webpack
+      - ../static:/bridge-gui/static
+    environment:
+      STAGE: development
+      APOLLO_CLIENT_URL: 'http://localhost:3000'
