@@ -4,7 +4,6 @@
 
 const program = require('commander');
 const shell = require('shelljs');
-const ops = require('./storj-base/start');
 
 const info = console.info.bind(this);
 const log = console.log.bind(this);
@@ -20,9 +19,15 @@ program.parse(process.argv);
 function init() {
   gitSubmoduleInit();
   gitSubmoduleUpdate();
-  
-  // -- run `init` from storj-base/start
+
+  const ops = require('./storj-base/start');
+  yarn('i', './storj-base');
   ops.init();
+}
+
+function yarn(command, pwd) {
+  pwd = pwd || '.';
+  shell.exec('cd ' + pwd + ' && yarn ' + command);
 }
 
 function gitSubmoduleInit(submodule) {
