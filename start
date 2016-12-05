@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const program = require('commander');
+const shell = require('shelljs');
+const ops = require('./storj-base/start');
+
+const info = console.info.bind(this);
+const log = console.log.bind(this);
+const error = console.error.bind(this);
+
+program
+  .command('init', '')
+  .action(init)
+;
+
+program.parse(process.argv);
+
+function init() {
+  gitSubmoduleInit();
+  gitSubmoduleUpdate();
+  
+  // -- run `init` from storj-base/start
+  ops.init();
+}
+
+function gitSubmoduleInit(submodule) {
+  submodule = submodule || '.';
+  shell.exec('git submodule init ' + submodule);
+}
+
+function gitSubmoduleUpdate(submodule) {
+  submodule = submodule || '.';
+  shell.exec('git submodule update --remote ' + submodule);
+}
+
