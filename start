@@ -21,7 +21,6 @@ function init() {
   gitSubmoduleUpdate();
 
   const ops = require('./storj-base/start');
-  yarn('i', './storj-base');
   ops.init();
 }
 
