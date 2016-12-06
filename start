@@ -36,6 +36,6 @@ function gitSubmoduleInit(submodule) {
 
 function gitSubmoduleUpdate(submodule) {
   submodule = submodule || '.';
-  shell.exec('git submodule update --remote ' + submodule);
+  shell.exec('git submodule update ' + submodule);
 }
 

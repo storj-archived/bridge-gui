@@ -1,4 +1,4 @@
-version: "2"
+version: '2'
 services:
   mongo:
     image: mongo
@@ -8,7 +8,7 @@ services:
     image: rabbitmq
   bridge:
     build:
-      context: ..
+      context: ./bridge
       dockerfile: ./dockerfiles/bridge-develop.dockerfile
     ports:
       - '6382:6382'
@@ -17,15 +17,14 @@ services:
     environment:
       NODE_ENV: 'develop'
     volumes:
-      - ../bridge/bin:/bridge/bin
-      - ../bridge/lib:/bridge/lib
-      - ../../core:/core
+      - ./bridge/bin:/bridge/bin
+      - ./bridge/lib:/bridge/lib
     links:
       - mongo
       - rabbitmq
   billing:
     build:
-      context: ..
+      context: ./billing
       dockerfile: ./dockerfiles/billing-develop.dockerfile
     ports:
       - '3000:3000'
@@ -34,10 +33,8 @@ services:
     environment:
       NODE_ENV: 'develop'
     volumes:
-      - ../billing/bin:/billing/bin
-      - ../billing/lib:/billing/lib
-      - ../../service-storage-models:/service-storage-models
-      - ../../core:/core
+      - ./billing/bin:/billing/bin
+      - ./billing/lib:/billing/lib
     links:
       - mongo
       - rabbitmq
