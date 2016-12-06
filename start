@@ -14,7 +14,25 @@ program
   .action(init)
 ;
 
+program
+  .command('up', '')
+  .action(up)
+
+program
+  .command('build', '')
+  .action(build)
+
 program.parse(process.argv);
+
+function up() {
+  log('Starting up the development environment.') 
+  shell.exec('docker-compose -f ./dockerfiles/bridge-gui-development.yml up')
+}
+
+function build() {
+  log('Starting up the storj-base container.')
+  shell.exec('docker-compose -f ./storj-base/docker-compose.yml run build')
+}
 
 function init() {
   gitSubmoduleInit();
