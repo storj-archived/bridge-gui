@@ -11,27 +11,28 @@ const error = console.error.bind(this);
 
 program
   .command('init', '')
-  .action(init)
-;
+  .action(init);
 
 program
   .command('up', '')
-  .action(up)
+  .action(up);
 
 program
   .command('build', '')
-  .action(build)
+  .action(build);
 
 program.parse(process.argv);
 
 function up() {
-  log('Starting up the development environment.') 
-  shell.exec('docker-compose -f ./dockerfiles/bridge-gui-development.yml up')
+  service = service || '';
+  log('Starting up the development environment.'); 
+  dockerCompose('./dockerfiles/bridge-gui-development.yml', 'up ' + service);
 }
 
-function build() {
-  log('Starting up the storj-base container.')
-  shell.exec('docker-compose -f ./storj-base/docker-compose.yml run build')
+function build(service) {
+  service = service || '';
+  log('Starting up the` storj-base container.');
+  dockerCompose('./storj-base/docker-compose.yml', 'run build ' + service);
 }
 
 function init() {
@@ -56,4 +57,10 @@ function gitSubmoduleUpdate(submodule) {
   submodule = submodule || '.';
   shell.exec('git submodule update ' + submodule);
 }
+
+function dockerCompose(file, command) {
+  log('docker compse')
+  shell.exec('docker-compose -f ' + file + ' ' + command);
+}
+
 
