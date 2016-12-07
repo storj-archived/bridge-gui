@@ -9,7 +9,7 @@ services:
   bridge:
     image: storjlabs/bridge
     build:
-      context: ../../bridge
+      context: ../bridge
       dockerfile: ./dockerfiles/bridge-development.dockerfile
     ports:
       - '6382:6382'
@@ -18,25 +18,25 @@ services:
       NODE_ENV: 'develop'
       MONGO_URL:  'mongodb://mongo:27017/__storj-bridge-development'
     volumes:
-      - ../../bridge/bin:/bridge/bin
-      - ../../bridge/lib:/bridge/lib
-      - ../../bridge/index.js:/bridge/index.js
-      - ../../bridge/package.json:/bridge/package.json
-      - ../../bridge/.nvmrc:/bridge/.nvmrc
+      - ../bridge/bin:/bridge/bin
+      - ../bridge/lib:/bridge/lib
+      - ../bridge/index.js:/bridge/index.js
+      - ../bridge/package.json:/bridge/package.json
+      - ../bridge/.nvmrc:/bridge/.nvmrc
     links:
       - mongo
       - rabbitmq
   billing:
     image: storjlabs/billing
     build:
-      context: ../../billing
+      context: ../billing
       dockerfile: ./dockerfiles/billing-development.dockerfile
     volumes:
-      - ../../billing/lib:/billing/lib
-      - ../../billing/bin:/billing/bin
-      - ../../billing/index.js:/billing/index.js
-      - ../../billing/package.json:/billing/package.json
-      - ../../billing/.nvmrc:/billing/.nvmrc
+      - ../billing/lib:/billing/lib
+      - ../billing/bin:/billing/bin
+      - ../billing/index.js:/billing/index.js
+      - ../billing/package.json:/billing/package.json
+      - ../billing/.nvmrc:/billing/.nvmrc
     environment:
       STAGE: development
       MONGO_URL: 'mongodb://mongo:27017/__storj-bridge-development'
