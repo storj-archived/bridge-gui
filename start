@@ -23,7 +23,7 @@ program
 
 program.parse(process.argv);
 
-function up() {
+function up(service) {
   service = service || '';
   log('Starting up the development environment.'); 
   dockerCompose('./dockerfiles/bridge-gui-development.yml', 'up ' + service);

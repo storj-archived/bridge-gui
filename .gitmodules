@@ -9,3 +9,6 @@
 [submodule "billing"]
 	path = billing
 	url = git@github.com:Storj/billing.git
+[submodule "core"]
+	path = core
+	url = git@github.com:Storj/core.git
