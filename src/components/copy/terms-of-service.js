@@ -7,8 +7,8 @@ export default () => {
         <div>
           <div className="row">
             <div className="col-xs-12 text-center">
-              <h3> Storage Terms of Service </h3>
-              <p className="text-center"> Last Updated: July 7, 2016 </p>
+              <h3>Storage Terms of Service</h3>
+              <p className="text-center">Last Updated: July 21, 2016</p>
               <p>
                 <a href  = "https://storj.io/terms-of-service.html"
                   target = "_blank"
@@ -48,7 +48,8 @@ export default () => {
               You agree to be bound by and comply with the Storj Labs Terms of
               Use in connection with your access and use of the Services
               (including the Storage Services). The Storj Labs Terms of Use and
-              these Storage Terms are collectively referred to as the &ldquo;<b>Agreement</b>.&rdquo; PLEASE MAKE SURE YOU READ THE
+              these Storage Terms are collectively referred to as the &ldquo;
+              <b>Agreement</b>.&rdquo; PLEASE MAKE SURE YOU READ THE
               STORJ LABS TERMS OF USE CAREFULLY. THEY CONTAIN LIMITATIONS OF
               LIABILITY, DISCLAIMERS AND A BINDING ARBITRATION CLAUSE AND CLASS
               ACTION WAIVER, WHICH AFFECT YOUR LEGAL RIGHTS.
@@ -228,6 +229,14 @@ export default () => {
               payable by you for the corresponding month.
               </p>
 
+              <p><b>8. Promotional Credits</b></p>
+
+              <p>(a) The Company may also provide credits against fees payable to the company in relation to marketing, referrals, or other events ("Promotional Credits"). All credits not deemed to be Service Credits will be considered Promotional Credits.
+              </p>
+              <p>(b) Promotional Credits must be redeemed within 12 months of issuance unless otherwise stated.
+              </p>
+              <p>(c) After redemption, Promotional Credits are valid for a period of 12 months. Promotional Credits that have not been used at that time will expire.
+              </p>
             </div>
           </div>
         </div>
