@@ -1,0 +1,57 @@
+version: '2'
+services:
+  mongo:
+    image: mongo
+    ports:
+      - '27017:27017'
+  rabbitmq:
+    image: rabbitmq
+  bridge:
+    image: storjlabs/bridge
+    build:
+      context: ../bridge
+      dockerfile: ./dockerfiles/bridge-development.dockerfile
+    ports:
+      - '6382:6382'
+    command: /usr/bin/env npm run start-dev
+    environment:
+      NODE_ENV: 'develop'
+      MONGO_URL:  'mongodb://mongo:27017/__storj-bridge-development'
+    volumes:
+      - ../bridge:/bridge
+    links:
+      - mongo
+      - rabbitmq
+  billing:
+    image: storjlabs/billing
+    build:
+      context: ../billing
+      dockerfile: ./dockerfiles/billing-development.dockerfile
+    volumes:
+      - ../billing:/billing
+    environment:
+      STAGE: development
+      MONGO_URL: 'mongodb://mongo:27017/__storj-bridge-development'
+    links:
+      - mongo
+    ports:
+      - '3000:3000'
+  bridge-gui:
+    image: storjlabs/bridge-gui
+    build:
+      context: ../
+      dockerfile: ./dockerfiles/bridge-gui-development.dockerfile
+    volumes:
+      - ../:/bridge-gui
+    environment:
+      STAGE: development
+      APOLLO_CLIENT_URL: 'http://billing:3000'
+      API_HOST: bridge
+      API_PORT: 6382
+      HOST: 0.0.0.0
+      PORT: 3001
+    links:
+      - bridge
+      - billing
+    ports:
+      - '3001:3001'

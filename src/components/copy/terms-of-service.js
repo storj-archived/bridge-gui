@@ -48,7 +48,8 @@ export default () => {
               You agree to be bound by and comply with the Storj Labs Terms of
               Use in connection with your access and use of the Services
               (including the Storage Services). The Storj Labs Terms of Use and
-              these Storage Terms are collectively referred to as the &ldquo;<b>Agreement</b>.&rdquo; PLEASE MAKE SURE YOU READ THE
+              these Storage Terms are collectively referred to as the &ldquo;
+              <b>Agreement</b>.&rdquo; PLEASE MAKE SURE YOU READ THE
               STORJ LABS TERMS OF USE CAREFULLY. THEY CONTAIN LIMITATIONS OF
               LIABILITY, DISCLAIMERS AND A BINDING ARBITRATION CLAUSE AND CLASS
               ACTION WAIVER, WHICH AFFECT YOUR LEGAL RIGHTS.
@@ -236,7 +237,6 @@ export default () => {
               </p>
               <p>(c) After redemption, Promotional Credits are valid for a period of 12 months. Promotional Credits that have not been used at that time will expire.
               </p>
-
             </div>
           </div>
         </div>

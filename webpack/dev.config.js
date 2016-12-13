@@ -18,7 +18,7 @@ module.exports = {
     'webpack/hot/only-dev-server',
     'bootstrap-sass!./src/theme/bootstrap.config.prod.js',
     './src/client.js',
-    './src/theme/shame.scss'
+    './src/theme/shame.sc'
   ],
   output: {
     path: assetsPath,
