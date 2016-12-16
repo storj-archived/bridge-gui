@@ -4,11 +4,17 @@ import {Link, IndexLink, hashHistory} from 'react-router';
 import Navbar from 'react-bootstrap/lib/Navbar';
 import client from 'utils/api-client';
 
+const mapStateToProps = (state) => ({
+    userEmail: state.localStorage.email
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  logout: (pubkey) => dispatch(authActions.logout(pubkey))
+})
+
 @connect(
-  null,
-  dispatch => ({
-    logout: (pubkey) => dispatch(authActions.logout(pubkey))
-  })
+  mapStateToProps,
+  mapDispatchToProps
 )
 
 export default class Dashboard extends Component {
@@ -24,6 +30,7 @@ export default class Dashboard extends Component {
     function logout(){
       if(window && window.localStorage) {
         window.localStorage.removeItem('privkey');
+        window.localStorage.removeItem('email');
       }
       client.removeKeyPair();
       hashHistory.push('/');
@@ -31,6 +38,7 @@ export default class Dashboard extends Component {
   };
 
   render() {
+    const email = this.props.userEmail;
     const styles = require('./dashboard.scss');
     return (
       <Navbar className="navbar-default">
@@ -54,7 +62,7 @@ export default class Dashboard extends Component {
         <Navbar.Collapse>
           <ul className="nav navbar-nav navbar-left">
             <li><IndexLink to='/dashboard'>Buckets</IndexLink></li>
-            {/* <li><Link to='/dashboard/billing'>Billing</Link></li> */}
+            <li><Link to='/dashboard/billing'>Billing</Link></li>
             <li><a href='https://storj.readme.io/'>Documentation</a></li>
             <li><Link to='/dashboard/api-docs'>API</Link></li>
             <li><a href='https://storj.readme.io/discuss'>Support</a></li>

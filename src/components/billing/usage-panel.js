@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router';
+import Currency from 'components/billing/currency';
 
 
 const UsagePanel = ({amount, linkParams}) => {
@@ -10,7 +11,9 @@ const UsagePanel = ({amount, linkParams}) => {
         <div className="row">
           <div className="col-xs-6">
             <p className="text-muted">Current Usage</p>
-            <h2 className="mb0 blue"><b>{amount}</b></h2>
+            <h2 className="mb0 blue"><b>
+              <Currency amount={amount} />
+            </b></h2>
           </div>
           <div className="col-xs-6 text-right">
             <Link className="btn btn-blue btn-action" to={linkParams} >View Usage</Link>
