@@ -1,6 +1,5 @@
 export App from 'containers/app/index';
 export Auth from 'containers/auth';
-export Billing from 'containers/billing';
 export EditBucket from 'containers/buckets/edit-bucket';
 export NewBucket from 'containers/buckets/new-bucket';
 export Buckets from 'containers/buckets';
