@@ -1,9 +1,14 @@
-import {createStore as _createStore, applyMiddleware} from 'redux';
+import {createStore as _createStore, applyMiddleware, compose} from 'redux';
 import bridgeClientMiddleware from 'redux/middleware/bridge-client-middleware';
 import reducer from 'redux/modules/reducer';
+import uuid from 'node-uuid';
+import {print as graphqlTagPrint} from 'graphql-tag/printer';
 
 import ApolloClient, {createNetworkInterface} from 'apollo-client';
 import bridgeClientWrapper from 'utils/api-client';
+
+// NB: for testing only
+window.wrappedBridgeClient = bridgeClientWrapper;
 
 export default function createStore() {
   let privkey = localStorage.getItem('privkey');
@@ -22,45 +27,30 @@ export default function createStore() {
 
   const bridgeClient = bridgeClientWrapper.api;
 
-  /**
-   * Adds authentication headers to request object
-   * @private
-   * @param {Object} opts - Options parameter passed to request
-   * @return {Object}
-   */
-  const authenticate = (opts) => {
-    if (bridgeClient.keypair) {
-      const payload = ['GET', 'DELETE'].indexOf(opts.method) !== -1 ?
-        querystring.stringify(opts.qs) :
-        JSON.stringify(opts.json);
-
-      const contract = [opts.method, opts.uri, payload].join('\n');
-
-      opts.headers = opts.headers || {};
-      opts.headers['x-pubkey'] = bridgeClient.keypair.getPublicKey();
-      opts.headers['x-signature'] = bridgeClient.keypair.sign(contract, {
-        compact: false
-      });
-    } else if (bridgeClient.basicauth) {
-      opts.auth = {
-        user: bridgeClient.basicauth.email,
-        pass: utils.sha256(bridgeClient.basicauth.password, 'utf8')
-      };
-    }
-
-    return opts;
-  };
-
-  const apolloNetworkInterface = createNetworkInterface('http://localhost:6382/graphql');
+  const baseUrl = process.env.APOLLO_CLIENT_URL || 'http://localhost:3000';
+  const basePath = '/graphql';
+  const apolloNetworkInterface = createNetworkInterface(`${baseUrl}${basePath}`);
   apolloNetworkInterface.use([{
     applyMiddleware(req, next) {
-      // req.options.neaders
-      authenticate(req.options);
+      const opts = req.options;
+      opts.baseUrl = baseUrl;
+      opts.uri = basePath;
+      opts.method = 'POST';
+
+      // Add `__nonce` param to request body
+      req.request.__nonce = uuid.v4();
+
+      // Copy by value so we can `print` the query
+      opts.json = {...req.request};
+      opts.json.query = graphqlTagPrint(opts.json.query);
+
+      bridgeClient._authenticate(opts);
       next();
     }
   }]);
 
   const apolloClient = new ApolloClient({
+    // shouldBatch: true,
     networkInterface: apolloNetworkInterface
   });
 
@@ -70,7 +60,10 @@ export default function createStore() {
   ];
 
   const store = _createStore(reducer(apolloClient),
-    applyMiddleware(...middleware)
+    compose(
+      applyMiddleware(...middleware),
+      window.devToolsExtension ? window.devToolsExtension() : f => f
+    )
   );
 
   return {store, apolloClient};

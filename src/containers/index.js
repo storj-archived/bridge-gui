@@ -9,4 +9,3 @@ export LoginForm from 'containers/auth/login-form';
 export NotFound from 'containers/not-found';
 export SignupForm from 'containers/auth/signup-form';
 export Support from 'containers/support/index';
-export Billing from 'containers/billing/index';

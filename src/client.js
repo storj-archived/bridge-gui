@@ -11,6 +11,8 @@ import renderRoutes from 'routes';
 const dest = document.getElementById('content');
 const {store, apolloClient} = createStore();
 
+Stripe.setPublishableKey('pk_test_9jNycwEK9kRyCEbKpbMJI1rO');
+
 ReactDOM.render(
   <ApolloProvider store={store} client={apolloClient}>
     {renderRoutes(store)}

@@ -16,7 +16,7 @@ const host = config.host || 'localhost';
 const port = (config.port + 1) || 3001;
 const serverOptions = {
   contentBase: '../src/',
-  quiet: true,
+  quiet: false,
   noInfo: true,
   hot: true,
   lazy: false,
@@ -30,7 +30,7 @@ const app = WDS.app;
 
 const addSecurityHeaders = (req, res, next) => {
   res.set('X-Frame-Options', 'DENY');
-  res.set('Content-Security-Policy', "default-src 'self'; style-src 'unsafe-inline' 'self'; object-src 'none'; connect-src *; frame-src https://storj.github.io;");
+  // res.set('Content-Security-Policy', "default-src 'self'; style-src 'unsafe-inline' 'self'; object-src 'none'; connect-src *; frame-src https://storj.github.io;");
   next();
 };
 
@@ -51,7 +51,7 @@ app
 app.use('/graphiql', function(req, res, next) {
   res.removeHeader('Content-Security-Policy');
   graphiqlExpress({
-    endpointURL: 'http://localhost:6382/graphql'
+    endpointURL: 'http://localhost:3000/graphql'
   })(req, res, next);
 });
 
