@@ -70,17 +70,12 @@ export default class PasswordReset extends Component {
                   </h1>
 
                   <form>
-                    <p>
-                      Enter your email address and a new password below and
-                      we'll send you instructions on how to complete your
-                      password reset.
+                    <p class="form-group">Enter your email address and a new
+                      password below, and we'll send you instructions on how to
+                      complete your password reset.
                     </p>
 
-                    <div className={`
-                        form-group
-                        ${submitFailed && email.error ? 'has-error' : ''}
-                      `}
-                    >
+                    <div className={'form-group ' + (submitFailed && email.error ? 'has-error' : '')}>
                       {submitFailed && formLabelError(email)}
                       <input
                         type="email"
