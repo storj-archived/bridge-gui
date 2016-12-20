@@ -6,7 +6,7 @@ RUN mkdir /bridge-gui
 
 COPY . /bridge-gui
 
-RUN yarn install --ignore-engines
+RUN npm install yarn && yarn install --ignore-engines
 
 WORKDIR /bridge-gui
 
