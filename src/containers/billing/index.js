@@ -86,6 +86,8 @@ const mapStateToProps = ({transactionGroup: {balance, usage}}) => {
   return {balance, usage};
 };
 
+let globalCounter = 0;
+
 @connect({
   mapQueriesToProps,
   mapMutationsToProps,
@@ -95,19 +97,20 @@ const mapStateToProps = ({transactionGroup: {balance, usage}}) => {
 
 export default class Billing extends Component {
   componentWillReceiveProps(nextProps) {
+    globalCounter++;
+    if(globalCounter > 50) return;
+
+    console.log('balance and usage: ', balance, usage);
+
     const {balance, usage} = nextProps;
-    // TODO: Use apollo query observables instead of promises
-    if (typeof balance !== 'undefined' || typeof usage !== 'undefined') {
-        return;
+
+    if (!!balance && !!usage) {
+      return console.log('stopping');
     }
+
     const {startDate: balanceStartDate, endDate: balanceEndDate} = this.getBalanceRange();
     const {startDate: usageStartDate, endDate: usageEndDate} = this.getUsageRange();
 
-    if (!balanceStartDate || !balanceEndDate || !usageStartDate || !usageEndDate) {
-      return null;
-    }
-    // TODO: Use Apollo query observables instead of promises
-    // to check for loading true/false
     const balancePromise = this.props.query({
       query: transactionRangeQuery,
       variables: {
@@ -146,7 +149,7 @@ export default class Billing extends Component {
       (today.getMonth() - 1),
       startDayOfMonth
     ));
-    const endDate = (moment(startDate).add('1', 'month').unix() * 1000);
+    const endDate = (moment(startDate).add('1', 'month').valueOf());
 
     return {
       startDate,
@@ -165,7 +168,7 @@ export default class Billing extends Component {
       (today.getMonth()),
       startDayOfMonth
     ));
-    const endDate = (moment(startDate).add('1', 'month').unix() * 1000);
+    const endDate = (moment(startDate).add('1', 'month').valueOf());
 
     return {
       startDate,
@@ -244,6 +247,12 @@ export default class Billing extends Component {
     };
     const linkParams = '/dashboard/billing/usage';
 
+    // return (
+    //   <div>
+    //     <h1>Billing</h1>
+    //   </div>
+    //
+    // )
     return (
       <div>
         <section>

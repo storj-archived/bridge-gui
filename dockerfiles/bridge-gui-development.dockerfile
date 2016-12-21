@@ -6,11 +6,11 @@ RUN mkdir /bridge-gui
 
 COPY . /bridge-gui
 
-RUN npm install yarn && yarn install --ignore-engines
-
 WORKDIR /bridge-gui
 
-# TODO: make this not a required step
-RUN npm run build
+RUN npm install -g yarn && \
+  yarn install --ignore-engines && \
+  npm rebuild node-sass && \
+  npm run build
 
 CMD npm run start-dev
