@@ -298,7 +298,7 @@ export default class Billing extends Component {
           </div>
         </section>
         <section>
-          { !!this.getPaymentInfo().id ? null : <AddCardForm
+          { !!this.getPaymentInfo().id   ? null : <AddCardForm
             // TODO: use apollo watchquery correctly so we don't have to call `refetch`
             updatePaymentInfo={this.props.paymentProcessor.refetch}/> }
         </section>
