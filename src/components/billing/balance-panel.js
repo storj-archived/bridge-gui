@@ -17,7 +17,7 @@ const BalancePanel = ({amount, addCreditHandler, cardData}) => {
             <button
               disabled={!cardData}
               onClick={addCreditHandler}
-              className="btn btn-green btn-action" >
+              className="btn btn-green btn-action display-none" >
                 Pay Balance
             </button>
           </div>

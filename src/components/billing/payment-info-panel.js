@@ -18,7 +18,10 @@ const PaymentInfoPanel = ({
             <h2>**** **** **** {lastFour}</h2>
           </div>
           <div className="col-xs-4 text-right">
-            <button onClick={removeCardHandler} className="btn btn-action btn-red">Remove Card</button>
+            <button onClick={removeCardHandler}
+              className="btn btn-action btn-red">
+                Remove Card
+            </button>
           </div>
         </div>
       </div>

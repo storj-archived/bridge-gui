@@ -4,15 +4,17 @@ services:
     image: mongo
     ports: 
       - '27017:27017'
-  billing:
-    image: storjlabs/billing:manual-build
-    ports: 
-      - '3000:3000'
-    links:
-      - mongo
-    environment:
-      NODE_ENV: development
-      MONGO_URL: 'mongodb://mongo/bridge'
+  #billing:
+  #  image: storjlabs/billing:manual-build
+  #  ports: 
+  #    - '3000:3000'
+  #  links:
+  #    - mongo
+  #  environment:
+  #    NODE_ENV: development
+  #    MONGO_URL: 'mongodb://mongo/bridge'
+  #  volumes:
+  #    - ../../billing/:/root/node_modules/storj-billing/
   integration:
     image: dylanlott/storj-integration
     ports:
@@ -24,7 +26,6 @@ services:
       - '8080:8080'
     links: 
       - mongo
-      - billing
     environment:
       PORT: 6382
       NODE_ENV: 'development'

@@ -64,9 +64,10 @@ const mapMutationsToProps = ({
             id,
             name,
             billingDate,
-            defaultCard {
+            defaultPaymentMethod {
               merchant,
-              lastFour
+              lastFour,
+              id
             },
             error
           }

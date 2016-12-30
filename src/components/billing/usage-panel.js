@@ -16,7 +16,7 @@ const UsagePanel = ({amount, linkParams}) => {
             </b></h2>
           </div>
           <div className="col-xs-6 text-right">
-            <Link className="btn btn-blue btn-action" to={linkParams} >View Usage</Link>
+            <Link className="btn btn-blue btn-action display-none" to={linkParams} >View Usage</Link>
           </div>
         </div>
       </div>

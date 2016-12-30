@@ -34,9 +34,10 @@ const mapQueriesToProps = () => {
           id,
           name,
           billingDate,
-          defaultCard {
+          defaultPaymentMethod {
             merchant,
-            lastFour
+            lastFour,
+            id
           },
           error
         }
@@ -69,6 +70,14 @@ const mapMutationsToProps = () => {
         mutation: gql`
         mutation {
           removePaymentProcessor {
+            id,
+            name,
+            billingDate,
+            defaultPaymentMethod {
+              merchant,
+              lastFour,
+              id
+            },
             error
           }
         }`
@@ -99,7 +108,7 @@ export default class Billing extends Component {
   componentWillReceiveProps(nextProps) {
     globalCounter++;
     if(globalCounter > 50) return;
-
+    console.log(globalCounter);
     console.log('balance and usage: ', balance, usage);
 
     const {balance, usage} = nextProps;
@@ -191,11 +200,11 @@ export default class Billing extends Component {
     const {loading} = this.props.paymentProcessor;
 
     if (loading || !this.props.paymentProcessor.paymentProcessor) {
-      return null;
+      return {};
     }
 
-    const {defaultCard} = this.props.paymentProcessor.paymentProcessor;
-    return defaultCard;
+    const {defaultPaymentMethod} = this.props.paymentProcessor.paymentProcessor;
+    return defaultPaymentMethod;
   }
 
   getTransactions() {
@@ -278,7 +287,7 @@ export default class Billing extends Component {
             </div>
             <div className="row">
               <div className="col-xs-12">
-                { !this.getPaymentInfo() ? null :
+                { !this.getPaymentInfo().id ? null :
                   <PaymentInfoPanel
                     removeCardHandler={this.removeCard.bind(this)}
                     paymentInfo={this.getPaymentInfo()}
@@ -289,7 +298,7 @@ export default class Billing extends Component {
           </div>
         </section>
         <section>
-          { !!this.getPaymentInfo() ? null : <AddCardForm
+          { !!this.getPaymentInfo().id ? null : <AddCardForm
             // TODO: use apollo watchquery correctly so we don't have to call `refetch`
             updatePaymentInfo={this.props.paymentProcessor.refetch}/> }
         </section>
