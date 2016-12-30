@@ -2,11 +2,9 @@ FROM node:6
 
 EXPOSE 3001
 
-RUN mkdir /bridge-gui
+WORKDIR /bridge-gui
 
 COPY . /bridge-gui
-
-WORKDIR /bridge-gui
 
 RUN npm install -g yarn && \
   yarn install --ignore-engines && \
