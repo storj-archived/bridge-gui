@@ -4,54 +4,29 @@ services:
     image: mongo
     ports:
       - '27017:27017'
-  rabbitmq:
-    image: rabbitmq
-  bridge:
-    image: storjlabs/bridge
-    build:
-      context: ../bridge
-      dockerfile: ./dockerfiles/bridge-development.dockerfile
+  #billing:
+  #  image: storjlabs/billing:manual-build
+  #  ports:
+  #    - '3000:3000'
+  #  links:
+  #    - mongo
+  #  environment:
+  #    NODE_ENV: development
+  #    MONGO_URL: 'mongodb://mongo/bridge'
+  #  volumes:
+  #    - ../../billing/:/root/node_modules/storj-billing/
+  integration:
+    image: dylanlott/storj-integration
     ports:
       - '6382:6382'
-    command: /usr/bin/env npm run start-dev
-    environment:
-      NODE_ENV: 'develop'
-      MONGO_URL:  'mongodb://mongo:27017/__storj-bridge-development'
-    volumes:
-      - ../bridge:/bridge
+      - '9000:9000'
+      - '9100:9100'
+      - '9200:9200'
+      - '9300:9300'
+      - '8080:8080'
     links:
       - mongo
-      - rabbitmq
-  billing:
-    image: storjlabs/billing
-    build:
-      context: ../billing
-      dockerfile: ./dockerfiles/billing-development.dockerfile
-    volumes:
-      - ../billing:/billing
     environment:
-      STAGE: development
-      MONGO_URL: 'mongodb://mongo:27017/__storj-bridge-development'
-    links:
-      - mongo
-    ports:
-      - '3000:3000'
-  bridge-gui:
-    image: storjlabs/bridge-gui
-    build:
-      context: ../
-      dockerfile: ./dockerfiles/bridge-gui-development.dockerfile
-    volumes:
-      - ../:/bridge-gui
-    environment:
-      STAGE: development
-      APOLLO_CLIENT_URL: 'http://billing:3000'
-      API_HOST: bridge
-      API_PORT: 6382
-      HOST: 0.0.0.0
-      PORT: 3001
-    links:
-      - bridge
-      - billing
-    ports:
-      - '3001:3001'
+      PORT: 6382
+      NODE_ENV: 'development'
+    command: /bin/sleep 90000

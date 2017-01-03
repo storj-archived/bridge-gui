@@ -3,6 +3,7 @@ var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var strip = require('strip-loader');
+var Dotenv = require('dotenv-webpack');
 
 var relativeAssetsPath = '../static/dist';
 var assetsPath = path.join(__dirname, relativeAssetsPath);
@@ -18,7 +19,7 @@ module.exports = {
     'webpack/hot/only-dev-server',
     'bootstrap-sass!./src/theme/bootstrap.config.prod.js',
     './src/client.js',
-    './src/theme/shame.sc'
+    './src/theme/shame.scss'
   ],
   output: {
     path: assetsPath,
@@ -64,6 +65,12 @@ module.exports = {
     tls: 'empty'
   },
   plugins: [
+    //set environment variables with dotenv
+    new Dotenv({
+      path: './.env',
+      safe: false
+    }),
+
     // css files from the extract-text-plugin loader
     new ExtractTextPlugin('[name].css', {allChunks: true}),
     new webpack.DefinePlugin({

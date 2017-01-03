@@ -10,3 +10,4 @@ build.log
 gems/
 .cache
 .node-gyp
+.env

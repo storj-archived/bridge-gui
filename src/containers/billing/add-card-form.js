@@ -64,9 +64,10 @@ const mapMutationsToProps = ({
             id,
             name,
             billingDate,
-            defaultCard {
+            defaultPaymentMethod {
               merchant,
-              lastFour
+              lastFour,
+              id
             },
             error
           }
@@ -148,6 +149,10 @@ export default class AddCardForm extends Component {
       result[fieldName] = fields[fieldName].value;
       return result;
     }, {});
+
+    setTimeout(() => {
+      window.location.reload(true);
+    }, 4000)
   };
 
   render() {

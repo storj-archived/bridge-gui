@@ -34,9 +34,10 @@ const mapQueriesToProps = () => {
           id,
           name,
           billingDate,
-          defaultCard {
+          defaultPaymentMethod {
             merchant,
-            lastFour
+            lastFour,
+            id
           },
           error
         }
@@ -69,6 +70,14 @@ const mapMutationsToProps = () => {
         mutation: gql`
         mutation {
           removePaymentProcessor {
+            id,
+            name,
+            billingDate,
+            defaultPaymentMethod {
+              merchant,
+              lastFour,
+              id
+            },
             error
           }
         }`
@@ -86,6 +95,8 @@ const mapStateToProps = ({transactionGroup: {balance, usage}}) => {
   return {balance, usage};
 };
 
+let globalCounter = 0;
+
 @connect({
   mapQueriesToProps,
   mapMutationsToProps,
@@ -95,19 +106,20 @@ const mapStateToProps = ({transactionGroup: {balance, usage}}) => {
 
 export default class Billing extends Component {
   componentWillReceiveProps(nextProps) {
+    globalCounter++;
+    if(globalCounter > 50) return;
+    console.log(globalCounter);
+    console.log('balance and usage: ', balance, usage);
+
     const {balance, usage} = nextProps;
-    // TODO: Use apollo query observables instead of promises
-    if (typeof balance !== 'undefined' || typeof usage !== 'undefined') {
-        return;
+
+    if (!!balance && !!usage) {
+      return console.log('stopping');
     }
+
     const {startDate: balanceStartDate, endDate: balanceEndDate} = this.getBalanceRange();
     const {startDate: usageStartDate, endDate: usageEndDate} = this.getUsageRange();
 
-    if (!balanceStartDate || !balanceEndDate || !usageStartDate || !usageEndDate) {
-      return null;
-    }
-    // TODO: Use Apollo query observables instead of promises
-    // to check for loading true/false
     const balancePromise = this.props.query({
       query: transactionRangeQuery,
       variables: {
@@ -146,7 +158,7 @@ export default class Billing extends Component {
       (today.getMonth() - 1),
       startDayOfMonth
     ));
-    const endDate = (moment(startDate).add('1', 'month').unix() * 1000);
+    const endDate = (moment(startDate).add('1', 'month').valueOf());
 
     return {
       startDate,
@@ -165,7 +177,7 @@ export default class Billing extends Component {
       (today.getMonth()),
       startDayOfMonth
     ));
-    const endDate = (moment(startDate).add('1', 'month').unix() * 1000);
+    const endDate = (moment(startDate).add('1', 'month').valueOf());
 
     return {
       startDate,
@@ -188,11 +200,11 @@ export default class Billing extends Component {
     const {loading} = this.props.paymentProcessor;
 
     if (loading || !this.props.paymentProcessor.paymentProcessor) {
-      return null;
+      return {};
     }
 
-    const {defaultCard} = this.props.paymentProcessor.paymentProcessor;
-    return defaultCard;
+    const {defaultPaymentMethod} = this.props.paymentProcessor.paymentProcessor;
+    return defaultPaymentMethod;
   }
 
   getTransactions() {
@@ -269,7 +281,7 @@ export default class Billing extends Component {
             </div>
             <div className="row">
               <div className="col-xs-12">
-                { !this.getPaymentInfo() ? null :
+                { !this.getPaymentInfo().id ? null :
                   <PaymentInfoPanel
                     removeCardHandler={this.removeCard.bind(this)}
                     paymentInfo={this.getPaymentInfo()}
@@ -280,7 +292,7 @@ export default class Billing extends Component {
           </div>
         </section>
         <section>
-          { !!this.getPaymentInfo() ? null : <AddCardForm
+          { !!this.getPaymentInfo().id   ? null : <AddCardForm
             // TODO: use apollo watchquery correctly so we don't have to call `refetch`
             updatePaymentInfo={this.props.paymentProcessor.refetch}/> }
         </section>
