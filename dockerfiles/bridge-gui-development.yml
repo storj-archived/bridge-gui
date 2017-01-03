@@ -2,11 +2,11 @@ version: '2'
 services:
   mongo:
     image: mongo
-    ports: 
+    ports:
       - '27017:27017'
   #billing:
   #  image: storjlabs/billing:manual-build
-  #  ports: 
+  #  ports:
   #    - '3000:3000'
   #  links:
   #    - mongo
@@ -24,7 +24,7 @@ services:
       - '9200:9200'
       - '9300:9300'
       - '8080:8080'
-    links: 
+    links:
       - mongo
     environment:
       PORT: 6382

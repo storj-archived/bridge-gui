@@ -256,12 +256,6 @@ export default class Billing extends Component {
     };
     const linkParams = '/dashboard/billing/usage';
 
-    // return (
-    //   <div>
-    //     <h1>Billing</h1>
-    //   </div>
-    //
-    // )
     return (
       <div>
         <section>
