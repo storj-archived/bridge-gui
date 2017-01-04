@@ -46,13 +46,13 @@
 
     - name: Tweak mongo config
       lineinfile:
-        dest: /etc/mongodb.conf
+        dest: /etc/mongod.conf
         state: present
         line: 'bind_ip = 0.0.0.0'
         regexp: '^#?\s*bind_ip\s*=\s*\d+\.\d+\.\d+\.\d+'
       become: yes #sudo
       notify:
-        - Restart mongodb
+        - Restart mongod
       tags:
         - mongo
 
@@ -95,7 +95,7 @@
 #        - npm
         - yarn
         - install
-        
+
     - include: tasks/link-node-modules.yml module=item
 
 #    - name: Link project binaries (npm link)
@@ -107,9 +107,9 @@
 #        - npm
 #        - link
   handlers:
-    - name: Restart mongodb
+    - name: Restart mongod
       service:
-        name: mongodb
+        name: mongod
         state: restarted
       become: yes #sudo
 
