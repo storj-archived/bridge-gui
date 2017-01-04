@@ -39,7 +39,6 @@
 
   tasks:
     - include: tasks/link-node-modules.yml module=item
-      with_items: '{{ modules }}'
 
     - name: Add motd instructions
       copy:

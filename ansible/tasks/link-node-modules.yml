@@ -1,11 +1,11 @@
 ---
 - name: Link storj node modules
   file:
-    src: '~/{{ module[0] }}'
-    path: '~/bridge-gui/node_modules/{{ module[1] }}'
+    src: '~/{{ item[0] }}'
+    path: '~/bridge-gui/node_modules/{{ item[1] }}'
     state: link
     force: yes
   with_nested:
-   - [core, service-storage-models, service-middleware, mongodb-adapter]
-   - [core, service-storage-models, service-middleware, mongodb-adapter]
+   - "{{ modules }}"
+   - "{{ modules }}"
 
