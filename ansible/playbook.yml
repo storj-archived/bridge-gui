@@ -38,8 +38,6 @@
     - node
 
   tasks:
-    - include: tasks/link-node-modules.yml module=item
-
     - name: Add motd instructions
       copy:
         src: ./files/motd
@@ -97,6 +95,8 @@
 #        - npm
         - yarn
         - install
+        
+    - include: tasks/link-node-modules.yml module=item
 
 #    - name: Link project binaries (npm link)
 #      command: bash -lc 'npm link'
