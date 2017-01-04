@@ -11,20 +11,36 @@
       # TODO: lookup bin name(s) from package.json
 #      bin: storj-bridge
       path: '{{ ansible_env.HOME }}/.nvm/versions/node/v{{ nvm.node.version }}/bin/npm'
+    modules:
+      - core
+      - mongodb-adapter
+      - service-storage-models
+      - service-middleware
+      - bridge
+      - billing
+
   pre_tasks:
+    - include: tasks/mongodb.yml
+      become: yes #sudo
+
     - name: Install service-level dependencies
-      become: true
+      become: yes #sudo
       apt:
         name: '{{ item }}'
         state: present
         update_cache: yes
       with_items:
-        - mongodb
+        - mongodb-org
         - git
+
   roles:
     - rabbitmq
     - node
+
   tasks:
+    - include: tasks/link-node-modules.yml module=item
+      with_items: '{{ modules }}'
+
     - name: Add motd instructions
       copy:
         src: ./files/motd
@@ -65,11 +81,19 @@
         - npm
         - install
 
-    - name: 'Install bridge-gui project dependencies (npm install) - NOTE: THIS COULD TAKE A WHILE...'
+    - name: 'Clean existing node_modules directories'
+      file:
+        path: '~/{{ item }}/node_modules'
+        state: absent
+      with_items: '{{ modules }}'
+
+    - name: 'Install project dependencies (npm install) - NOTE: THIS COULD TAKE A WHILE...'
 #      npm:
 #        path: '{{ synced_dir }}'
 #        executable: '{{ npm.path }}'
-      shell: 'yarn --ignore-engines'
+      shell: 'cd ~/{{ item }} && yarn --ignore-engines'
+      with_items: '{{ modules }}'
+      ignore_errors: yes
       tags:
 #        - npm
         - yarn
