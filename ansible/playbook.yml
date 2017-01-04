@@ -69,11 +69,7 @@
         create: yes
 
     - name: 'Install yarn'
-      npm:
-        path: '{{ synced_dir }}'
-        executable: '{{ npm.path }}'
-        global: yes
-        name: yarn
+      shell: 'npm i -g yarn'
       tags:
         - npm
         - install

@@ -56,6 +56,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "../service-storage-models", "/home/vagrant/service-storage-models"
   config.vm.synced_folder "../service-middleware", "/home/vagrant/service-middleware"
   config.vm.synced_folder "../core", "/home/vagrant/core"
+  config.vm.synced_folder "../mongodb-adapter", "/home/vagrant/mongodb-adapter"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
