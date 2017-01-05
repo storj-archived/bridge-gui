@@ -94,6 +94,6 @@ Vagrant.configure("2") do |config|
   # SHELL
 
   config.vm.provision "ansible_local" do |ansible|
-    ansible.playbook = "ansible/temp.yml"
+    ansible.playbook = "ansible/playbook.yml"
   end
 end

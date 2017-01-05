@@ -1,8 +1,8 @@
 ---
 - name: Remove existing storj node modules directories
   file:
-    src: '/home/vagrant/{{ item[0] }}'
-    path: '/home/vagrant/{{ item[1] }}/node_modules/{{ item[0] }}'
+    src: '/home/vagrant/{{ item[0].git }}'
+    path: '/home/vagrant/{{ item[1].git }}/node_modules/{{ item[0].npm }}'
     state: absent
   with_nested:
    - '{{ modules }}'

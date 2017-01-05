@@ -24,20 +24,6 @@
         npm: storj-bridge
       - git: billing
         npm: storj-billing
-#    node_modules:
-#      - storj-lib
-#      - storj-mongodb-adapter
-#      - storj-service-storage-models
-#      - storj-service-middleware
-#      - storj-bridge
-#      - storj-billing
-#    git_repos:
-#      - core
-#      - mongodb-adapter
-#      - service-storage-models
-#      - service-middleware
-#      - bridge
-#      - billing
 
   pre_tasks:
     - include: tasks/mongodb.yml
@@ -52,6 +38,7 @@
         state: present
         update_cache: yes
       with_items:
+        - build-essential
         - mongodb-org
         - git
 
