@@ -24,6 +24,8 @@
         npm: storj-bridge
       - git: billing
         npm: storj-billing
+      - git: bridge-gui
+        npm: storj-bridge-gui
 
   pre_tasks:
     - include: tasks/mongodb.yml
@@ -89,7 +91,7 @@
 
     - name: 'Clean existing node_modules directories'
       file:
-        path: '~/{{ item }}/node_modules'
+        path: '~/{{ item.git }}/node_modules'
         state: absent
       with_items: '{{ modules }}'
 
@@ -97,7 +99,7 @@
 #      npm:
 #        path: '{{ synced_dir }}'
 #        executable: '{{ npm.path }}'
-      shell: 'cd ~/{{ item }} && yarn --ignore-engines'
+      shell: 'cd ~/{{ item.git }} && yarn --ignore-engines'
       with_items: '{{ modules }}'
       ignore_errors: yes
       tags:
