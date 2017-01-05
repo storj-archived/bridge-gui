@@ -16,4 +16,11 @@
   with_nested:
    - '{{ modules }}'
    - '{{ modules }}'
+#
+#- name: Remove recursive links
+#  file:
+#    src: '/home/vagrant/{{ item.git }}'
+#    path: '/home/vagrant/{{ item.git }}/node_modules/{{ item.npm }}'
+#    state: absent
+#  with_items: '{{ modules }}'
 
