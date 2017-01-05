@@ -12,16 +12,38 @@
 #      bin: storj-bridge
       path: '{{ ansible_env.HOME }}/.nvm/versions/node/v{{ nvm.node.version }}/bin/npm'
     modules:
-      - core
-      - mongodb-adapter
-      - service-storage-models
-      - service-middleware
-      - bridge
-      - billing
+      - git: core
+        npm: storj-lib
+      - git: mongodb-adapter
+        npm: storj-mongodb-adapter
+      - git: service-storage-models
+        npm: storj-service-storage-models
+      - git: service-middleware
+        npm: storj-service-middleware
+      - git: bridge
+        npm: storj-bridge
+      - git: billing
+        npm: storj-billing
+#    node_modules:
+#      - storj-lib
+#      - storj-mongodb-adapter
+#      - storj-service-storage-models
+#      - storj-service-middleware
+#      - storj-bridge
+#      - storj-billing
+#    git_repos:
+#      - core
+#      - mongodb-adapter
+#      - service-storage-models
+#      - service-middleware
+#      - bridge
+#      - billing
 
   pre_tasks:
     - include: tasks/mongodb.yml
       become: yes #sudo
+      tags:
+        - link
 
     - name: Install service-level dependencies
       become: yes #sudo
@@ -69,7 +91,11 @@
         create: yes
 
     - name: 'Install yarn'
-      shell: 'npm i -g yarn'
+      npm:
+        path: '{{ synced_dir }}'
+        executable: '{{ npm.path }}'
+        global: yes
+        name: yarn
       tags:
         - npm
         - install
@@ -92,7 +118,7 @@
         - yarn
         - install
 
-    - include: tasks/link-node-modules.yml module=item
+    - include: tasks/link-node-modules.yml
 
 #    - name: Link project binaries (npm link)
 #      command: bash -lc 'npm link'

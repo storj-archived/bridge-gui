@@ -1,11 +1,19 @@
 ---
+- name: Remove existing storj node modules directories
+  file:
+    src: '/home/vagrant/{{ item[0] }}'
+    path: '/home/vagrant/{{ item[1] }}/node_modules/{{ item[0] }}'
+    state: absent
+  with_nested:
+   - '{{ modules }}'
+   - '{{ modules }}'
+
 - name: Link storj node modules
   file:
-    src: '~/{{ item[0] }}'
-    path: '~/bridge-gui/node_modules/{{ item[1] }}'
+    src: '/home/vagrant/{{ item[0].git }}'
+    path: '/home/vagrant/{{ item[1].git }}/node_modules/{{ item[0].npm }}'
     state: link
-    force: yes
   with_nested:
-   - "{{ modules }}"
-   - "{{ modules }}"
+   - '{{ modules }}'
+   - '{{ modules }}'
 
