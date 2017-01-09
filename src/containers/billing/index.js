@@ -204,7 +204,7 @@ export default class Billing extends Component {
     }
 
     const {defaultPaymentMethod} = this.props.paymentProcessor.paymentProcessor;
-    return defaultPaymentMethod;
+    return defaultPaymentMethod || {};
   }
 
   getTransactions() {

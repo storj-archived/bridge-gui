@@ -1,4 +1,4 @@
-FROM storjlabs/docker-nodejs:4.1.1
+FROM node:6
 
 # Apt
 RUN apt-get update
@@ -17,7 +17,8 @@ RUN git reset --hard
 RUN git clean -fdx
 
 # Install node modules for production (i.e. don't install devdeps)
-RUN npm install --production
+RUN npm i -g yarn
+RUN yarn --ignore-engines --production
 
 # Build for production
 RUN npm run build
