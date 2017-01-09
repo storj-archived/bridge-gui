@@ -1,5 +1,5 @@
 import url from 'url';
-import {KeyPair, BridgeClient as Client} from 'storj-lib';
+import {KeyPair, BridgeClient as Client} from 'storj';
 import request from 'request';
 import {hashHistory} from 'react-router';
 import async from 'async';
