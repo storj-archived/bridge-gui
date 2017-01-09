@@ -17,8 +17,7 @@ RUN git reset --hard
 RUN git clean -fdx
 
 # Install node modules for production (i.e. don't install devdeps)
-RUN npm i -g yarn
-RUN yarn --ignore-engines --production
+RUN npm i --production
 
 # Build for production
 RUN npm run build
