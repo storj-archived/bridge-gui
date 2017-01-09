@@ -11,6 +11,8 @@ var assetsPath = path.join(__dirname, relativeAssetsPath);
 var config = require('../src/config');
 var port = (config.port + 1) || 3001;
 
+var excludeRegex = /(?:^\/home\/vagrant\/(?!bridge-gui))|(?:node_modules)/;
+
 module.exports = {
   devtool: 'source-map',
   context: path.resolve(__dirname, '..'),
@@ -32,7 +34,7 @@ module.exports = {
       /node_modules\/json-schema\/lib\/validate\.js/
     ],
     loaders: [
-      { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel']},
+      { test: /\.jsx?$/, exclude: excludeRegex, loaders: ['react-hot', 'babel']},
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css?importLoaders=2&sourceMap!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true') },
       { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
@@ -46,6 +48,7 @@ module.exports = {
   },
   progress: true,
   resolve: {
+    // root: path.resolve(__dirname, '..'),
     alias: {
       dgram: `${__dirname}/stubs/dgram`,
       bufferutil: `${__dirname}/stubs/blank`,

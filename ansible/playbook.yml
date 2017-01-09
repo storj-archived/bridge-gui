@@ -89,6 +89,9 @@
         - npm
         - install
 
+    - name: 'Install nodemon globally'
+      shell: 'yarn global add nodemon'
+
     - name: 'Clean existing node_modules directories'
       file:
         path: '~/{{ item.git }}/node_modules'
