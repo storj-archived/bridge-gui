@@ -19,6 +19,21 @@ RUN git clean -fdx
 # Install node modules for production (i.e. don't install devdeps)
 RUN npm i --production
 
+ARG NODE_ENV=development
+ARG APIHOST=localhost
+ARG APIPORT=6382
+ARG APIPROTOCOL=http
+ARG APOLLO_URL=http://localhost:3000/graphql
+ARG STRIPE_PUBLISHABLE_KEY
+
+ENV NODE_ENV $NODE_ENV
+ENV APIHOST $APIHOST
+ENV APIPORT $APIPORT
+ENV APIPROTOCOL $APIPROTOCOL
+ENV APOLLO_URL $APOLLO_URL
+ENV STRIPE_PUBLISHABLE_KEY $STRIPE_PUBLISHABLE_KEY
+
+
 # Build for production
 RUN npm run build
 
