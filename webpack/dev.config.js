@@ -94,6 +94,7 @@ module.exports = {
         APIHOST: JSON.stringify(process.env.APIHOST),
         APIPORT: JSON.stringify(process.env.APIPORT),
         APIPROTOCOL: JSON.stringify(process.env.APIPROTOCOL),
+        APOLLO_CLIENT_URL: JSON.stringify(process.env.APOLLO_CLIENT_URL),
         STRIPE_PUBLISHABLE_KEY: JSON.stringify(process.env.STRIPE_PUBLISHABLE_KEY)
       }
     }),
