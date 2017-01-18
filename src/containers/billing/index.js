@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {connect} from 'react-apollo';
+import React, { Component } from 'react';
+import { connect } from 'react-apollo';
 import gql from 'graphql-tag';
 import moment from 'moment';
 import BalancePanel from 'components/billing/balance-panel';
@@ -8,7 +8,7 @@ import UsagePanel from 'components/billing/usage-panel';
 import AddCardForm from 'containers/billing/add-card-form';
 import TransactionsList from 'components/billing/transactions-list';
 import 'containers/billing/billing.scss';
-import {setBalance, setUsage} from 'redux/modules/transaction-group';
+import { setBalance, setUsage } from 'redux/modules/transaction-group';
 
 const transactionRangeQuery =
   gql`query usageTransactions($startDate: String!, $endDate: String!) {
@@ -60,7 +60,7 @@ const mapQueriesToProps = () => {
       }`
     }
   }
-}
+};
 
 const mapMutationsToProps = () => {
   return {
@@ -107,7 +107,7 @@ let globalCounter = 0;
 export default class Billing extends Component {
   componentWillReceiveProps(nextProps) {
     globalCounter++;
-    if(globalCounter > 50) return;
+    if (globalCounter > 50) return;
     console.log(globalCounter);
     console.log('balance and usage: ', balance, usage);
 
@@ -151,13 +151,17 @@ export default class Billing extends Component {
     const {loading, paymentProcessor} = this.props.paymentProcessor;
     const billingDate = (loading || !paymentProcessor) ? (new Date).getDate() : paymentProcessor.billingDate;
     const today = new Date();
-    const daysInMonth = (new Date(today.getFullYear(), (today.getMonth() - 1), 0)).getDate();
+    const daysInMonth = moment.utc(
+      // NB: add 1 to `.getUTCMonth` because `Date` uses 0 for Jan while `moment` uses 1
+      `${today.getUTCFullYear()}-${today.getUTCMonth() + 1}-1`,
+      'YYYY-MM-DD'
+    ).subtract(2, 'month').date();
     const startDayOfMonth = (billingDate > daysInMonth) ? daysInMonth : billingDate;
-    const startDate = Date.parse(new Date(
-      today.getFullYear(),
-      (today.getMonth() - 1),
-      startDayOfMonth
-    ));
+    const startDate = moment.utc(
+      // NB: add 1 to `.getUTCMonth` because `Date` uses 0 for Jan while `moment` uses 1
+      `${today.getUTCFullYear()}-${today.getUTCMonth() + 1}-${startDayOfMonth}`,
+      'YYYY-MM-DD HH:mm:ss.SSS'
+    ).subtract(2, 'month').valueOf();
     const endDate = (moment(startDate).add('1', 'month').valueOf());
 
     return {
@@ -170,13 +174,17 @@ export default class Billing extends Component {
     const {loading, paymentProcessor} = this.props.paymentProcessor;
     const billingDate = (loading || !paymentProcessor) ? (new Date).getDate() : paymentProcessor.billingDate;
     const today = new Date();
-    const daysInMonth = (new Date(today.getFullYear(), today.getMonth(), 0)).getDate();
+    const daysInMonth = moment.utc(
+      // NB: add 1 to `.getUTCMonth` because `Date` uses 0 for Jan while `moment` uses 1
+      `${today.getUTCFullYear()}-${today.getUTCMonth() + 1}-${today.getUTCDate()} 00:00:00.000`,
+      'YYYY-MM-DD HH:mm:ss.SSS'
+    ).subtract(1, 'month').date();
     const startDayOfMonth = (billingDate > daysInMonth) ? daysInMonth : billingDate;
-    const startDate = Date.parse(new Date(
-      today.getFullYear(),
-      (today.getMonth()),
-      startDayOfMonth
-    ));
+    const startDate = moment.utc(
+      // NB: add 1 to `.getUTCMonth` because `Date` uses 0 for Jan while `moment` uses 1
+      `${today.getUTCFullYear()}-${today.getUTCMonth() + 1}-${startDayOfMonth} 00:00:00.000`,
+      'YYYY-MM-DD HH:mm:ss.SSS'
+    ).subtract(1, 'month').valueOf();
     const endDate = (moment(startDate).add('1', 'month').valueOf());
 
     return {
@@ -221,9 +229,9 @@ export default class Billing extends Component {
       const titleizedType = credit.type
         .replace(/^\w/, (w) => (w.toUpperCase()));
       transaction.description = `${titleizedType} payment - Thank you!`;
-      transaction.timestamp = Date.parse(credit.created);
-      transaction.created = `${moment(credit.created)
-        .utc().format('MMM DD, YYYY - HH:mm')} UTC`;
+      transaction.timestamp = moment.utc(credit.created).valueOf();
+      transaction.created = `${moment.utc((credit.created))
+        .format('MMM DD, YYYY - HH:mm')} UTC`;
       return transaction;
     });
 
@@ -231,10 +239,10 @@ export default class Billing extends Component {
       const transaction = {...debit};
       const titleizedType = debit.type
         .replace(/^\w/, (w) => (w.toUpperCase()));
-      transaction.description = `${titleizedType} successful`;
+      transaction.description = `${titleizedType} usage`;
       transaction.timestamp = Date.parse(debit.created);
-      transaction.created = `${moment(debit.created)
-        .utc().format('MMM DD, YYYY - HH:mm')} UTC`;
+      transaction.created = `${moment.utc((debit.created))
+        .format('MMM DD, YYYY - HH:mm')} UTC`;
       return transaction;
     });
 
@@ -292,7 +300,7 @@ export default class Billing extends Component {
           </div>
         </section>
         <section>
-          { !!this.getPaymentInfo().id   ? null : <AddCardForm
+          { !!this.getPaymentInfo().id ? null : <AddCardForm
             // TODO: use apollo watchquery correctly so we don't have to call `refetch`
             updatePaymentInfo={this.props.paymentProcessor.refetch}/> }
         </section>

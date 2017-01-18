@@ -9,7 +9,7 @@ import React from 'react';
 
 const Currency = ({amount}) => {
   const value = (typeof(amount) !== 'number') ?
-    '' : amount.toFixed(4);
+    '' : (amount / 100).toFixed(6);
 
   return (
     <span>${value}</span>
