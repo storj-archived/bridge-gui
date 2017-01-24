@@ -113,9 +113,9 @@ export default class Billing extends Component {
     globalCounter++;
     if (globalCounter > 50) return;
     console.log(globalCounter);
-    console.log('balance and usage: ', balance, usage);
 
     const {balance, usage} = nextProps;
+    console.log('balance and usage: ', balance, usage);
 
     if (!!balance && !!usage) {
       return console.log('stopping');
@@ -124,31 +124,35 @@ export default class Billing extends Component {
     const {startDate: balanceStartDate, endDate: balanceEndDate} = this.getBalanceRange();
     const {startDate: usageStartDate, endDate: usageEndDate} = this.getUsageRange();
 
-    const balancePromise = this.props.query({
-      query: transactionRangeQuery,
-      variables: {
-        startDate: balanceStartDate,
-        endDate: balanceEndDate
-      }
-    });
+    if (!(balance && balance.loading)) {
+      const balancePromise = this.props.query({
+        query: transactionRangeQuery,
+        variables: {
+          startDate: balanceStartDate,
+          endDate: balanceEndDate
+        }
+      });
 
-    const usagePromise = this.props.query({
-      query: transactionRangeQuery,
-      variables: {
-        startDate: usageStartDate,
-        endDate: usageEndDate
-      }
-    });
+      balancePromise.then(({data: {credits, debits}, loading}) => {
+        const balance = this.calculateBalance(credits, debits);
+        this.props.setBalance(balance);
+      });
+    }
 
-    balancePromise.then(({data: {credits, debits}, loading}) => {
-      const balance = this.calculateBalance(credits, debits);
-      this.props.setBalance(balance);
-    });
+    if (!(usage && usage.loading)) {
+      const usagePromise = this.props.query({
+        query: transactionRangeQuery,
+        variables: {
+          startDate: usageStartDate,
+          endDate: usageEndDate
+        }
+      });
 
-    usagePromise.then(({data: {credits, debits}}) => {
-      const usage = this.calculateBalance(credits, debits);
-      this.props.setUsage(usage);
-    });
+      usagePromise.then(({data: {credits, debits}}) => {
+        const usage = this.calculateBalance(credits, debits);
+        this.props.setUsage(usage);
+      });
+    }
   }
 
   getBalanceRange() {
