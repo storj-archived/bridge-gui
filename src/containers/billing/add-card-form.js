@@ -56,11 +56,11 @@ const mapMutationsToProps = ({
   state
 }) => {
   return {
-    addPaymentProcessor: (data) => {
+    addPaymentMethod: (data) => {
       return {
         mutation: gql `
         mutation ($data: String!, $name: PaymentProcessorEnum!) {
-          addPaymentProcessor(data: $data, name: $name) {
+          addPaymentMethod(data: $data, name: $name) {
             id,
             name,
             billingDate,
@@ -134,7 +134,7 @@ export default class AddCardForm extends Component {
       cvc: cvv.value
     }, (status, response) => {
       const token = response.id;
-      this.props.mutations.addPaymentProcessor(JSON.stringify(token))
+      this.props.mutations.addPaymentMethod(JSON.stringify(token))
         .then(() => {
           this.props.updatePaymentInfo();
         });
@@ -149,10 +149,6 @@ export default class AddCardForm extends Component {
       result[fieldName] = fields[fieldName].value;
       return result;
     }, {});
-
-    setTimeout(() => {
-      window.location.reload(true);
-    }, 4000)
   };
 
   render() {

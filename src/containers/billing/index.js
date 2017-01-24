@@ -64,12 +64,12 @@ const mapQueriesToProps = () => {
 
 const mapMutationsToProps = () => {
   return {
-    removeCard: () => {
+    removeCard: (paymentProcessorId, paymentMethodId) => {
       return {
         // TODO: maybe add `id,` to get query update?
         mutation: gql`
-        mutation {
-          removePaymentProcessor {
+        mutation removePaymentMethod($paymentProcessorId: String!, $paymentMethodId: String!) {
+          removePaymentMethod(paymentProcessorId: $paymentProcessorId, paymentMethodId: $paymentMethodId) {
             id,
             name,
             billingDate,
@@ -80,7 +80,11 @@ const mapMutationsToProps = () => {
             },
             error
           }
-        }`
+        }`,
+        variables: {
+          paymentProcessorId,
+          paymentMethodId
+        }
       };
     }
   };
@@ -254,9 +258,15 @@ export default class Billing extends Component {
   removeCard() {
     const {removeCard} = this.props.mutations;
     // TODO: use apollo watchquery correctly so we don't have to call `refetch`
-    const {refetch} = this.props.paymentProcessor;
+    const {refetch, paymentProcessor: {
+      id: paymentProcessorId,
+      defaultPaymentMethod: {id: paymentMethodId}
+    }} = this.props.paymentProcessor;
 
-    removeCard().then(() => (refetch()));
+    removeCard(
+      paymentProcessorId,
+      paymentMethodId
+    ).then(() => (refetch()));
   }
 
   render() {
