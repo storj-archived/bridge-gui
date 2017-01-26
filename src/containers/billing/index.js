@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-apollo';
 import gql from 'graphql-tag';
 import moment from 'moment';
-window.m = moment;
 import BalancePanel from 'components/billing/balance-panel';
 import PaymentInfoPanel from 'components/billing/payment-info-panel';
 import UsagePanel from 'components/billing/usage-panel';
