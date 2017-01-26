@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-apollo';
 import gql from 'graphql-tag';
 import moment from 'moment';
+window.m = moment;
 import BalancePanel from 'components/billing/balance-panel';
 import PaymentInfoPanel from 'components/billing/payment-info-panel';
 import UsagePanel from 'components/billing/usage-panel';
@@ -156,29 +157,14 @@ export default class Billing extends Component {
   }
 
   getBalanceRange() {
-    const {loading, paymentProcessor} = this.props.paymentProcessor;
-    const billingDate = (loading || !paymentProcessor) ? (new Date).getDate() : paymentProcessor.billingDate;
-    const today = new Date();
-    const daysInMonth = moment.utc(
-      // NB: add 1 to `.getUTCMonth` because `Date` uses 0 for Jan while `moment` uses 1
-      `${today.getUTCFullYear()}-${today.getUTCMonth() + 1}-1`,
-      'YYYY-MM-DD'
-    ).subtract(2, 'month').date();
-    const startDayOfMonth = (billingDate > daysInMonth) ? daysInMonth : billingDate;
-    const startDate = moment.utc(
-      // NB: add 1 to `.getUTCMonth` because `Date` uses 0 for Jan while `moment` uses 1
-      `${today.getUTCFullYear()}-${today.getUTCMonth() + 1}-${startDayOfMonth}`,
-      'YYYY-MM-DD HH:mm:ss.SSS'
-    ).subtract(2, 'month').valueOf();
-    const endDate = (moment(startDate).add('1', 'month').valueOf());
-
-    return {
-      startDate,
-      endDate
-    };
+    return this.getRange(1);
   }
 
   getUsageRange() {
+    return this.getRange(0);
+  }
+
+  getRange(offset) {
     const {loading, paymentProcessor} = this.props.paymentProcessor;
     const billingDate = (loading || !paymentProcessor) ? (new Date).getDate() : paymentProcessor.billingDate;
     const today = new Date();
@@ -186,13 +172,13 @@ export default class Billing extends Component {
       // NB: add 1 to `.getUTCMonth` because `Date` uses 0 for Jan while `moment` uses 1
       `${today.getUTCFullYear()}-${today.getUTCMonth() + 1}-${today.getUTCDate()} 00:00:00.000`,
       'YYYY-MM-DD HH:mm:ss.SSS'
-    ).subtract(1, 'month').date();
+    ).subtract(offset, 'month').date();
     const startDayOfMonth = (billingDate > daysInMonth) ? daysInMonth : billingDate;
     const startDate = moment.utc(
       // NB: add 1 to `.getUTCMonth` because `Date` uses 0 for Jan while `moment` uses 1
       `${today.getUTCFullYear()}-${today.getUTCMonth() + 1}-${startDayOfMonth} 00:00:00.000`,
       'YYYY-MM-DD HH:mm:ss.SSS'
-    ).subtract(1, 'month').valueOf();
+    ).subtract(offset, 'month').add(1, 'second').valueOf();
     const endDate = (moment(startDate).add('1', 'month').valueOf());
 
     return {
