@@ -112,13 +112,11 @@ export default class Billing extends Component {
   componentWillReceiveProps(nextProps) {
     globalCounter++;
     if (globalCounter > 50) return;
-    console.log(globalCounter);
 
     const {balance, usage} = nextProps;
-    console.log('balance and usage: ', balance, usage);
 
     if (!!balance && !!usage) {
-      return console.log('stopping');
+      return;
     }
 
     const {startDate: balanceStartDate, endDate: balanceEndDate} = this.getBalanceRange();
