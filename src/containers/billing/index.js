@@ -163,19 +163,30 @@ export default class Billing extends Component {
 
   getRange(offset) {
     const {loading, paymentProcessor} = this.props.paymentProcessor;
-    const billingDate = (loading || !paymentProcessor) ? (new Date).getDate() : paymentProcessor.billingDate;
+    const billingDate = (loading || !paymentProcessor) ?
+      (new Date).getDate() : paymentProcessor.billingDate;
+
+    const format = 'YYYY-MM-DD HH:mm:ss.SSS';
     const today = new Date();
-    const daysInMonth = moment.utc(
+    const currentYearMonth = [
+      today.getUTCFullYear(),
       // NB: add 1 to `.getUTCMonth` because `Date` uses 0 for Jan while `moment` uses 1
-      `${today.getUTCFullYear()}-${today.getUTCMonth() + 1}-${today.getUTCDate()} 00:00:00.000`,
-      'YYYY-MM-DD HH:mm:ss.SSS'
+      today.getUTCMonth() + 1
+    ];
+
+    const dateThisMonthString = (date) => {
+      `${currentYearMonth.concat([date]).join('-')} 00:00:00.000`
+    };
+
+    const daysInMonth = moment.utc(
+      dateThisMonthString(today.getUTCDate()), format
     ).subtract(offset, 'month').date();
+
     const startDayOfMonth = (billingDate > daysInMonth) ? daysInMonth : billingDate;
     const startDate = moment.utc(
-      // NB: add 1 to `.getUTCMonth` because `Date` uses 0 for Jan while `moment` uses 1
-      `${today.getUTCFullYear()}-${today.getUTCMonth() + 1}-${startDayOfMonth} 00:00:00.000`,
-      'YYYY-MM-DD HH:mm:ss.SSS'
-    ).subtract(offset, 'month').add(1, 'second').valueOf();
+      dateThisMonthString(startDayOfMonth), format
+    ).subtract(offset, 'month').valueOf();
+
     const endDate = (moment(startDate).add('1', 'month').valueOf());
 
     return {
