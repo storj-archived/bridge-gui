@@ -14,7 +14,7 @@ export default function bridgeClientMiddleware({bridgeClient, apolloClient}) {
       const [REQUEST, SUCCESS, FAILURE] = types;
       next({...rest, type: REQUEST});
 
-      const actionPromise = promise(bridgeClient);
+      const actionPromise = promise({bridgeClient, apolloClient});
       actionPromise.then(
         (result) => {
           next({...rest, result, type: SUCCESS});

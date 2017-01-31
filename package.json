@@ -11,6 +11,7 @@
   "homepage": "https://app.storj.io/",
   "main": "bin/server.js",
   "scripts": {
+    "mock-backend": "node ./scripts/test/mock-backend/index.js",
     "start": "concurrent --kill-others \"npm run start-prod\" \"npm run start-prod-api\"",
     "start-prod": "better-npm-run start-prod",
     "build": "webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
@@ -41,7 +42,7 @@
     }
   },
   "dependencies": {
-    "apollo-client": "^0.4.11",
+    "apollo-client": "^0.4.19",
     "assets-webpack-plugin": "^3.4.0",
     "async": "^2.0.0-rc.2",
     "autoprefixer-loader": "^3.1.0",
@@ -59,13 +60,17 @@
     "clean-webpack-plugin": "^0.1.4",
     "compression": "^1.6.0",
     "css-loader": "^0.23.1",
+    "dotenv-webpack": "^1.3.1",
     "escape-string-regexp": "^1.0.5",
     "express": "^4.13.3",
     "extract-text-webpack-plugin": "^0.9.1",
     "file-loader": "^0.8.5",
     "json-loader": "^0.5.4",
+    "moment": "^2.17.1",
+    "moment-timezone": "^0.5.5",
     "multireducer": "^2.0.0",
     "node-sass": "^3.4.2",
+    "node-uuid": "^1.4.7",
     "pretty-error": "^1.2.0",
     "react": "^0.14.7",
     "react-apollo": "^0.3.20",
@@ -81,8 +86,9 @@
     "sass-loader": "^3.1.2",
     "serve-favicon": "^2.3.0",
     "shebang-loader": "0.0.1",
-    "storj": "^2.0.0",
+    "storj": "2.0.0",
     "strip-loader": "^0.1.0",
+    "stripe": "^4.9.0",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.9"
@@ -106,19 +112,17 @@
     "karma-cli": "^0.1.1",
     "karma-mocha": "^0.2.0",
     "karma-mocha-reporter": "^1.1.1",
-    "karma-phantomjs-launcher": "^0.2.1",
     "karma-sourcemap-loader": "^0.3.5",
     "karma-webpack": "^1.7.0",
+    "lodash": "^4.17.2",
     "mocha": "^2.3.3",
-    "nightwatch": "^0.9.5",
-    "phantomjs": "^1.9.18",
-    "phantomjs-polyfill": "0.0.1",
     "react-hot-loader": "^1.3.0",
     "react-transform-catch-errors": "^1.0.0",
     "redbox-react": "1.1.1",
     "redux-devtools": "^3.0.0-beta-3",
     "redux-devtools-dock-monitor": "^1.0.0-beta-3",
     "redux-devtools-log-monitor": "^1.0.0-beta-3",
+    "shelljs": "^0.7.5",
     "sinon": "^1.17.2",
     "superagent": "^2.1.0",
     "webpack-dev-middleware": "^1.4.0",
@@ -126,6 +130,6 @@
     "webpack-hot-middleware": "^2.5.0"
   },
   "engines": {
-    "node": "4.1.1"
+    "node": "^6.9.1"
   }
 }

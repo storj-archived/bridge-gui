@@ -8,3 +8,7 @@ webpack-stats.json
 npm-debug.log
 build.log
 gems/
+.cache
+.node-gyp
+.env
+.vagrant

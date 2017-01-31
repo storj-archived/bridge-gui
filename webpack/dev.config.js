@@ -3,12 +3,15 @@ var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var strip = require('strip-loader');
+var Dotenv = require('dotenv-webpack');
 
 var relativeAssetsPath = '../static/dist';
 var assetsPath = path.join(__dirname, relativeAssetsPath);
 
 var config = require('../src/config');
 var port = (config.port + 1) || 3001;
+
+var excludeRegex = /(?:^\/home\/vagrant\/(?!bridge-gui))|(?:node_modules)/;
 
 module.exports = {
   devtool: 'source-map',
@@ -31,7 +34,7 @@ module.exports = {
       /node_modules\/json-schema\/lib\/validate\.js/
     ],
     loaders: [
-      { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel']},
+      { test: /\.jsx?$/, exclude: excludeRegex, loaders: ['react-hot', 'babel']},
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css?importLoaders=2&sourceMap!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true') },
       { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
@@ -45,10 +48,12 @@ module.exports = {
   },
   progress: true,
   resolve: {
+    // root: path.resolve(__dirname, '..'),
     alias: {
       dgram: `${__dirname}/stubs/dgram`,
       bufferutil: `${__dirname}/stubs/blank`,
-      'utf-8-validate': `${__dirname}/stubs/blank`
+      'utf-8-validate': `${__dirname}/stubs/blank`,
+      'graceful-fs': `${__dirname}/stubs/blank`
     },
     modulesDirectories: [
       'src',
@@ -63,6 +68,12 @@ module.exports = {
     tls: 'empty'
   },
   plugins: [
+    //set environment variables with dotenv
+    new Dotenv({
+      path: './.env',
+      safe: false
+    }),
+
     // css files from the extract-text-plugin loader
     new ExtractTextPlugin('[name].css', {allChunks: true}),
     new webpack.DefinePlugin({
@@ -81,7 +92,10 @@ module.exports = {
         // Useful to reduce the size of client-side libraries, e.g. react
         NODE_ENV: JSON.stringify('development'),
         APIHOST: JSON.stringify(process.env.APIHOST),
-        APIPORT: JSON.stringify(process.env.APIPORT)
+        APIPORT: JSON.stringify(process.env.APIPORT),
+        APIPROTOCOL: JSON.stringify(process.env.APIPROTOCOL),
+        APOLLO_CLIENT_URL: JSON.stringify(process.env.APOLLO_CLIENT_URL),
+        STRIPE_PUBLISHABLE_KEY: JSON.stringify(process.env.STRIPE_PUBLISHABLE_KEY)
       }
     }),
 

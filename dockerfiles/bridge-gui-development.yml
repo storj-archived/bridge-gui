@@ -1,0 +1,32 @@
+version: '2'
+services:
+  mongo:
+    image: mongo
+    ports:
+      - '27017:27017'
+  #billing:
+  #  image: storjlabs/billing:manual-build
+  #  ports:
+  #    - '3000:3000'
+  #  links:
+  #    - mongo
+  #  environment:
+  #    NODE_ENV: development
+  #    MONGO_URL: 'mongodb://mongo/bridge'
+  #  volumes:
+  #    - ../../billing/:/root/node_modules/storj-billing/
+  integration:
+    image: dylanlott/storj-integration
+    ports:
+      - '6382:6382'
+      - '9000:9000'
+      - '9100:9100'
+      - '9200:9200'
+      - '9300:9300'
+      - '8080:8080'
+    links:
+      - mongo
+    environment:
+      PORT: 6382
+      NODE_ENV: 'development'
+    command: /bin/sleep 90000

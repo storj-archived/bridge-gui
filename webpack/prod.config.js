@@ -52,7 +52,8 @@ module.exports = {
     alias: {
       dgram: `${__dirname}/stubs/dgram`,
       bufferutil: `${__dirname}/stubs/blank`,
-      'utf-8-validate': `${__dirname}/stubs/blank`
+      'utf-8-validate': `${__dirname}/stubs/blank`,
+      'graceful-fs': `${__dirname}/stubs/blank`
     },
     modulesDirectories: [
       'src',
@@ -86,7 +87,12 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         // Useful to reduce the size of client-side libraries, e.g. react
-        NODE_ENV: JSON.stringify('production')
+        NODE_ENV: JSON.stringify('production'),
+        APIHOST: JSON.stringify(process.env.APIHOST),
+        APIPORT: JSON.stringify(process.env.APIPORT),
+        APIPROTOCOL: JSON.stringify(process.env.APIPROTOCOL),
+        APOLLO_CLIENT_URL: JSON.stringify(process.env.APOLLO_CLIENT_URL),
+        STRIPE_PUBLISHABLE_KEY: JSON.stringify(process.env.STRIPE_PUBLISHABLE_KEY)
       }
     }),
 
