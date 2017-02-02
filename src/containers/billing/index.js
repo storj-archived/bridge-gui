@@ -175,7 +175,7 @@ export default class Billing extends Component {
     ];
 
     const dateThisMonthString = (date) => {
-      `${currentYearMonth.concat([date]).join('-')} 00:00:00.000`
+      return `${currentYearMonth.concat([date]).join('-')} 00:00:00.000`
     };
 
     const daysInMonth = moment.utc(
