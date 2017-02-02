@@ -3,7 +3,7 @@ import countryMap from 'components/form-controls/country-map';
 
 const CountryDropdown = (props) => {
   return (
-    <select className="form-control" {...props}>
+    <select {...props}>
       {
         Object.keys(countryMap).map((value) => {
           const text = countryMap[value];
