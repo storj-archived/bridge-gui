@@ -72,7 +72,7 @@ const AddCardPanel = ({handleCardSubmit, fields}) => {
                     </div>
                     <div className="form-group">
                       <div className="col-sm-6">
-                        <CountryDropdown name="country" autoComplete="country" title="Select your country" {...fields.country}/>
+                        <CountryDropdown className="form-control" name="country" autoComplete="country" title="Select your country" {...fields.country}/>
                       </div>
                     </div>
                   </div>
