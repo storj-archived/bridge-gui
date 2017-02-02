@@ -64,7 +64,7 @@ const AddCardPanel = ({handleCardSubmit, fields}) => {
                         <div className="help-block has-error">{fields.zip.touched ? fields.zip.error : ''}</div>
                       </div>
                       <div className="col-sm-6">
-                        <CountryDropdown name="country" autoComplete="country" title="Select your country" {...fields.country}/>
+                        <CountryDropdown className="form-control" name="country" autoComplete="country" title="Select your country" {...fields.country}/>
                       </div>
                   </div>
                 </fieldset>
