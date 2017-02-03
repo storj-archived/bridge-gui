@@ -18,6 +18,7 @@ Vagrant.configure("2") do |config|
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
   # config.vm.box_check_update = false
+  config.vm.box_url = "./package.box"
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
@@ -49,6 +50,8 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
+
+  config.vm.synced_folder "~/.ssh", "/home/vagrant/.ssh/host"
 
   config.vm.synced_folder "./", "/home/vagrant/bridge-gui"
   config.vm.synced_folder "../bridge", "/home/vagrant/bridge"
