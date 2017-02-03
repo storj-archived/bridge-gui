@@ -37,6 +37,7 @@ const addSecurityHeaders = (req, res, next) => {
     "object-src 'none'",
     "connect-src *",
     "frame-src https://storj.github.io https://js.stripe.com",
+    "child-src https://storj.github.io https://js.stripe.com",
     "img-src 'self' https://q.stripe.com"
   ].join('; '));
   next();
