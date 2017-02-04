@@ -286,6 +286,15 @@ export default class Billing extends Component {
         <section>
           <div className="container">
             <div className="row">
+              <div className="col-xs-12">
+                <div className="alert alert-warning" role="alert">Billing will be activated soon. Until that time, you won't be charged anything. We'll notify you by email when billing is active.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div className="container">
+            <div className="row">
               <div className="col-xs-12 col-sm-6">
                 <BalancePanel amount={this.props.balance}
                               addCreditHandler={addCreditHandler}
