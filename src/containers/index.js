@@ -10,3 +10,4 @@ export NotFound from 'containers/not-found';
 export SignupForm from 'containers/auth/signup-form';
 export Support from 'containers/support/index';
 export Billing from 'containers/billing';
+export Referrals from 'containers/referrals';
