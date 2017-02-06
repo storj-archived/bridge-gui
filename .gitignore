@@ -12,3 +12,4 @@ gems/
 .node-gyp
 .env
 .vagrant
+package.box
