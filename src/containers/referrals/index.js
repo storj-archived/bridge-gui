@@ -4,9 +4,6 @@ import gql from 'graphql-tag';
 import moment from 'moment';
 
 /*
-QUERY
- - referral link (comes from marketing doc)
-
 MUTATIONS / ACTIONS
   - send email(s)
     - create referral doc
@@ -17,6 +14,8 @@ const mapQueriesToProps = () => {
     marketingQuery: {
       query: gql`query {
         marketing {
+          id,
+          user,
           referralLink
         }
       }`
@@ -24,14 +23,74 @@ const mapQueriesToProps = () => {
   }
 };
 
+const mapMutationsToProps = () => {
+  return {
+    sendReferralEmails: (emailList, senderEmail, marketingId) => {
+      return {
+        mutation: gql`
+        mutation sendReferralEmails($emailList: [String]!, $senderEmail: String!, $marketingId: String!) {
+          sendReferralEmails(emailList: $emailList, senderEmail: $senderEmail, marketingId: $marketingId) {
+            sender {
+              id
+            },
+            recipient {
+              id
+            },
+            created,
+            type
+          }
+        }`,
+        variables: {
+          emailList,
+          senderEmail,
+          marketingId
+        }
+      };
+    }
+  };
+};
+
 @connect({
-  mapQueriesToProps
+  mapQueriesToProps,
+  mapMutationsToProps
 })
 
 export default class Referrals extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: 'Enter emails'
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    // this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({ value: event.target.value });
+  }
+
+  handleSubmit(event) {
+    console.log('submitting emails', this.state.value);
+    event.preventDefault();
+    if (this.state.value) {
+      const emailList = this.state.value.split(',').map((email) => email.trim());
+      // thing to billing server
+      console.log('props', this.props)
+      this.props.mutations.sendReferralEmails(
+        emailList,
+        this.props.marketingQuery.marketing.user,
+        this.props.marketingQuery.marketing.id
+      );
+    } else {
+      console.log('there is no state')
+    }
+  }
+
   render () {
-    const { marketing, loading } = this.props.marketingQuery;
+    let emails;
     let referralLink;
+    const { marketing, loading } = this.props.marketingQuery;
 
     if (loading || !(marketing && marketing.referralLink)) {
       referralLink = 'Loading ...';
@@ -67,14 +126,23 @@ export default class Referrals extends Component {
             <div className="col-xs-12">
               <h2 className="title">Refer by email</h2>
               <div className="content">
-                <form action="" acceptCharset="UTF-8" method="post">
+                <form acceptCharset="UTF-8" onSubmit={this.handleSubmit.bind(this)}>
                   <p>Enter the emails you want to refer, separated by a comma.</p>
                   <div className="form-group">
-                    <textarea className="form-control" rows="4"></textarea>
+                    <textarea
+                      className="form-control"
+                      rows="4"
+                      value={this.state.value}
+                      onChange={this.handleChange}
+                    />
                   </div>
                   <div className="row">
                     <div className="col-xs-12">
-                      <input type="submit" name="submit" className="btn btn-block" />
+                      <input
+                        type="submit"
+                        name="submit"
+                        className="btn btn-block"
+                      />
                     </div>
                   </div>
                 </form>
