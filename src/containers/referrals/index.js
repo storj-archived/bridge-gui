@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-apollo';
 import gql from 'graphql-tag';
 import moment from 'moment';
+import CopyToClipboard from 'react-copy-to-clipboard';
 
 /*
 MUTATIONS / ACTIONS
@@ -59,11 +60,13 @@ export default class Referrals extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: 'Enter emails'
+      value: 'Enter emails',
+      copied: false
     };
 
     this.handleChange = this.handleChange.bind(this);
-    // this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCopy = this.handleCopy.bind(this);
   }
 
   handleChange(event) {
@@ -85,6 +88,11 @@ export default class Referrals extends Component {
     } else {
       console.log('there is no state')
     }
+  }
+
+  handleCopy() {
+    console.log('copying');
+    this.setState({ copied: true });
   }
 
   render () {
@@ -113,7 +121,24 @@ export default class Referrals extends Component {
               <h2 className="title">Share your link</h2>
               <div className="content">
                 <p>Copy your referral link and share it with your friends.</p>
-                <input type="text" className="form-control"value={referralLink} />
+                <div className="row">
+                  <input
+                    type="text"
+                    className="form-control col-xs-9 col-md-9"
+                    value={referralLink}
+                  />
+                  <CopyToClipboard
+                    className="col-xs-3 col-md-3"
+                    text={referralLink}
+                    onCopy={this.handleCopy}
+                  >
+                    <button>Copy</button>
+                  </CopyToClipboard>
+                </div>
+                  {this.state.copied
+                    ? <span style={{ color: 'red' }}>Copied!</span>
+                    : null
+                  }
               </div>
             </div>
           </div>
@@ -126,7 +151,7 @@ export default class Referrals extends Component {
             <div className="col-xs-12">
               <h2 className="title">Refer by email</h2>
               <div className="content">
-                <form acceptCharset="UTF-8" onSubmit={this.handleSubmit.bind(this)}>
+                <form acceptCharset="UTF-8" onSubmit={this.handleSubmit}>
                   <p>Enter the emails you want to refer, separated by a comma.</p>
                   <div className="form-group">
                     <textarea
