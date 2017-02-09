@@ -122,21 +122,25 @@ export default class Referrals extends Component {
               <div className="content">
                 <p>Copy your referral link and share it with your friends.</p>
                 <div className="row">
-                  <input
-                    type="text"
-                    className="form-control col-xs-9 col-md-9"
-                    value={referralLink}
-                  />
+                  <div className="col-xs-7 col-md-7">
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={referralLink}
+                    />
+                  </div>
                   <CopyToClipboard
-                    className="col-xs-3 col-md-3"
                     text={referralLink}
                     onCopy={this.handleCopy}
-                  >
-                    <button>Copy</button>
+                    >
+                    <span class="col-xs-3 col-md-3">
+                      <button className="btn btn-default" type="button">Copy</button>
+                    </span>
                   </CopyToClipboard>
                 </div>
+
                   {this.state.copied
-                    ? <span style={{ color: 'red' }}>Copied!</span>
+                    ? <span style={{ color: 'red', margin: '10px', display: 'inline-block' }}>Copied!</span>
                     : null
                   }
               </div>
