@@ -6,6 +6,26 @@ import client from 'utils/api-client';
 import signupValidation from 'containers/auth/signup-form/signup-validation';
 import formLabelError from 'components/error-views/form-label-error';
 import TermsOfService from 'components/copy/terms-of-service';
+import { connect } from 'react-apollo';
+import gql from 'graphql-tag';
+
+const mapMutationsToProps = () => {
+  return {
+    // checkReferralLink: (referralLink) => {
+    //   mutation: gql`
+    //   mutation checkReferralLink($referralLink: String) {
+    //     referralLink
+    //   }`,
+    //   variables: {
+    //     referralLink
+    //   }
+    // }
+  }
+};
+
+@connect({
+  mapMutationsToProps
+})
 
 const mapQueriestoProps = () => {
   return {
@@ -92,23 +112,59 @@ export default class SignUpForm extends Component {
     this.setState({showEula: false});
   }
 
+  signUpWithReferral(link) {
+    const email = this.props.fields.email.value;
+    client.api.createUser({
+      email: this.props.fields.email.value,
+      password: this.props.fields.password.value,
+      redirect: 'https://app.storj.io/'
+    })
+    .then(
+      function success() {
+        this.props.mutations.issueCredit(link, email)
+          .then(() => {
+            resolve();
+            hashHistory.push('/signup-success-referral');
+          })
+      },
+      function fail(err) {
+        if (err && err.message) {
+          reject({_error: err.message});
+        }
+      });
+  }
+
+  signupWithoutReferral(user) {
+    client.api.createUser({
+      email: this.props.fields.email.value,
+      password: this.props.fields.password.value,
+      redirect: 'https://app.storj.io/'
+    })
+    .then(
+      function success() {
+        resolve();
+        hashHistory.push('/signup-success');
+      },
+      function fail(err) {
+        if (err && err.message) {
+          reject({_error: err.message});
+        }
+      });
+  }
+
   submit() {
     return new Promise((resolve, reject) => {
-      client.api.createUser({
-        email: this.props.fields.email.value,
-        password: this.props.fields.password.value,
-        redirect: 'https://app.storj.io/'
-      })
-        .then(
-          function success() {
-            resolve();
-            hashHistory.push('/signup-success');
-          },
-          function fail(err) {
-            if (err && err.message) {
-              reject({_error: err.message});
-            }
-          });
+      //check referralLinkIsValid
+      console.log('referralLink: ', this.props.location.query.referralLink);
+      const link = this.props.location.query.referralLink
+      this.props.mutations.checkReferralLink(link)
+        .then((link) => {
+          this.signUpWithReferral(link);
+        })
+        .catch((nolink) => {
+          this.signUpWithReferral();
+        })
+
     });
 
     submit() {
