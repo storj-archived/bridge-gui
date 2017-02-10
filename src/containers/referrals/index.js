@@ -3,12 +3,7 @@ import { connect } from 'react-apollo';
 import gql from 'graphql-tag';
 import moment from 'moment';
 import CopyToClipboard from 'react-copy-to-clipboard';
-
-/*
-MUTATIONS / ACTIONS
-  - send email(s)
-    - create referral doc
-*/
+import ReferralInfo from '../components/referrals/referral-info';
 
 const mapQueriesToProps = () => {
   return {
@@ -111,12 +106,9 @@ export default class Referrals extends Component {
       <section>
         <div className="container">
           <div className="row">
-            <div className="col-xs-12 col-md-6">
-              <h2 className="title">Give $10, Get $10</h2>
-              <div className="content">
-                <p>Everyone you refer, gets a $10 credit. Once they've spent $10 with us, you'll get $10. There is no limit to the amount of credit you can earn through referrals.</p>
-              </div>
-            </div>
+
+            <ReferralInfo></ReferralInfo>
+
             <div className="col-xs-12 col-md-6">
               <h2 className="title">Share your link</h2>
               <div className="content">
