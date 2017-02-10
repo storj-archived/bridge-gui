@@ -7,10 +7,67 @@ import signupValidation from 'containers/auth/signup-form/signup-validation';
 import formLabelError from 'components/error-views/form-label-error';
 import TermsOfService from 'components/copy/terms-of-service';
 
+const mapQueriestoProps = () => {
+  return {
+    checkReferralLinkQuery: {
+      query: gql`query {
+        referralLink,
+      }`
+    }
+  }
+};
+
+const mapMutationsToProps = () => {
+  return {
+    createSignupCredit: (userId, referralLink) => {
+      return {
+        mutation: gql`
+          mutation createSignupCredit($userId: String!, $referralLink: String!) {
+            createSignupCredit(userId: $userId, referralLink: $referralLink) {
+              user,
+              created,
+              promo_code,
+              promo_amount,
+              promo_expires
+            }
+          }
+        `,
+        variables: {
+          userId,
+          referralLink
+        }
+      }
+    },
+
+    convertReferralRecipient: (referralId, credit) => {
+      return {
+        mutation: gql`
+          mutation convertReferralRecipient($referralId: String!, $credit: Object) {
+            convertReferralRecipient(referralId: $referralId, credit: $credit) {
+              recipient {
+                email
+              }
+              converted {
+                recipient_signup
+              }
+              credit
+            }
+          }
+        `
+      }
+    }
+  }
+};
+
 @reduxForm({
   form: 'Signup',
   fields: ['email', 'password', 'eula'],
   validate: signupValidation
+})
+
+@connect({
+  mapMutationsToProps,
+  mapQueriestoProps
 })
 
 export default class SignUpForm extends Component {
@@ -53,6 +110,37 @@ export default class SignUpForm extends Component {
             }
           });
     });
+
+    submit() {
+      return new Promise((resolve, reject) => {
+        const link = this.props.location.query.referralLink;
+
+        if (link) {
+          return this.props
+            .checkReferralLinkQuery(link)
+            .then((referralLink) => {
+              resolve(this.signUpWithReferral(referralLink))
+            })
+            .catch((noLink) => reject(this.handleInvalidReferralLink(noLink)));
+        }
+        this.createUser()
+
+
+
+
+
+        //check referralLinkIsValid
+        console.log('referralLink: ', this.props.location.query.referralLink);
+        const link = this.props.location.query.referralLink
+        this.props.checkReferralLink(link)
+          .then((link) => {
+            this.signUpWithReferral(link);
+          })
+          .catch((nolink) => {
+            this.signUpWithReferral();
+          })
+      });
+    }
   }
 
   renderEula() {
