@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
+import {storeEmail} from 'redux/modules/local-storage';
 import { IndexLink, hashHistory } from 'react-router';
 import Modal from 'react-bootstrap/lib/Modal';
 import client from 'utils/api-client';
@@ -9,6 +10,10 @@ import TermsOfService from 'components/copy/terms-of-service';
 import { connect } from 'react-apollo';
 import gql from 'graphql-tag';
 import Promise from 'bluebird';
+
+const mapDispatchToProps = {
+  storeEmail
+};
 
 const mapQueriesToProps = () => {
   return {
@@ -41,26 +46,37 @@ const mapMutationsToProps = () => {
       }
     },
 
-    // convertReferralRecipient: (referralId, credit) => {
-    //   return {
-    //     mutation: gql`
-    //       mutation convertReferralRecipient($referralId: String!, $credit: Object) {
-    //         convertReferralRecipient(referralId: $referralId, credit: $credit) {
-    //           recipient {
-    //             email
-    //           }
-    //           converted {
-    //             recipient_signup
-    //           }
-    //           credit
-    //         }
-    //     }`,
-    //     variables: {
-    //       referralId,
-    //       credit
-    //     }
-    //   }
-    // }
+    convertReferralRecipient: (
+    marketingId,
+    marketingLink,
+    recipientEmail,
+    creditId,
+    creditDate
+    ) => {
+      return {
+        mutation: gql`
+          mutation convertReferralRecipient($marketingId: String!, $marketingLink: String!,
+            $recipientEmail: String!, $creditId: String!, $creditDate: String!) {
+            convertReferralRecipient(marketingId: $marketingId, marketingLink: $marketingLink,
+            recipientEmail: $recipientEmail, creditId: $creditId, creditDate: $creditDate) {
+              recipient {
+                email
+              }
+              converted {
+                recipient_signup
+              }
+              credit
+            }
+        }`,
+        variables: {
+          marketingId,
+          marketingLink,
+          recipientEmail,
+          creditId,
+          creditDate
+        }
+      }
+    }
   }
 };
 
@@ -72,7 +88,8 @@ const mapMutationsToProps = () => {
 
 @connect({
   mapMutationsToProps,
-  mapQueriesToProps
+  mapQueriesToProps,
+  mapDispatchToProps
 })
 
 export default class SignUpForm extends Component {
@@ -92,6 +109,36 @@ export default class SignUpForm extends Component {
     this.signupRegularUser = this.signupRegularUser.bind(this);
     this.signupReferralUser = this.signupReferralUser.bind(this);
     this.submit = this.submit.bind(this);
+    this.login = this.login.bind(this);
+  }
+
+  login(credentials) {
+    return new Promise((resolve, reject) => {
+      const keypair = client.createKeyPair();
+      const email = credentials.email;
+      const password = credentials.password;
+
+      client.useBasicAuth(email, password);
+
+      if (window && window.localStorage) {
+        this.props.storeEmail(email);
+      }
+
+      client.api.addPublicKey(keypair.getPublicKey()).then(
+        function success() {
+          client.removeBasicAuth();
+          if (window && window.localStorage) {
+            window.localStorage.setItem('privkey', keypair.getPrivateKey());
+          }
+          client.useKeyPair(keypair);
+          resolve(true);
+        },
+        function fail(err) {
+          if (err && err.message) {
+            reject({_error: err.message});
+          }
+        });
+    });
   }
 
   openEula(event) {
@@ -112,14 +159,17 @@ export default class SignUpForm extends Component {
       };
       console.log('ok create user')
       client.api.createUser(credentials)
-      .then(
-        function success(user) {
-          console.log('oh haaaai')
-          resolve(user);
-      }, function fail(err) {
-          if (err && err.message) {
-            reject({ _error: err.message });
-          }
+      .then((user) => {
+        this.login(credentials)
+          .then((result) => {
+            console.log('LOGIN RESULT: ', result);
+          })
+          .catch((err) => console.error(err));
+        resolve(user);
+      }, (err) => {
+        if (err && err.message) {
+          reject({ _error: err.message });
+        }
       });
     });
   }
@@ -129,6 +179,7 @@ export default class SignUpForm extends Component {
       console.log('regularuser')
       this.signupUser().then((user) => {
         console.log('user', user)
+
         this.props.mutations
           .issueSignupCredit(user.id, 'NEW_SIGNUP')
           .then((credit) => {
