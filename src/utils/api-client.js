@@ -37,6 +37,7 @@ class WrappedClient extends Client {
     this._authenticate(opts);
 
     const requestPromise = new Promise(function(resolve, reject) {
+      console.log('in request promise')
       request(opts, function(err, res, body) {
         if (err) {
           return reject(err);
@@ -53,8 +54,12 @@ class WrappedClient extends Client {
       });
     });
 
-    if (callback) requestPromise.then(callback, callback);
+    if (callback) {
+      console.log('haaaaai')
+      return requestPromise.then(callback, callback);
+    }
 
+    console.log('ohhhhhhhhh', requestPromise);
     return requestPromise;
   }
 

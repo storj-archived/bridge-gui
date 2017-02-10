@@ -12,11 +12,11 @@ import Promise from 'bluebird';
 
 const mapQueriesToProps = () => {
   return {
-    checkReferralLinkQuery: {
-      query: gql`query {
-        referralLink,
-      }`
-    }
+  //   checkReferralLinkQuery: {
+  //     query: gql`query {
+  //       referralLink,
+  //     }`
+  //   }
   }
 };
 
@@ -41,26 +41,26 @@ const mapMutationsToProps = () => {
       }
     },
 
-    convertReferralRecipient: (referralId, credit) => {
-      return {
-        mutation: gql`
-          mutation convertReferralRecipient($referralId: String!, $credit: Object) {
-            convertReferralRecipient(referralId: $referralId, credit: $credit) {
-              recipient {
-                email
-              }
-              converted {
-                recipient_signup
-              }
-              credit
-            }
-        }`,
-        variables: {
-          referralId,
-          credit
-        }
-      }
-    }
+    // convertReferralRecipient: (referralId, credit) => {
+    //   return {
+    //     mutation: gql`
+    //       mutation convertReferralRecipient($referralId: String!, $credit: Object) {
+    //         convertReferralRecipient(referralId: $referralId, credit: $credit) {
+    //           recipient {
+    //             email
+    //           }
+    //           converted {
+    //             recipient_signup
+    //           }
+    //           credit
+    //         }
+    //     }`,
+    //     variables: {
+    //       referralId,
+    //       credit
+    //     }
+    //   }
+    // }
   }
 };
 
@@ -79,6 +79,7 @@ export default class SignUpForm extends Component {
   static propTypes = {
     fields: PropTypes.object.isRequired,
     error: PropTypes.string,
+    handleSubmit: PropTypes.func.isRequired,
     submitFailed: PropTypes.bool.isRequired
   };
 
@@ -107,16 +108,17 @@ export default class SignUpForm extends Component {
       const credentials = {
         email: this.props.fields.email.value,
         password: this.props.fields.password.value,
-        redirect: 'https://app.storj.io/' // <-- you are also problem
+        redirect: 'https://app.storj.io/'
       };
-
-      client.api.createUser(credentials).then(
-        // i think you are the problem
+      console.log('ok create user')
+      client.api.createUser(credentials)
+      .then(
         function success(user) {
-          return resolve(user);
+          console.log('oh haaaai')
+          resolve(user);
       }, function fail(err) {
           if (err && err.message) {
-            return reject({ _error: err.message });
+            reject({ _error: err.message });
           }
       });
     });
@@ -126,16 +128,16 @@ export default class SignUpForm extends Component {
     return new Promise((resolve, reject) => {
       console.log('regularuser')
       this.signupUser().then((user) => {
-        console.log('user')
-        return this.props.mutations
+        console.log('user', user)
+        this.props.mutations
           .issueSignupCredit(user.id, 'NEW_SIGNUP')
           .then((credit) => {
-            console.log('yaaaaay')
+            console.log('yaaaaay', credit)
             // hashHistory.push('/signup-success');
             resolve({ credit })
           })
-          .catch((err) => reject({ _error: err.message }));
-      });
+          .catch((err) => reject(err));
+      }).catch((err) => reject({ _error: err.message }))
     });
   }
 
@@ -231,7 +233,7 @@ export default class SignUpForm extends Component {
                     <div className="form-group">
                       <button
                         type="submit"
-                        onClick={this.submit}
+                        onClick={handleSubmit(this.submit)}
                         className="btn btn-block btn-green"
                       >
                         Sign Up
