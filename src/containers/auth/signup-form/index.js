@@ -1,6 +1,6 @@
-import React, {Component, PropTypes} from 'react';
-import {reduxForm} from 'redux-form';
-import {IndexLink, hashHistory} from 'react-router';
+import React, { Component, PropTypes } from 'react';
+import { reduxForm } from 'redux-form';
+import { IndexLink, hashHistory } from 'react-router';
 import Modal from 'react-bootstrap/lib/Modal';
 import client from 'utils/api-client';
 import signupValidation from 'containers/auth/signup-form/signup-validation';
@@ -8,26 +8,9 @@ import formLabelError from 'components/error-views/form-label-error';
 import TermsOfService from 'components/copy/terms-of-service';
 import { connect } from 'react-apollo';
 import gql from 'graphql-tag';
+import Promise from 'bluebird';
 
-const mapMutationsToProps = () => {
-  return {
-    // checkReferralLink: (referralLink) => {
-    //   mutation: gql`
-    //   mutation checkReferralLink($referralLink: String) {
-    //     referralLink
-    //   }`,
-    //   variables: {
-    //     referralLink
-    //   }
-    // }
-  }
-};
-
-@connect({
-  mapMutationsToProps
-})
-
-const mapQueriestoProps = () => {
+const mapQueriesToProps = () => {
   return {
     checkReferralLinkQuery: {
       query: gql`query {
@@ -39,19 +22,18 @@ const mapQueriestoProps = () => {
 
 const mapMutationsToProps = () => {
   return {
-    createSignupCredit: (userId, referralLink) => {
+    issueSignupCredit: (userId, referralLink) => {
       return {
         mutation: gql`
-          mutation createSignupCredit($userId: String!, $referralLink: String!) {
-            createSignupCredit(userId: $userId, referralLink: $referralLink) {
+          mutation issueSignupCredit($userId: String!, $link: String!) {
+            issueSignupCredit(userId: $userId, referralLink: $link) {
               user,
               created,
               promo_code,
               promo_amount,
               promo_expires
             }
-          }
-        `,
+        }`,
         variables: {
           userId,
           referralLink
@@ -72,8 +54,11 @@ const mapMutationsToProps = () => {
               }
               credit
             }
-          }
-        `
+        }`,
+        variables: {
+          referralId,
+          credit
+        }
       }
     }
   }
@@ -87,116 +72,102 @@ const mapMutationsToProps = () => {
 
 @connect({
   mapMutationsToProps,
-  mapQueriestoProps
+  mapQueriesToProps
 })
 
 export default class SignUpForm extends Component {
   static propTypes = {
     fields: PropTypes.object.isRequired,
     error: PropTypes.string,
-    handleSubmit: PropTypes.func.isRequired,
     submitFailed: PropTypes.bool.isRequired
   };
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      showEula: false
+    };
+    this.signupUser = this.signupUser.bind(this);
+    this.signupRegularUser = this.signupRegularUser.bind(this);
+    this.signupReferralUser = this.signupReferralUser.bind(this);
+    this.submit = this.submit.bind(this);
   }
 
   openEula(event) {
     event.preventDefault();
-    this.setState({showEula: true});
+    this.setState({ showEula: true });
   }
 
   closeEula() {
-    this.setState({showEula: false});
+    this.setState({ showEula: false });
   }
 
-  signUpWithReferral(link) {
-    const email = this.props.fields.email.value;
-    client.api.createUser({
-      email: this.props.fields.email.value,
-      password: this.props.fields.password.value,
-      redirect: 'https://app.storj.io/'
-    })
-    .then(
-      function success() {
-        this.props.mutations.issueCredit(link, email)
-          .then(() => {
-            resolve();
-            hashHistory.push('/signup-success-referral');
+  signupUser() {
+    return new Promise((resolve, reject) => {
+      const credentials = {
+        email: this.props.fields.email.value,
+        password: this.props.fields.password.value,
+        redirect: 'https://app.storj.io/' // <-- you are also problem
+      };
+
+      client.api.createUser(credentials).then(
+        // i think you are the problem
+        function success(user) {
+          return resolve(user);
+      }, function fail(err) {
+          if (err && err.message) {
+            return reject({ _error: err.message });
+          }
+      });
+    });
+  }
+
+  signupRegularUser() {
+    return new Promise((resolve, reject) => {
+      console.log('regularuser')
+      this.signupUser().then((user) => {
+        console.log('user')
+        return this.props.mutations
+          .issueSignupCredit(user.id, 'NEW_SIGNUP')
+          .then((credit) => {
+            console.log('yaaaaay')
+            // hashHistory.push('/signup-success');
+            resolve({ credit })
           })
-      },
-      function fail(err) {
-        if (err && err.message) {
-          reject({_error: err.message});
-        }
+          .catch((err) => reject({ _error: err.message }));
       });
+    });
   }
 
-  signupWithoutReferral(user) {
-    client.api.createUser({
-      email: this.props.fields.email.value,
-      password: this.props.fields.password.value,
-      redirect: 'https://app.storj.io/'
-    })
-    .then(
-      function success() {
-        resolve();
-        hashHistory.push('/signup-success');
-      },
-      function fail(err) {
-        if (err && err.message) {
-          reject({_error: err.message});
-        }
-      });
+  signupReferralUser(marketing) {
+    // Promise.coroutine(function* () {
+    //   console.log('signup referral')
+    //   const user = yield this.signupUser();
+    //   const credit = yield this.props.mutations
+    //     .issueSignupCredit(user.id, 'REFERRAL_RECIPIENT');
+    //   const referral = yield this.props.mutations
+    //     .convertReferralRecipient(marketing, user.id, credit);
+
+    //   return { credit };
+    // })();
   }
 
   submit() {
-    return new Promise((resolve, reject) => {
-      //check referralLinkIsValid
-      console.log('referralLink: ', this.props.location.query.referralLink);
-      const link = this.props.location.query.referralLink
-      this.props.mutations.checkReferralLink(link)
-        .then((link) => {
-          this.signUpWithReferral(link);
-        })
-        .catch((nolink) => {
-          this.signUpWithReferral();
-        })
-
-    });
-
-    submit() {
-      return new Promise((resolve, reject) => {
-        const link = this.props.location.query.referralLink;
-
-        if (link) {
-          return this.props
-            .checkReferralLinkQuery(link)
-            .then((referralLink) => {
-              resolve(this.signUpWithReferral(referralLink))
-            })
-            .catch((noLink) => reject(this.handleInvalidReferralLink(noLink)));
-        }
-        this.createUser()
-
-
-
-
-
-        //check referralLinkIsValid
-        console.log('referralLink: ', this.props.location.query.referralLink);
-        const link = this.props.location.query.referralLink
-        this.props.checkReferralLink(link)
-          .then((link) => {
-            this.signUpWithReferral(link);
-          })
-          .catch((nolink) => {
-            this.signUpWithReferral();
-          })
-      });
+    console.log('referralLink: ', this.props.location.query.referralLink);
+    const link = this.props.location.query.referralLink;
+    if (link) {
+      return this.props.mutations
+        .checkReferralLink(link)
+        .then((marketing) => this.signupReferralUser(marketing))
+        // this needs to eventually be 'signup-succes-referral'
+        .then((result) => hashHistory.push('/signup-success'))
+        .catch((nolink) => this.handleInvalidReferralLink(nolink));
     }
+    this.signupRegularUser();
+    // this.signupRegularUser().then((result) => {
+    //   console.log('result', result);
+    //   hashHistory.push('/signup-success');
+    // });
   }
 
   renderEula() {
@@ -229,34 +200,66 @@ export default class SignUpForm extends Component {
 
                   <form>
 
-                    <div className={'form-group ' + (submitFailed && email.error ? 'has-error' : '')}>
+                    <div className={`
+                      form-group
+                      ${submitFailed && email.error ? 'has-error' : ''}
+                    `}>
                       {submitFailed && formLabelError(email)}
-                      <input type="email" className="form-control" name="email"
-                             placeholder="Email Address" {...email} />
+                      <input
+                        type="email"
+                        className="form-control"
+                        name="email"
+                        placeholder="Email Address"
+                        {...email}
+                      />
                     </div>
 
-                    <div className={'form-group ' + (submitFailed && password.error ? 'has-error' : '')}>
+                    <div className={`
+                      form-group
+                      ${submitFailed && password.error ? 'has-error' : ''}
+                    `}>
                       {submitFailed && formLabelError(password)}
-                      <input type="password" className="form-control" name="password"
-                             placeholder="Password" {...password} />
+                      <input
+                        type="password"
+                        className="form-control"
+                        name="password"
+                        placeholder="Password"
+                        {...password}
+                      />
                     </div>
 
                     <div className="form-group">
-                      <button type="submit" onClick={handleSubmit(this.submit.bind(this))}
-                              className="btn btn-block btn-green">Sign Up
+                      <button
+                        type="submit"
+                        onClick={this.submit}
+                        className="btn btn-block btn-green"
+                      >
+                        Sign Up
                       </button>
                     </div>
 
                     <div className="form-group checkbox">
-                      <label><input type="checkbox" className="text-right" name="eula" {...eula} />I agree to the <a
-                        href="#noop" onClick={this.openEula.bind(this)}>Terms of Service</a></label>
+                      <label>
+                        <input
+                          type="checkbox"
+                          className="text-right"
+                          name="eula"
+                          {...eula}
+                        />
+                        I agree to the
+                        <a href="#noop" onClick={this.openEula.bind(this)}>
+                          Terms of Service
+                        </a>
+                      </label>
                     </div>
 
                     {error && <div><span className="text-danger">{error}</span></div>}
                     {eula.error && eula.touched && <div><span className="text-danger">{eula.error}</span></div>}
                   </form>
                 </div>
-                <p>Already have an account? <IndexLink to="/" className="login">Log In</IndexLink></p>
+                <p>Already have an account?
+                  <IndexLink to="/" className="login">Log In</IndexLink>
+                </p>
               </div>
             </div>
           </div>

@@ -3,7 +3,7 @@ import { connect } from 'react-apollo';
 import gql from 'graphql-tag';
 import moment from 'moment';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import ReferralInfo from '../components/referrals/referral-info';
+import ReferralInfo from '../../components/referrals/referral-info';
 import { isValidEmail } from '../../utils/validation';
 
 const mapQueriesToProps = () => {
@@ -43,32 +43,6 @@ const mapMutationsToProps = () => {
           marketingId
         }
       };
-    },
-    checkReferralLink: (referralLink) => {
-      return {
-        mutation: gql`
-          mutation checkReferralLink($referralLink: String) {
-            checkReferralLink(referralLink: $referralLink) {
-              link
-            }
-          },
-
-        `
-      }
-    },
-    createSignupCredit: () => {
-      return {
-        mutation: gql`
-          mutation createSignupCredit()
-        `
-      }
-    },
-    convertReferralToRecipient: () => {
-      return {
-        mutation: gql`
-
-        `
-      }
     }
   };
 };
