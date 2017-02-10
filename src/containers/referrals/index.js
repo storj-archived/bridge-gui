@@ -3,12 +3,7 @@ import { connect } from 'react-apollo';
 import gql from 'graphql-tag';
 import moment from 'moment';
 import CopyToClipboard from 'react-copy-to-clipboard';
-
-/*
-MUTATIONS / ACTIONS
-  - send email(s)
-    - create referral doc
-*/
+import { isValidEmail } from '../../utils/validation';
 
 const mapQueriesToProps = () => {
   return {
@@ -47,6 +42,32 @@ const mapMutationsToProps = () => {
           marketingId
         }
       };
+    },
+    checkReferralLink: (referralLink) => {
+      return {
+        mutation: gql`
+          mutation checkReferralLink($referralLink: String) {
+            checkReferralLink(referralLink: $referralLink) {
+              link
+            }
+          },
+
+        `
+      }
+    },
+    createSignupCredit: () => {
+      return {
+        mutation: gql`
+          mutation createSignupCredit()
+        `
+      }
+    },
+    convertReferralToRecipient: () => {
+      return {
+        mutation: gql`
+
+        `
+      }
     }
   };
 };
@@ -61,16 +82,29 @@ export default class Referrals extends Component {
     super(props);
     this.state = {
       value: 'Enter emails',
-      copied: false
+      copied: false,
+      valid: true
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCopy = this.handleCopy.bind(this);
+    this.handleValidation = this.handleValidation.bind(this);
   }
 
   handleChange(event) {
     this.setState({ value: event.target.value });
+    this.handleValidation(event.target.value);
+  }
+
+  handleValidation(emails) {
+    const list = emails.split(',');
+    list.forEach((email) => {
+      isValidEmail(email.trim()) ?
+        this.setState({valid: true})
+        : this.setState({valid: false})
+    });
+    console.log(this.state.valid);
   }
 
   handleSubmit(event) {
@@ -133,7 +167,7 @@ export default class Referrals extends Component {
                     text={referralLink}
                     onCopy={this.handleCopy}
                     >
-                    <span class="col-xs-3 col-md-3">
+                    <span className="col-xs-3 col-md-3">
                       <button className="btn btn-default" type="button">Copy</button>
                     </span>
                   </CopyToClipboard>
@@ -164,6 +198,12 @@ export default class Referrals extends Component {
                       value={this.state.value}
                       onChange={this.handleChange}
                     />
+
+                  {this.state.valid
+                      ? null
+                      : <span style={{ color: 'red', margin: '10px', display: 'inline-block' }}>Invalid email list!</span>
+                    }
+
                   </div>
                   <div className="row">
                     <div className="col-xs-12">
