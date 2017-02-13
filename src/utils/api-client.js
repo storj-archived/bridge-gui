@@ -19,6 +19,7 @@ class WrappedClient extends Client {
   }
 
   _request(method, path, params, callback) {
+    console.log('method', method, 'path', path, 'params', params)
     const opts = {
       baseUrl: this._options.baseURI,
       uri: path,

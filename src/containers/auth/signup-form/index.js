@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
-import {storeEmail} from 'redux/modules/local-storage';
 import { IndexLink, hashHistory } from 'react-router';
 import Modal from 'react-bootstrap/lib/Modal';
 import client from 'utils/api-client';
@@ -11,85 +10,10 @@ import { connect } from 'react-apollo';
 import gql from 'graphql-tag';
 import Promise from 'bluebird';
 
-const mapDispatchToProps = {
-  storeEmail
-};
-
-const mapQueriesToProps = () => {
-  return {
-  //   checkReferralLinkQuery: {
-  //     query: gql`query {
-  //       referralLink,
-  //     }`
-  //   }
-  }
-};
-
-const mapMutationsToProps = () => {
-  return {
-    issueSignupCredit: (userId, referralLink) => {
-      return {
-        mutation: gql`
-          mutation issueSignupCredit($userId: String!, $link: String!) {
-            issueSignupCredit(userId: $userId, referralLink: $link) {
-              user,
-              created,
-              promo_code,
-              promo_amount,
-              promo_expires
-            }
-        }`,
-        variables: {
-          userId,
-          referralLink
-        }
-      }
-    },
-
-    convertReferralRecipient: (
-    marketingId,
-    marketingLink,
-    recipientEmail,
-    creditId,
-    creditDate
-    ) => {
-      return {
-        mutation: gql`
-          mutation convertReferralRecipient($marketingId: String!, $marketingLink: String!,
-            $recipientEmail: String!, $creditId: String!, $creditDate: String!) {
-            convertReferralRecipient(marketingId: $marketingId, marketingLink: $marketingLink,
-            recipientEmail: $recipientEmail, creditId: $creditId, creditDate: $creditDate) {
-              recipient {
-                email
-              }
-              converted {
-                recipient_signup
-              }
-              credit
-            }
-        }`,
-        variables: {
-          marketingId,
-          marketingLink,
-          recipientEmail,
-          creditId,
-          creditDate
-        }
-      }
-    }
-  }
-};
-
 @reduxForm({
   form: 'Signup',
   fields: ['email', 'password', 'eula'],
   validate: signupValidation
-})
-
-@connect({
-  mapMutationsToProps,
-  mapQueriesToProps,
-  mapDispatchToProps
 })
 
 export default class SignUpForm extends Component {
@@ -105,40 +29,7 @@ export default class SignUpForm extends Component {
     this.state = {
       showEula: false
     };
-    this.signupUser = this.signupUser.bind(this);
-    this.signupRegularUser = this.signupRegularUser.bind(this);
-    this.signupReferralUser = this.signupReferralUser.bind(this);
     this.submit = this.submit.bind(this);
-    this.login = this.login.bind(this);
-  }
-
-  login(credentials) {
-    return new Promise((resolve, reject) => {
-      const keypair = client.createKeyPair();
-      const email = credentials.email;
-      const password = credentials.password;
-
-      client.useBasicAuth(email, password);
-
-      if (window && window.localStorage) {
-        this.props.storeEmail(email);
-      }
-
-      client.api.addPublicKey(keypair.getPublicKey()).then(
-        function success() {
-          client.removeBasicAuth();
-          if (window && window.localStorage) {
-            window.localStorage.setItem('privkey', keypair.getPrivateKey());
-          }
-          client.useKeyPair(keypair);
-          resolve(true);
-        },
-        function fail(err) {
-          if (err && err.message) {
-            reject({_error: err.message});
-          }
-        });
-    });
   }
 
   openEula(event) {
@@ -150,77 +41,25 @@ export default class SignUpForm extends Component {
     this.setState({ showEula: false });
   }
 
-  signupUser() {
+  submit() {
     return new Promise((resolve, reject) => {
       const credentials = {
         email: this.props.fields.email.value,
         password: this.props.fields.password.value,
-        redirect: 'https://app.storj.io/'
+        redirect: 'https://app.storj.io/',
+        referralLink: this.props.location.query.referralLink
       };
+      console.log(credentials);
       console.log('ok create user')
-      client.api.createUser(credentials)
-      .then((user) => {
-        this.login(credentials)
-          .then((result) => {
-            console.log('LOGIN RESULT: ', result);
-          })
-          .catch((err) => console.error(err));
-        resolve(user);
+      client.api.createUser(credentials).then((user) => {
+        //redirect to signup success
+        return resolve(user);
       }, (err) => {
         if (err && err.message) {
-          reject({ _error: err.message });
+          reject({_error: err.message});
         }
       });
-    });
-  }
-
-  signupRegularUser() {
-    return new Promise((resolve, reject) => {
-      console.log('regularuser')
-      this.signupUser().then((user) => {
-        console.log('user', user)
-
-        this.props.mutations
-          .issueSignupCredit(user.id, 'NEW_SIGNUP')
-          .then((credit) => {
-            console.log('yaaaaay', credit)
-            // hashHistory.push('/signup-success');
-            resolve({ credit })
-          })
-          .catch((err) => reject(err));
-      }).catch((err) => reject({ _error: err.message }))
-    });
-  }
-
-  signupReferralUser(marketing) {
-    // Promise.coroutine(function* () {
-    //   console.log('signup referral')
-    //   const user = yield this.signupUser();
-    //   const credit = yield this.props.mutations
-    //     .issueSignupCredit(user.id, 'REFERRAL_RECIPIENT');
-    //   const referral = yield this.props.mutations
-    //     .convertReferralRecipient(marketing, user.id, credit);
-
-    //   return { credit };
-    // })();
-  }
-
-  submit() {
-    console.log('referralLink: ', this.props.location.query.referralLink);
-    const link = this.props.location.query.referralLink;
-    if (link) {
-      return this.props.mutations
-        .checkReferralLink(link)
-        .then((marketing) => this.signupReferralUser(marketing))
-        // this needs to eventually be 'signup-succes-referral'
-        .then((result) => hashHistory.push('/signup-success'))
-        .catch((nolink) => this.handleInvalidReferralLink(nolink));
-    }
-    this.signupRegularUser();
-    // this.signupRegularUser().then((result) => {
-    //   console.log('result', result);
-    //   hashHistory.push('/signup-success');
-    // });
+    })
   }
 
   renderEula() {
