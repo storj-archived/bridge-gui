@@ -41,7 +41,7 @@ RUN npm run build
 EXPOSE 8080
 
 # Start the app
-CMD [ "npm", "run", "start-prod" ]
+CMD [ "./scripts/start-bridge-gui" ]
 
 # Use for testing
 #CMD [ "/bin/sleep", "5000" ]

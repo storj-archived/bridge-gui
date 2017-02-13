@@ -1,0 +1,4 @@
+#!/bin/bash
+
+../build/inject_static_secrets.sh APIHOST APIPORT APIPROTOCOL NODE_ENV STRIPE_PUBLISHABLE_KEY APOLLO_CLIENT_URL
+npm run start-prod
