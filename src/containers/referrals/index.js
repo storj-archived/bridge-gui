@@ -79,16 +79,12 @@ export default class Referrals extends Component {
         this.setState({valid: true})
         : this.setState({valid: false})
     });
-    console.log(this.state.valid);
   }
 
   handleSubmit(event) {
-    console.log('submitting emails', this.state.value);
     event.preventDefault();
     if (this.state.value) {
       const emailList = this.state.value.split(',').map((email) => email.trim());
-      // thing to billing server
-      console.log('props', this.props)
       this.props.mutations.sendReferralEmails(
         emailList,
         this.props.marketingQuery.marketing.user,
@@ -100,7 +96,6 @@ export default class Referrals extends Component {
   }
 
   handleCopy() {
-    console.log('copying');
     this.setState({ copied: true });
   }
 
@@ -112,7 +107,7 @@ export default class Referrals extends Component {
     if (loading || !(marketing && marketing.referralLink)) {
       referralLink = 'Loading ...';
     } else {
-      referralLink = marketing.referralLink;
+      referralLink = 'https://app.storj.io/#/signup?referralLink=' + marketing.referralLink;
     }
 
     return (

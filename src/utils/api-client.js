@@ -19,7 +19,6 @@ class WrappedClient extends Client {
   }
 
   _request(method, path, params, callback) {
-    console.log('method', method, 'path', path, 'params', params)
     const opts = {
       baseUrl: this._options.baseURI,
       uri: path,
@@ -38,7 +37,6 @@ class WrappedClient extends Client {
     this._authenticate(opts);
 
     const requestPromise = new Promise(function(resolve, reject) {
-      console.log('in request promise')
       request(opts, function(err, res, body) {
         if (err) {
           return reject(err);
@@ -56,11 +54,9 @@ class WrappedClient extends Client {
     });
 
     if (callback) {
-      console.log('haaaaai')
       return requestPromise.then(callback, callback);
     }
 
-    console.log('ohhhhhhhhh', requestPromise);
     return requestPromise;
   }
 

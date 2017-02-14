@@ -12,7 +12,6 @@ import Promise from 'bluebird';
 import axios from 'axios';
 import config from 'config'
 const BILLING_URL = config.billing.url;
-console.log('BILLING URL: ', BILLING_URL);
 
 @reduxForm({
   form: 'Signup',
@@ -47,7 +46,6 @@ export default class SignUpForm extends Component {
 
   submit() {
     return new Promise((resolve, reject) => {
-      console.log('referral link: ', this.props.location.query.referralLink);
       const credentials = {
         email: this.props.fields.email.value,
         password: this.props.fields.password.value,
@@ -59,15 +57,9 @@ export default class SignUpForm extends Component {
         email: this.props.fields.email.value
       }
 
-      console.log('REFERRAL', referral);
-      console.log('CREDENTIALS', credentials);
-
-      console.log('ok create user')
       client.api.createUser(credentials).then((user) => {
-        console.log('POST TO BILLING: ', referral);
         axios.post(BILLING_URL + '/credits/signups', referral)
           .then((res) => {
-            console.log('CREDITS SIGNUPS RES: ', res);
             hashHistory.push('/signup-success');
             return resolve(user, res);
           })
