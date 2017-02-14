@@ -11,7 +11,7 @@ import gql from 'graphql-tag';
 import Promise from 'bluebird';
 import axios from 'axios';
 import config from 'config'
-const BILLING_URL = config.billing.url;
+const BILLING_URL = process.env.APOLLO_CLIENT_URL;
 
 @reduxForm({
   form: 'Signup',
