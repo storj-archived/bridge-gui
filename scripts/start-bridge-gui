@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "Injecting secrets into Statically generated content"
+./build/inject_static_secrets.sh APIHOST APIPORT APIPROTOCOL NODE_ENV STRIPE_PUBLISHABLE_KEY APOLLO_CLIENT_URL
+echo "Starting Bridge GUI"
+npm run start-prod
