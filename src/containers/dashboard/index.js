@@ -63,6 +63,7 @@ export default class Dashboard extends Component {
           <ul className="nav navbar-nav navbar-left">
             <li><IndexLink to='/dashboard'>Buckets</IndexLink></li>
             <li><Link to='/dashboard/billing'>Billing</Link></li>
+            <li><Link to='/dashboard/referrals'>Referrals</Link></li>
             <li><a href='https://storj.readme.io/'>Documentation</a></li>
             <li><Link to='/dashboard/api-docs'>API</Link></li>
             <li><a href='https://storj.readme.io/discuss'>Support</a></li>

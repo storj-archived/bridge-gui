@@ -11,7 +11,6 @@ import webpackConfig from './dev.config';
 import {graphiqlExpress} from 'apollo-server';
 
 const compiler = webpack(webpackConfig);
-
 const host = config.host || 'localhost';
 const port = (config.port + 1) || 3001;
 const serverOptions = {

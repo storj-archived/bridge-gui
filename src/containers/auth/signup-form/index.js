@@ -1,11 +1,17 @@
-import React, {Component, PropTypes} from 'react';
-import {reduxForm} from 'redux-form';
-import {IndexLink, hashHistory} from 'react-router';
+import React, { Component, PropTypes } from 'react';
+import { reduxForm } from 'redux-form';
+import { IndexLink, hashHistory } from 'react-router';
 import Modal from 'react-bootstrap/lib/Modal';
 import client from 'utils/api-client';
 import signupValidation from 'containers/auth/signup-form/signup-validation';
 import formLabelError from 'components/error-views/form-label-error';
 import TermsOfService from 'components/copy/terms-of-service';
+import { connect } from 'react-apollo';
+import gql from 'graphql-tag';
+import Promise from 'bluebird';
+import axios from 'axios';
+import config from 'config'
+const BILLING_URL = process.env.APOLLO_CLIENT_URL;
 
 @reduxForm({
   form: 'Signup',
@@ -23,35 +29,46 @@ export default class SignUpForm extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      showEula: false
+    };
+    this.submit = this.submit.bind(this);
   }
 
   openEula(event) {
     event.preventDefault();
-    this.setState({showEula: true});
+    this.setState({ showEula: true });
   }
 
   closeEula() {
-    this.setState({showEula: false});
+    this.setState({ showEula: false });
   }
 
   submit() {
     return new Promise((resolve, reject) => {
-      client.api.createUser({
+      const credentials = {
         email: this.props.fields.email.value,
         password: this.props.fields.password.value,
         redirect: 'https://app.storj.io/'
-      })
-        .then(
-          function success() {
-            resolve();
+      };
+
+      const referral = {
+        referralLink: this.props.location.query.referralLink,
+        email: this.props.fields.email.value
+      }
+
+      client.api.createUser(credentials).then((user) => {
+        axios.post(BILLING_URL + '/credits/signups', referral)
+          .then((res) => {
             hashHistory.push('/signup-success');
-          },
-          function fail(err) {
-            if (err && err.message) {
-              reject({_error: err.message});
-            }
-          });
+            return resolve(user, res);
+          })
+          .catch((err) => console.error(err));
+      }, (err) => {
+        if (err && err.message) {
+          reject({_error: err.message});
+        }
+      });
     });
   }
 
@@ -85,34 +102,66 @@ export default class SignUpForm extends Component {
 
                   <form>
 
-                    <div className={'form-group ' + (submitFailed && email.error ? 'has-error' : '')}>
+                    <div className={`
+                      form-group
+                      ${submitFailed && email.error ? 'has-error' : ''}
+                    `}>
                       {submitFailed && formLabelError(email)}
-                      <input type="email" className="form-control" name="email"
-                             placeholder="Email Address" {...email} />
+                      <input
+                        type="email"
+                        className="form-control"
+                        name="email"
+                        placeholder="Email Address"
+                        {...email}
+                      />
                     </div>
 
-                    <div className={'form-group ' + (submitFailed && password.error ? 'has-error' : '')}>
+                    <div className={`
+                      form-group
+                      ${submitFailed && password.error ? 'has-error' : ''}
+                    `}>
                       {submitFailed && formLabelError(password)}
-                      <input type="password" className="form-control" name="password"
-                             placeholder="Password" {...password} />
+                      <input
+                        type="password"
+                        className="form-control"
+                        name="password"
+                        placeholder="Password"
+                        {...password}
+                      />
                     </div>
 
                     <div className="form-group">
-                      <button type="submit" onClick={handleSubmit(this.submit.bind(this))}
-                              className="btn btn-block btn-green">Sign Up
+                      <button
+                        type="submit"
+                        onClick={handleSubmit(this.submit)}
+                        className="btn btn-block btn-green"
+                      >
+                        Sign Up
                       </button>
                     </div>
 
                     <div className="form-group checkbox">
-                      <label><input type="checkbox" className="text-right" name="eula" {...eula} />I agree to the <a
-                        href="#noop" onClick={this.openEula.bind(this)}>Terms of Service</a></label>
+                      <label>
+                        <input
+                          type="checkbox"
+                          className="text-right"
+                          name="eula"
+                          {...eula}
+                        />
+                        I agree to the
+                        <a href="#noop" onClick={this.openEula.bind(this)}>
+                          Terms of Service
+                        </a>
+                      </label>
                     </div>
 
                     {error && <div><span className="text-danger">{error}</span></div>}
                     {eula.error && eula.touched && <div><span className="text-danger">{eula.error}</span></div>}
                   </form>
                 </div>
-                <p>Already have an account? <IndexLink to="/" className="login">Log In</IndexLink></p>
+                <p>Already have an account?
+                  <IndexLink to="/" className="login">Log In</IndexLink>
+                </p>
               </div>
             </div>
           </div>

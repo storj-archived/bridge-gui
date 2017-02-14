@@ -60,6 +60,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "../service-middleware", "/home/vagrant/service-middleware"
   config.vm.synced_folder "../core", "/home/vagrant/core"
   config.vm.synced_folder "../mongodb-adapter", "/home/vagrant/mongodb-adapter"
+  config.vm.synced_folder "../service-mailer", "/home/vagrant/service-mailer"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -77,7 +78,8 @@ Vagrant.configure("2") do |config|
   # information on available options.
 
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = "2048"
+    vb.memory = 2048 
+    vb.cpus = 2
     vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
   end
 

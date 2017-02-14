@@ -53,7 +53,9 @@ class WrappedClient extends Client {
       });
     });
 
-    if (callback) requestPromise.then(callback, callback);
+    if (callback) {
+      return requestPromise.then(callback, callback);
+    }
 
     return requestPromise;
   }
