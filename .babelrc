@@ -6,8 +6,7 @@
   ],
   "plugins": [
     "typecheck",
-    "babel-plugin-transform-decorators-legacy",
-    "transform-async-to-generator"
+    "babel-plugin-transform-decorators-legacy"
   ],
   "env": {
     "dev": {
