@@ -59,5 +59,7 @@ module.exports = Object.assign({
       ]
     }
   },
-
+  billing: {
+    url: process.env.BILLING_URL || 'http://172.17.200.10:3000'
+  }
 }, environment);
