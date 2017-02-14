@@ -5,7 +5,8 @@ ENVVARS=$@
 
 function dosub {
   echo "Replacing $1 in all static content starting at path $STATIC_PATH with $2"
-  find $STATIC_PATH -type f -print0 | LC_ALL=C xargs -0 sed -i "s/ENV_${1}/\$${2}/g"
+  SANATIZED_VALUE=$(echo $1 | sed -e 's/[\/&]/\\&/g')
+  find $STATIC_PATH -type f -print0 | LC_ALL=C xargs -0 sed -i "s/ENV_${SANATIZED_VALUE}/\$${2}/g"
 }
 
 for VAR in "$@"; do
