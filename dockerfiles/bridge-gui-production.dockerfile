@@ -22,7 +22,7 @@ COPY . /opt/bridge-gui/
 # Install node modules for production (i.e. don't install devdeps)
 #RUN npm i --production
 
-ARG NODE_ENV=ENV_NODE_ENV
+ARG NODE_ENV=production
 ARG APIHOST=ENV_APIHOST
 ARG APIPORT=ENV_APIPORT
 ARG APIPROTOCOL=ENV_APIPROTOCOL
