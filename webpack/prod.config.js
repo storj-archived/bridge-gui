@@ -10,6 +10,7 @@ var relativeAssetsPath = '../static/dist';
 var assetsPath = path.join(__dirname, relativeAssetsPath);
 var assetsJsonFilename = 'webpack-assets.json';
 var assetsJsonPath = path.resolve(assetsPath, assetsJsonFilename);
+var outputPublicPathUrl = process.env.OUTPUT_PUBLIC_PATH_URL || 'OUTPUT_PUBLIC_PATH_URL';
 
 module.exports = {
   cache: true,
@@ -24,7 +25,7 @@ module.exports = {
     path: assetsPath,
     filename: '[name]-[chunkhash].js',
     chunkFilename: '[name]-[chunkhash].js',
-    publicPath: '/dist/',
+    publicPath: 'https://' + outputPublicPathUrl + '/dist/',
     assetsJsonPath: assetsJsonPath
   },
   module: {
