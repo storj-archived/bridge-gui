@@ -8,6 +8,9 @@ RUN apt-get install -y git wget curl
 RUN mkdir -p /opt/bridge-gui
 WORKDIR /opt/bridge-gui
 
+# To invalidate the cache, simply update the timestamp here (you can use date +%s)
+ARG CACHE_DATE=1487245008
+
 ADD package.json .
 RUN npm install --production
 
