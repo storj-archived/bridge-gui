@@ -170,7 +170,8 @@ export default class Billing extends Component {
     const today = new Date();
     const currentYearMonth = [
       today.getUTCFullYear(),
-      today.getUTCMonth() + 1 - offset
+      // plus 1 for 0 index to 1 index conversion; minus 1 for constant previous month
+      today.getUTCMonth() // + 1 - 1
     ];
 
     const dateThisMonthString = (date) => {
