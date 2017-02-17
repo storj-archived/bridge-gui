@@ -8,9 +8,6 @@ RUN apt-get install -y git wget curl
 RUN mkdir -p /opt/bridge-gui
 WORKDIR /opt/bridge-gui
 
-# To invalidate the cache, simply update the timestamp here (you can use date +%s)
-ARG CACHE_DATE=1487245008
-
 ADD package.json .
 RUN npm install --production
 
@@ -25,12 +22,12 @@ COPY . /opt/bridge-gui/
 # Install node modules for production (i.e. don't install devdeps)
 #RUN npm i --production
 
-ARG NODE_ENV=development
-ARG APIHOST=localhost
-ARG APIPORT=6382
-ARG APIPROTOCOL=http
-ARG APOLLO_CLIENT_URL=http://localhost:3000/graphql
-ARG STRIPE_PUBLISHABLE_KEY
+ARG NODE_ENV=production
+ARG APIHOST=ENV_APIHOST
+ARG APIPORT=ENV_APIPORT
+ARG APIPROTOCOL=ENV_APIPROTOCOL
+ARG APOLLO_CLIENT_URL=ENV_APOLLO_CLIENT_URL
+ARG STRIPE_PUBLISHABLE_KEY=ENV_STRIPE_PUBLISHABLE_KEY
 ARG OUTPUT_PUBLIC_PATH_URL=ENV_OUTPUT_PUBLIC_PATH_URL
 
 ENV NODE_ENV $NODE_ENV
