@@ -5,6 +5,8 @@ import moment from 'moment';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import ReferralInfo from '../../components/referrals/referral-info';
 import { isValidEmail } from '../../utils/validation';
+import axios from 'axios';
+const BILLING_URL = process.env.APOLLO_CLIENT_URL;
 
 const mapQueriesToProps = () => {
   return {
@@ -20,45 +22,19 @@ const mapQueriesToProps = () => {
   }
 };
 
-const mapMutationsToProps = () => {
-  return {
-    sendReferralEmails: (emailList, senderEmail, marketingId) => {
-      return {
-        mutation: gql`
-        mutation sendReferralEmails($emailList: [String]!, $senderEmail: String!, $marketingId: String!) {
-          sendReferralEmails(emailList: $emailList, senderEmail: $senderEmail, marketingId: $marketingId) {
-            sender {
-              id
-            },
-            recipient {
-              id
-            },
-            created,
-            type
-          }
-        }`,
-        variables: {
-          emailList,
-          senderEmail,
-          marketingId
-        }
-      };
-    }
-  };
-};
-
 @connect({
-  mapQueriesToProps,
-  mapMutationsToProps
+  mapQueriesToProps
 })
 
 export default class Referrals extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: 'Enter emails',
+      value: '',
       copied: false,
-      valid: true
+      valid: true,
+      emailFailures: [],
+      emailSuccesses: []
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -84,12 +60,25 @@ export default class Referrals extends Component {
   handleSubmit(event) {
     event.preventDefault();
     if (this.state.value) {
-      const emailList = this.state.value.split(',').map((email) => email.trim());
-      this.props.mutations.sendReferralEmails(
-        emailList,
-        this.props.marketingQuery.marketing.user,
-        this.props.marketingQuery.marketing.id
-      );
+      const emailList = this.state.value
+        .split(',').map((email) => email.trim());
+
+      axios.post(`${BILLING_URL}/referrals/sendReferralEmail`, {
+        marketing: this.props.marketingQuery.marketing,
+        emailList
+      }).then((response) => {
+        console.log('response', response);
+        const failures = response.data.failures.map((failure, index) => {
+          return <span key={index}>{failure.email}</span>;
+        });
+
+        const successes = response.data.successes.map((success, index) => {
+          return <span key={index}>{success.email}</span>;
+        });
+        this.setState({ value: '' });
+        this.setState({ emailSuccess: successes });
+        this.setState({ emailFailures: failures });
+      });
     } else {
       console.log('there is no state')
     }
@@ -167,9 +156,27 @@ export default class Referrals extends Component {
                     />
 
                   {this.state.valid
-                      ? null
-                      : <span style={{ color: 'red', margin: '10px', display: 'inline-block' }}>Invalid email list!</span>
-                    }
+                    ? null
+                    : <span style={{ color: 'red', margin: '10px', display: 'inline-block' }}>Invalid email list!</span>
+                  }
+
+                  {
+                    this.state.emailFailures.length
+                    ? <span style={{ color: 'red', margin: '10px', display:
+                      'inline-block' }}>
+                        Error sending: {this.state.emailFailures}
+                      </span>
+                    : null
+                  }
+
+                  {
+                    this.state.emailSuccesses.length
+                    ? <span style={{ color: 'green', margin: '10px', display:
+                      'inline-block' }}>
+                        Success sending: {this.state.emailSuccesses}!
+                      </span>
+                    : null
+                  }
 
                   </div>
                   <div className="row">
