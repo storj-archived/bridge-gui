@@ -170,8 +170,8 @@ export default class Billing extends Component {
     const today = new Date();
     const currentYearMonth = [
       today.getUTCFullYear(),
-      // NB: add 1 to `.getUTCMonth` because `Date` uses 0 for Jan while `moment` uses 1
-      today.getUTCMonth() + 1
+      // plus 1 for 0 index to 1 index conversion; minus 1 for constant previous month
+      today.getUTCMonth() // + 1 - 1
     ];
 
     const dateThisMonthString = (date) => {
@@ -179,8 +179,12 @@ export default class Billing extends Component {
     };
 
     const daysInMonth = moment.utc(
-      dateThisMonthString(today.getUTCDate()), format
-    ).subtract(offset, 'month').date();
+      dateThisMonthString(1), format
+    )
+      .subtract(offset, 'month')
+      .add(1, 'month')
+      .subtract(1, 'day')
+      .date();
 
     const startDayOfMonth = (billingDate > daysInMonth) ? daysInMonth : billingDate;
     const startDate = moment.utc(
@@ -256,10 +260,12 @@ export default class Billing extends Component {
   removeCard() {
     const {removeCard} = this.props.mutations;
     // TODO: use apollo watchquery correctly so we don't have to call `refetch`
-    const {refetch, paymentProcessor: {
+    const {
+      refetch, paymentProcessor: {
       id: paymentProcessorId,
       defaultPaymentMethod: {id: paymentMethodId}
-    }} = this.props.paymentProcessor;
+    }
+    } = this.props.paymentProcessor;
 
     removeCard(
       paymentProcessorId,
