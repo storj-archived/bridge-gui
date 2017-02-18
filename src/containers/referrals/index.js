@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-apollo';
 import gql from 'graphql-tag';
-import moment from 'moment';
 import {
   ReferralInfo,
   ReferralLink,
@@ -37,8 +36,7 @@ export default class Referrals extends Component {
       copied: false,
       valid: true,
       emailFailures: [],
-      emailSuccesses: [],
-      referralLink: 'Loading . . .'
+      emailSuccesses: []
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -71,7 +69,6 @@ export default class Referrals extends Component {
         marketing: this.props.marketingQuery.marketing,
         emailList
       }).then((response) => {
-        console.log('response', response);
         const failures = response.data.failures.map((failure, index) => {
           return <span key={index}>{failure.email}</span>;
         });
@@ -85,25 +82,26 @@ export default class Referrals extends Component {
           emailFailures: failures
         });
       });
-    } else {
-      console.log('there is no state')
     }
   }
 
   handleCopy() {
-    this.setState({ copied: true });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    console.log('nextProps', nextProps);
-
-    this.setState({
-      referralLink:
-        'https://app.storj.io/#/signup?referralLink=' + nextProps.marketingQuery.marketing.referralLink
-    });
+    this.setState({ copied: true })
+    setTimeout(() => {
+      this.setState({ copied: false })
+    }, 2000);
   }
 
   render () {
+    let referralLink;
+    const { marketing, loading } = this.props.marketingQuery;
+
+    if (loading || !(marketing && marketing.referralLink)) {
+      referralLink = 'Loading ...';
+    } else {
+      referralLink = 'https://app.storj.io/#/signup?referralLink=' + marketing.referralLink;
+    }
+
     return (
       <section>
         <div className="container">
@@ -122,7 +120,7 @@ export default class Referrals extends Component {
             </SendReferralEmail>
 
             <ReferralLink
-              referralLink={this.state.referralLink}
+              referralLink={referralLink}
               handleCopy={this.handleCopy}
               copied={this.state.copied}
             >

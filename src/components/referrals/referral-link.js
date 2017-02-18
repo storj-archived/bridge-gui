@@ -28,13 +28,13 @@ export default class ReferralLink extends Component {
               text={this.props.referralLink}
               onCopy={this.props.handleCopy}
             >
-              <div className="col-xs-12">
+              <div className="col-xs-12" style={{ position: 'relative' }}>
                 <button className="btn btn-primary btn-block">
                   Copy Link
                 </button>
                 {
                   this.props.copied
-                  ? <span style={{ color: 'red', marginBottom: '-10px' }}>Copied!</span>
+                  ? <div style={{ color: 'red', position: 'absolute'}}>Copied!</div>
                   : null
                 }
               </div>
