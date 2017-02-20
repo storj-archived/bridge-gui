@@ -293,7 +293,7 @@ export default class Billing extends Component {
           <div className="container">
             <div className="row">
               <div className="col-xs-12">
-                <div className="alert alert-warning" role="alert">
+                <div className="alert alert-info" role="alert">
                   Billing is in test mode and is not activated yet.
                   Don't try to submit the form.
                   We'll notify you when billing is activated.
