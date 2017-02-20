@@ -74,8 +74,7 @@ export default class SignUpForm extends Component {
 
   renderEula() {
     return (
-      <
-      l show={this.state.showEula} onHide={this.closeEula.bind(this)} bsSize="large">
+      <Modal show={this.state.showEula} onHide={this.closeEula.bind(this)} bsSize="large">
         <Modal.Header closeButton><h1 className="text-center">Storj Labs</h1></Modal.Header>
         <Modal.Body>
           <TermsOfService/>
