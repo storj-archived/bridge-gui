@@ -74,7 +74,7 @@ export default class Referrals extends Component {
         });
 
         const successes = response.data.successes.map((success, index) => {
-          return <span key={index}>{success.email}</span>;
+          return <p key={index}>{success.email}</p>;
         });
         this.setState({
           value: '',
