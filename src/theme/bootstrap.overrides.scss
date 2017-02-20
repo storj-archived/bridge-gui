@@ -176,9 +176,13 @@ input:focus, select:focus {
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-    .navbar-default .navbar-brand {
+  .navbar-default .navbar-brand {
 		margin-right: 0;
 	}
+  .navbar-default .navbar-nav > li > a {
+    padding: 40px 12px;
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 767px) {
@@ -194,6 +198,10 @@ input:focus, select:focus {
 	    background: #2683ff;
 	    color: #fff;
 	}
+  .navbar-brand {
+    margin: 15px;
+    margin-left: 0;
+  }
 }
 
 @import 'theme';

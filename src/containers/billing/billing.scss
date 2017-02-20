@@ -14,13 +14,6 @@ $brand-success: #91D127;
   border-color: $brand-success;
 }
 
-.alert {
-  width: 100%;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin: 0px auto !important;
-}
-
 .alert-warning {
   color: darken($brand-warning, 40%);
   background-color: $brand-warning;
