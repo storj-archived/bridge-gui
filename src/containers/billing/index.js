@@ -294,9 +294,7 @@ export default class Billing extends Component {
             <div className="row">
               <div className="col-xs-12">
                 <div className="alert alert-info" role="alert">
-                  Billing is in test mode and is not activated yet.
-                  Don't try to submit the form.
-                  We'll notify you when billing is activated.
+                  <p>Our billing services are live but we’re not charging for usage yet. Please enjoy your free storage! In the meantime, feel free to add a credit card, as billing will start in March.</p>
                 </div>
               </div>
             </div>
