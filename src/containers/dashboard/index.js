@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/lib/Navbar';
 import client from 'utils/api-client';
 
 const mapStateToProps = (state) => ({
-    userEmail: state.localStorage.email
+  userEmail: state.localStorage.email
 })
 
 const mapDispatchToProps = (dispatch) => ({
