@@ -34,19 +34,19 @@ export default class SendReferralEmail extends Component {
                 />
                 {
                   this.props.emailFailures.length
-                  ? <span style={{ color: 'red', margin: '10px', display:
+                  ? <div style={{ color: 'red', margin: '10px', display:
                     'inline-block' }}>
                       Error sending: {this.props.emailFailures}
-                    </span>
+                    </div>
                   : null
                 }
 
                 {
                   this.props.emailSuccesses.length
-                  ? <span style={{ color: 'green', margin: '10px', display:
+                  ? <div style={{ color: 'green', margin: '10px', display:
                     'inline-block' }}>
-                      Success sending: {this.props.emailSuccesses}!
-                    </span>
+                      Success sending: {this.props.emailSuccesses}
+                    </div>
                   : null
                 }
               </div>
