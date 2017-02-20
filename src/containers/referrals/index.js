@@ -70,7 +70,7 @@ export default class Referrals extends Component {
         emailList
       }).then((response) => {
         const failures = response.data.failures.map((failure, index) => {
-          return <span key={index}>{failure.email}</span>;
+          return <p key={index}>{failure.email} ({failure.message})</p>;
         });
 
         const successes = response.data.successes.map((success, index) => {
@@ -78,7 +78,7 @@ export default class Referrals extends Component {
         });
         this.setState({
           value: '',
-          emailSuccess: successes,
+          emailSuccesses: successes,
           emailFailures: failures
         });
       });

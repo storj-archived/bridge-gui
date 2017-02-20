@@ -22,7 +22,16 @@ export default class SendReferralEmail extends Component {
                   ? null
                   : <span style={{ color: 'red', margin: '10px', display: 'inline-block' }}>Invalid email list!</span>
                 }
-
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-xs-12">
+                <input
+                  type="submit"
+                  name="submit"
+                  value="Invite friends"
+                  className="btn btn-block btn-green"
+                />
                 {
                   this.props.emailFailures.length
                   ? <span style={{ color: 'red', margin: '10px', display:
@@ -40,16 +49,6 @@ export default class SendReferralEmail extends Component {
                     </span>
                   : null
                 }
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-xs-12">
-                <input
-                  type="submit"
-                  name="submit"
-                  value="Invite friends"
-                  className="btn btn-block btn-green"
-                />
               </div>
             </div>
           </form>
