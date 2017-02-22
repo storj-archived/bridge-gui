@@ -57,13 +57,17 @@ export default class SignUpForm extends Component {
         email: this.props.fields.email.value
       }
 
-      client.api.createUser(credentials).then((user) => {
-        axios.post(BILLING_URL + '/credits/signups', referral)
-          .then((res) => {
-            hashHistory.push('/signup-success');
-            return resolve(user, res);
-          })
-          .catch((err) => console.error(err));
+      client.api.createUser(credentials).then((result) => {
+        if (result.error) {
+          return reject({ _error: result.error })
+        } else {
+          axios.post(BILLING_URL + '/credits/signups', referral)
+            .then((res) => {
+              hashHistory.push('/signup-success');
+              return resolve(res);
+            })
+            .catch((err) => console.error(err));
+        }
       }, (err) => {
         if (err && err.message) {
           reject({_error: err.message});
@@ -148,7 +152,7 @@ export default class SignUpForm extends Component {
                           name="eula"
                           {...eula}
                         />
-                        I agree to the 
+                        I agree to the
                         <a href="#noop" onClick={this.openEula.bind(this)}>
                           Terms of Service
                         </a>
@@ -159,7 +163,7 @@ export default class SignUpForm extends Component {
                     {eula.error && eula.touched && <div><span className="text-danger">{eula.error}</span></div>}
                   </form>
                 </div>
-                <p>Already have an account? 
+                <p>Already have an account?
                   <IndexLink to="/" className="login">Log In</IndexLink>
                 </p>
               </div>
