@@ -57,13 +57,17 @@ export default class SignUpForm extends Component {
         email: this.props.fields.email.value
       }
 
-      client.api.createUser(credentials).then((user) => {
-        axios.post(BILLING_URL + '/credits/signups', referral)
-          .then((res) => {
-            hashHistory.push('/signup-success');
-            return resolve(user, res);
-          })
-          .catch((err) => console.error(err));
+      client.api.createUser(credentials).then((result) => {
+        if (result.error) {
+          return reject({ _error: result.error })
+        } else {
+          axios.post(BILLING_URL + '/credits/signups', referral)
+            .then((res) => {
+              hashHistory.push('/signup-success');
+              return resolve(res);
+            })
+            .catch((err) => console.error(err));
+        }
       }, (err) => {
         if (err && err.message) {
           reject({_error: err.message});
