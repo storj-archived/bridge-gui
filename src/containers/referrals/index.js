@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-apollo';
+import { hashHistory } from 'react-router';
+import client from 'utils/api-client';
 import gql from 'graphql-tag';
 import {
   ReferralInfo,
@@ -43,6 +45,20 @@ export default class Referrals extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCopy = this.handleCopy.bind(this);
     this.handleValidation = this.handleValidation.bind(this);
+  }
+
+  componentWillMount() {
+    const privkey = window.localStorage.getItem('privkey');
+    if (privkey) {
+      client.api.getPublicKeys()
+        .then(function success() {
+          return true;
+        }, function fail() {
+          hashHistory.push('/');
+        });
+    } else {
+      hashHistory.push('/');
+    }
   }
 
   handleChange(event) {
