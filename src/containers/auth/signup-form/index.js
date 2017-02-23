@@ -153,7 +153,7 @@ export default class SignUpForm extends Component {
                           {...eula}
                         />
                         <p>I agree to the&nbsp;
-                          <a href="#noop" onClick={this.openEula.bind(this)}> Terms of Service </a>
+                          <a href="#noop" onClick={this.openEula.bind(this)}>Terms of Service </a>
                         </p>
                       </label>
                     </div>
