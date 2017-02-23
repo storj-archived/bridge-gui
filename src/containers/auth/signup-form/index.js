@@ -152,7 +152,7 @@ export default class SignUpForm extends Component {
                           name="eula"
                           {...eula}
                         />
-                        <p>I agree to the&nbsp
+                        <p>I agree to the&nbsp;
                           <a href="#noop" onClick={this.openEula.bind(this)}> Terms of Service </a>
                         </p>
                       </label>
@@ -162,7 +162,7 @@ export default class SignUpForm extends Component {
                     {eula.error && eula.touched && <div><span className="text-danger">{eula.error}</span></div>}
                   </form>
                 </div>
-                <p>Already have an account?&nbsp
+                <p>Already have an account?&nbsp;
                   <IndexLink to="/" className="login">Log In</IndexLink>
                 </p>
               </div>
