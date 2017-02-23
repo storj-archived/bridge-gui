@@ -22,24 +22,6 @@ export default class SendReferralEmail extends Component {
                   ? null
                   : <span style={{ color: 'red', margin: '10px', display: 'inline-block' }}>Invalid email list!</span>
                 }
-
-                {
-                  this.props.emailFailures.length
-                  ? <span style={{ color: 'red', margin: '10px', display:
-                    'inline-block' }}>
-                      Error sending: {this.props.emailFailures}
-                    </span>
-                  : null
-                }
-
-                {
-                  this.props.emailSuccesses.length
-                  ? <span style={{ color: 'green', margin: '10px', display:
-                    'inline-block' }}>
-                      Success sending: {this.props.emailSuccesses}!
-                    </span>
-                  : null
-                }
               </div>
             </div>
             <div className="row">
@@ -50,6 +32,23 @@ export default class SendReferralEmail extends Component {
                   value="Invite friends"
                   className="btn btn-block btn-green"
                 />
+                {
+                  this.props.emailFailures.length
+                  ? <div style={{ color: 'red', margin: '10px', display:
+                    'inline-block' }}>
+                      Error sending: {this.props.emailFailures}
+                    </div>
+                  : null
+                }
+
+                {
+                  this.props.emailSuccesses.length
+                  ? <div style={{ color: 'green', margin: '10px', display:
+                    'inline-block' }}>
+                      Success sending: {this.props.emailSuccesses}
+                    </div>
+                  : null
+                }
               </div>
             </div>
           </form>

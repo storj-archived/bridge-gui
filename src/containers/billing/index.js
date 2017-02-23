@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-apollo';
+import { hashHistory } from 'react-router';
+import client from 'utils/api-client';
 import gql from 'graphql-tag';
 import moment from 'moment';
 import BalancePanel from 'components/billing/balance-panel';
@@ -109,6 +111,21 @@ let globalCounter = 0;
 })
 
 export default class Billing extends Component {
+
+  componentWillMount() {
+    const privkey = window.localStorage.getItem('privkey');
+    if (privkey) {
+      client.api.getPublicKeys()
+        .then(function success() {
+          return true;
+        }, function fail() {
+          hashHistory.push('/');
+        });
+    } else {
+      hashHistory.push('/');
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     globalCounter++;
     if (globalCounter > 50) return;
@@ -293,10 +310,8 @@ export default class Billing extends Component {
           <div className="container">
             <div className="row">
               <div className="col-xs-12">
-                <div className="alert alert-warning" role="alert">
-                  Billing is in test mode and is not activated yet.
-                  Don't try to submit the form.
-                  We'll notify you when billing is activated.
+                <div className="alert alert-info" role="alert">
+                  <p>Our billing services are live but we’re not charging for usage yet. Please enjoy your free storage! In the meantime, feel free to add a credit card, as billing will start in March.</p>
                 </div>
               </div>
             </div>

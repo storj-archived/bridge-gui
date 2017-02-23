@@ -33,7 +33,9 @@ export default class LoginForm extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      hasLoggedInUser: true
+    };
   }
 
   componentWillMount() {
@@ -43,6 +45,8 @@ export default class LoginForm extends Component {
         .then(function success() {
           hashHistory.push('/dashboard');
         });
+    } else {
+      this.setState({ hasLoggedInUser: false });
     }
   }
 
@@ -93,6 +97,10 @@ export default class LoginForm extends Component {
 
   render() {
     const {fields: {email, password, rememberUser}, error, handleSubmit, submitFailed} = this.props;
+    if (this.state.hasLoggedInUser) {
+      return <h3 style={{ textAlign: 'center' }}>Loading . . .</h3>;
+    }
+
     return (
       <div className="container auth">
         <div className="row">
