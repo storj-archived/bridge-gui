@@ -26,8 +26,15 @@ const mapQueriesToProps = () => {
   }
 };
 
+const mapStateToProps = (state) => {
+  return {
+    user: state.localStorage.email
+  }
+};
+
 @connect({
-  mapQueriesToProps
+  mapQueriesToProps,
+  mapStateToProps
 })
 
 export default class Referrals extends Component {
@@ -48,10 +55,13 @@ export default class Referrals extends Component {
   }
 
   componentWillMount() {
+    const props = this.props;
     const privkey = window.localStorage.getItem('privkey');
     if (privkey) {
       client.api.getPublicKeys()
         .then(function success() {
+          // TODO: Don't make unnecessary request (would be mo'bettah)
+          props.marketingQuery.refetch();
           return true;
         }, function fail() {
           hashHistory.push('/');
