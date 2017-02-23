@@ -146,13 +146,14 @@ export default class SignUpForm extends Component {
 
                     <div className="form-group checkbox">
                       <label>
+                        <p>
                         <input
                           type="checkbox"
                           className="text-right"
                           name="eula"
                           {...eula}
                         />
-                        <p>I agree to the&nbsp;
+                        I agree to the&nbsp;
                           <a href="#noop" onClick={this.openEula.bind(this)}>Terms of Service </a>
                         </p>
                       </label>
