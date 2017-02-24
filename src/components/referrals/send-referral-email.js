@@ -7,7 +7,7 @@ export default class SendReferralEmail extends Component {
         <h2>Refer by email</h2>
         <div className="content">
           <form acceptCharset="UTF-8" onSubmit={this.props.handleSubmit}>
-            <p>Enter your friend's emails (separated by commas) and we'll invite them for you.
+            <p>Enter your friends' emails (separated by commas) and we'll invite them for you.
             </p>
             <div className="row">
               <div className="col-xs-12">
