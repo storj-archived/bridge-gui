@@ -107,6 +107,13 @@ export default class Referrals extends Component {
           emailSuccesses: successes,
           emailFailures: failures
         });
+
+        setTimeout(() => {
+          this.setState({
+            emailSuccesses: [],
+            emailFailures: []
+          });
+        }, 5000);
       });
     }
   }
