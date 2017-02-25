@@ -32,7 +32,7 @@ function addSecurityHeaders(req, res, next) {
 }
 
 function httpToHttpsRedirect(req, res, next) {
-  if (req.protocol != 'https' && config.httpsRedirect) {
+  if (req.protocol !== 'https' && config.httpsRedirect) {
     res.redirect('https://' + req.hostname + req.url);
   } else {
     next();
