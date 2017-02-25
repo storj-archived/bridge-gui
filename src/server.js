@@ -31,7 +31,16 @@ function addSecurityHeaders(req, res, next) {
   next();
 }
 
+function httpToHttpsRedirect(req, res, next) {
+  if (req.protocol !== 'https' && config.httpsRedirect) {
+    res.redirect('https://' + req.hostname + req.url);
+  } else {
+    next();
+  }
+}
+
 app.use(compression())
+  .use(httpToHttpsRedirect)
   .use(favicon(path.join(__dirname, '..', 'static/img/favicon', 'favicon.ico')))
   .use(addSecurityHeaders)
   .use(Express.static(path.join(__dirname, '..', 'static')))
