@@ -309,17 +309,6 @@ export default class Billing extends Component {
         <section>
           <div className="container">
             <div className="row">
-              <div className="col-xs-12">
-                <div className="alert alert-info" role="alert">
-                  <p>Our billing services are live but we’re not charging for usage yet. Please enjoy your free storage! In the meantime, feel free to add a credit card, as billing will start in March.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section>
-          <div className="container">
-            <div className="row">
               <div className="col-xs-12 col-sm-6">
                 <BalancePanel amount={this.props.balance}
                               addCreditHandler={addCreditHandler}
