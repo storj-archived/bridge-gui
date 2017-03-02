@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-apollo';
+import { hashHistory } from 'react-router';
+import client from 'utils/api-client';
 import gql from 'graphql-tag';
 import moment from 'moment';
 import BalancePanel from 'components/billing/balance-panel';
@@ -109,6 +111,21 @@ let globalCounter = 0;
 })
 
 export default class Billing extends Component {
+
+  componentWillMount() {
+    const privkey = window.localStorage.getItem('privkey');
+    if (privkey) {
+      client.api.getPublicKeys()
+        .then(function success() {
+          return true;
+        }, function fail() {
+          hashHistory.push('/');
+        });
+    } else {
+      hashHistory.push('/');
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     globalCounter++;
     if (globalCounter > 50) return;

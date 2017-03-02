@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-apollo';
+import { hashHistory } from 'react-router';
+import client from 'utils/api-client';
 import gql from 'graphql-tag';
 import {
   ReferralInfo,
@@ -24,8 +26,15 @@ const mapQueriesToProps = () => {
   }
 };
 
+const mapStateToProps = (state) => {
+  return {
+    user: state.localStorage.email
+  }
+};
+
 @connect({
-  mapQueriesToProps
+  mapQueriesToProps,
+  mapStateToProps
 })
 
 export default class Referrals extends Component {
@@ -43,6 +52,23 @@ export default class Referrals extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCopy = this.handleCopy.bind(this);
     this.handleValidation = this.handleValidation.bind(this);
+  }
+
+  componentWillMount() {
+    const props = this.props;
+    const privkey = window.localStorage.getItem('privkey');
+    if (privkey) {
+      client.api.getPublicKeys()
+        .then(function success() {
+          // TODO: Don't make unnecessary request (would be mo'bettah)
+          props.marketingQuery.refetch();
+          return true;
+        }, function fail() {
+          hashHistory.push('/');
+        });
+    } else {
+      hashHistory.push('/');
+    }
   }
 
   handleChange(event) {
@@ -70,17 +96,24 @@ export default class Referrals extends Component {
         emailList
       }).then((response) => {
         const failures = response.data.failures.map((failure, index) => {
-          return <span key={index}>{failure.email}</span>;
+          return <p key={index}>{failure.email} ({failure.message})</p>;
         });
 
         const successes = response.data.successes.map((success, index) => {
-          return <span key={index}>{success.email}</span>;
+          return <p key={index}>{success.email}</p>;
         });
         this.setState({
           value: '',
-          emailSuccess: successes,
+          emailSuccesses: successes,
           emailFailures: failures
         });
+
+        setTimeout(() => {
+          this.setState({
+            emailSuccesses: [],
+            emailFailures: []
+          });
+        }, 5000);
       });
     }
   }

@@ -57,13 +57,17 @@ export default class SignUpForm extends Component {
         email: this.props.fields.email.value
       }
 
-      client.api.createUser(credentials).then((user) => {
-        axios.post(BILLING_URL + '/credits/signups', referral)
-          .then((res) => {
-            hashHistory.push('/signup-success');
-            return resolve(user, res);
-          })
-          .catch((err) => console.error(err));
+      client.api.createUser(credentials).then((result) => {
+        if (result.error) {
+          return reject({ _error: result.error })
+        } else {
+          axios.post(BILLING_URL + '/credits/signups', referral)
+            .then((res) => {
+              hashHistory.push('/signup-success');
+              return resolve(res);
+            })
+            .catch((err) => console.error(err));
+        }
       }, (err) => {
         if (err && err.message) {
           reject({_error: err.message});
@@ -74,8 +78,7 @@ export default class SignUpForm extends Component {
 
   renderEula() {
     return (
-      <
-      l show={this.state.showEula} onHide={this.closeEula.bind(this)} bsSize="large">
+      <Modal show={this.state.showEula} onHide={this.closeEula.bind(this)} bsSize="large">
         <Modal.Header closeButton><h1 className="text-center">Storj Labs</h1></Modal.Header>
         <Modal.Body>
           <TermsOfService/>
@@ -143,16 +146,16 @@ export default class SignUpForm extends Component {
 
                     <div className="form-group checkbox">
                       <label>
+                        <p>
                         <input
                           type="checkbox"
                           className="text-right"
                           name="eula"
                           {...eula}
                         />
-                        I agree to the
-                        <a href="#noop" onClick={this.openEula.bind(this)}>
-                          Terms of Service
-                        </a>
+                        I agree to the&nbsp;
+                          <a href="#noop" onClick={this.openEula.bind(this)}>Terms of Service </a>
+                        </p>
                       </label>
                     </div>
 
@@ -160,7 +163,7 @@ export default class SignUpForm extends Component {
                     {eula.error && eula.touched && <div><span className="text-danger">{eula.error}</span></div>}
                   </form>
                 </div>
-                <p>Already have an account?
+                <p>Already have an account?&nbsp;
                   <IndexLink to="/" className="login">Log In</IndexLink>
                 </p>
               </div>
