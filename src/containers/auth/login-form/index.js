@@ -44,9 +44,12 @@ export default class LoginForm extends Component {
       client.api.getPublicKeys()
         .then(function success() {
           hashHistory.push('/dashboard');
+        }, function fail() {
+          hashHistory.push('/');
         });
     } else {
       this.setState({ hasLoggedInUser: false });
+      hashHistory.push('/');
     }
   }
 
