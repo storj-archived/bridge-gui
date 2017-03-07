@@ -19,11 +19,11 @@ const validation = function(values) {
   const jcb = /^(?:2131|1800|35\d{3})\d{11}$/.test(values.ccNumber);
   const dinersclub = /^3(?:0[0-5]|[68][0-9])[0-9]{11}$/.test(values.ccNumber);
 
-  if(!visa && !mastercard && !amex && !discover && !jcb && !dinersclub) {
+  if (!visa && !mastercard && !amex && !discover && !jcb && !dinersclub) {
     errors.ccNumber = "Enter a valid credit card number."
   }
 
-  if(!values.cvv){
+  if (!values.cvv) {
     errors.cvv = "No CVV number provided."
   }
 
@@ -32,6 +32,7 @@ const validation = function(values) {
   }
 
   const cvv = /^([0-9]{3,4})$/.test(values.cvv);
+
   if (!cvv) {
     errors.cvv = "Please enter a valid CVV."
   }
@@ -155,13 +156,10 @@ export default class AddCardForm extends Component {
     const {
       fields
     } = this.props;
-    return ( <
-      AddCardPanel fields = {
-        fields
-      }
-      handleCardSubmit = {
-        this.handleCardSubmit.bind(this)
-      }
+    return (
+      <AddCardPanel
+        fields={fields}
+        handleCardSubmit={this.handleCardSubmit.bind(this)}
       />
     );
   }
