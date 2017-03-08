@@ -26,12 +26,10 @@ export default class SendReferralEmail extends Component {
             </div>
             <div className="row">
               <div className="col-xs-12">
-                <input
-                  type="submit"
-                  name="submit"
-                  value="Invite friends"
-                  className="btn btn-block btn-green"
-                />
+                <button type="submit" className="btn btn-block btn-green">
+                  {this.props.submitting ? 'Submitting...' : 'Invite friends'}
+                </button>
+
                 {
                   this.props.emailFailures.length
                   ? <div style={{ color: 'red', margin: '10px', display:
@@ -64,5 +62,6 @@ SendReferralEmail.propTypes = {
   value: React.PropTypes.string,
   valid: React.PropTypes.bool,
   emailFailures: React.PropTypes.array,
-  emailSuccess: React.PropTypes.array
+  emailSuccess: React.PropTypes.array,
+  submitting: React.PropTypes.bool
 };
