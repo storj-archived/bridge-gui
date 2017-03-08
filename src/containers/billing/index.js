@@ -118,7 +118,8 @@ export default class Billing extends Component {
       client.api.getPublicKeys()
         .then(function success() {
           return true;
-        }, function fail() {
+        }, function fail(err) {
+          console.log('publickey result', err);
           hashHistory.push('/');
         });
     } else {

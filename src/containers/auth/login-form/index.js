@@ -44,9 +44,12 @@ export default class LoginForm extends Component {
       client.api.getPublicKeys()
         .then(function success() {
           hashHistory.push('/dashboard');
+        }, function fail() {
+          hashHistory.push('/');
         });
     } else {
       this.setState({ hasLoggedInUser: false });
+      hashHistory.push('/');
     }
   }
 
@@ -68,6 +71,8 @@ export default class LoginForm extends Component {
   submit() {
     return new Promise((resolve, reject) => {
       const keypair = client.createKeyPair();
+      const publicKey = keypair.getPublicKey();
+      const privateKey = keypair.getPrivateKey();
       const email = this.props.fields.email.value;
       const password = this.props.fields.password.value;
 
@@ -77,11 +82,11 @@ export default class LoginForm extends Component {
         this.props.storeEmail(email);
       }
 
-      client.api.addPublicKey(keypair.getPublicKey()).then(
+      client.api.addPublicKey(publicKey).then(
         function success() {
           client.removeBasicAuth();
           if (window && window.localStorage) {
-            window.localStorage.setItem('privkey', keypair.getPrivateKey());
+            window.localStorage.setItem('privkey', privateKey);
           }
           client.useKeyPair(keypair);
           resolve();
