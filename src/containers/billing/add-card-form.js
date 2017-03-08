@@ -126,7 +126,9 @@ export default class AddCardForm extends Component {
 
     const { ccNumber, ccExp, cvv } = this.props.fields;
 
-    if (!ccNumber.initialValue || !ccExp.initialValue || !cvv.initialValue) {
+    // NB: Handles never-been-touched CC fields. Redux-form validation does not
+    // run if user doesn't touch fields
+    if (ccNumber.pristine || ccExp.pristine || cvv.pristine) {
       const msg = 'Please fill out all Credit Card Details';
       this.setState({ submitError: msg });
 
