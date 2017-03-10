@@ -11,6 +11,7 @@ import {
 import { isValidEmail } from '../../utils/validation';
 import axios from 'axios';
 const BILLING_URL = process.env.APOLLO_CLIENT_URL;
+import _ from 'lodash';
 
 const mapQueriesToProps = () => {
   return {
@@ -45,13 +46,22 @@ export default class Referrals extends Component {
       copied: false,
       valid: true,
       emailFailures: [],
-      emailSuccesses: []
+      emailSuccesses: [],
+      submitting: false
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCopy = this.handleCopy.bind(this);
-    this.handleValidation = this.handleValidation.bind(this);
+
+    this.handleValidation = _.debounce(function(emails) {
+      const list = emails.split(',');
+      list.forEach((email) => {
+        isValidEmail(email.trim()) ?
+          this.setState({valid: true})
+          : this.setState({valid: false})
+      });
+    }, 650).bind(this);
   }
 
   componentWillMount() {
@@ -76,18 +86,12 @@ export default class Referrals extends Component {
     this.handleValidation(event.target.value);
   }
 
-  handleValidation(emails) {
-    const list = emails.split(',');
-    list.forEach((email) => {
-      isValidEmail(email.trim()) ?
-        this.setState({valid: true})
-        : this.setState({valid: false})
-    });
-  }
-
   handleSubmit(event) {
     event.preventDefault();
+
     if (this.state.value) {
+      this.setState({ submitting: true });
+
       const emailList = this.state.value
         .split(',').map((email) => email.trim());
 
@@ -95,6 +99,8 @@ export default class Referrals extends Component {
         marketing: this.props.marketingQuery.marketing,
         emailList
       }).then((response) => {
+        this.setState({ submitting: false });
+
         const failures = response.data.failures.map((failure, index) => {
           return <p key={index}>{failure.email} ({failure.message})</p>;
         });
@@ -102,6 +108,7 @@ export default class Referrals extends Component {
         const successes = response.data.successes.map((success, index) => {
           return <p key={index}>{success.email}</p>;
         });
+
         this.setState({
           value: '',
           emailSuccesses: successes,
@@ -114,7 +121,10 @@ export default class Referrals extends Component {
             emailFailures: []
           });
         }, 5000);
-      });
+      })
+      .catch((err) => {
+        this.setState({ submitting: false });
+      })
     }
   }
 
@@ -126,7 +136,7 @@ export default class Referrals extends Component {
   }
 
   render () {
-    let referralLink;
+    let referralLink = '';
     const { marketing, loading } = this.props.marketingQuery;
 
     if (loading || !(marketing && marketing.referralLink)) {
@@ -149,6 +159,7 @@ export default class Referrals extends Component {
               valid={this.state.valid}
               emailFailures={this.state.emailFailures}
               emailSuccesses={this.state.emailSuccesses}
+              submitting={this.state.submitting}
             >
             </SendReferralEmail>
 

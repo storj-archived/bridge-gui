@@ -57,7 +57,9 @@ const mapQueriesToProps = () => {
           id,
           amount,
           created,
-          type
+          type,
+          bandwidth,
+          storage
         }
       }`
     }
@@ -118,7 +120,8 @@ export default class Billing extends Component {
       client.api.getPublicKeys()
         .then(function success() {
           return true;
-        }, function fail() {
+        }, function fail(err) {
+          console.log('publickey result', err);
           hashHistory.push('/');
         });
     } else {
@@ -259,13 +262,45 @@ export default class Billing extends Component {
     });
 
     const convertedDebits = debits.map((debit) => {
+      const GB = 1000000000; // NB: 9 zeros is 1 GB in bytes
+      let amountUsed;
+
+      /**
+       * This check is here to control for any 'adjustment' types
+       * Converts bytes to gigabytes
+       */
+      if (debit.type === 'storage' || debit.type === 'bandwidth') {
+        const amountInGB = debit[debit.type] / GB;
+        amountUsed = roundedAmount(amountInGB);
+      }
+      /**
+       * Prettifies the amount printed in billing history.
+       * Returns either a string that lets the user know that the amount that
+       * has been used is than 0.01 GB or rounds the amount to two decimal
+       * places.
+       */
+      function roundedAmount(num) {
+        const roundedToTwoPlaces = Math.round(num * 100) / 100;
+        const setToTwoDecimalPlaces = roundedToTwoPlaces.toFixed(2);
+
+        // Checks to see if the amount is less than one cent
+        if (setToTwoDecimalPlaces.indexOf('0.00') === 0) {
+          const lessThanOneCent = '< 0.01 GB';
+          return lessThanOneCent;
+        }
+        return `${setToTwoDecimalPlaces} GB`;
+      }
+
       const transaction = {...debit};
-      const titleizedType = debit.type
-        .replace(/^\w/, (w) => (w.toUpperCase()));
-      transaction.description = `${titleizedType} usage`;
+
+      transaction.description =
+        amountUsed
+        ? `${amountUsed} of ${debit.type} used`
+        : `Adjustment of ${debit.amount}`;
       transaction.timestamp = Date.parse(debit.created);
       transaction.created = `${moment.utc((debit.created))
         .format('MMM DD, YYYY - HH:mm')} UTC`;
+
       return transaction;
     });
 
@@ -295,6 +330,7 @@ export default class Billing extends Component {
     };
     const linkParams = '/dashboard/billing/usage';
 
+    console.log('bandwidth', this.props.transactions.debits);
     return (
       <div>
         <section>
@@ -306,6 +342,7 @@ export default class Billing extends Component {
             </div>
           </div>
         </section>
+
         <section>
           <div className="container">
             <div className="row">
