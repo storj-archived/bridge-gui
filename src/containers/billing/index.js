@@ -10,7 +10,7 @@ import UsagePanel from 'components/billing/usage-panel';
 import AddCardForm from 'containers/billing/add-card-form';
 import TransactionsList from 'components/billing/transactions-list';
 import 'containers/billing/billing.scss';
-import { setBalance, setUsage } from 'redux/modules/transaction-group';
+import { setBandwidth, setStorage } from 'redux/modules/transaction-group';
 
 const transactionRangeQuery =
   gql`query usageTransactions($startDate: String!, $endDate: String!) {
@@ -23,6 +23,8 @@ const transactionRangeQuery =
       debits(startDate: $startDate, endDate: $endDate) {
         id,
         amount,
+        storage,
+        bandwidth,
         created,
         type
       },
@@ -95,12 +97,12 @@ const mapMutationsToProps = () => {
 };
 
 const mapDispatchToProps = {
-  setBalance,
-  setUsage
+  setStorage,
+  setBandwidth
 };
 
-const mapStateToProps = ({transactionGroup: {balance, usage}}) => {
-  return {balance, usage};
+const mapStateToProps = ({transactionGroup: {storage, bandwidth}}) => {
+  return {storage, bandwidth};
 };
 
 let globalCounter = 0;
@@ -133,55 +135,46 @@ export default class Billing extends Component {
     globalCounter++;
     if (globalCounter > 50) return;
 
-    const {balance, usage} = nextProps;
+    const {bandwidth, storage} = nextProps;
 
-    if (!!balance && !!usage) {
+    if (!!bandwidth && !!storage) {
       return;
     }
 
-    const {startDate: balanceStartDate, endDate: balanceEndDate} = this.getBalanceRange();
-    const {startDate: usageStartDate, endDate: usageEndDate} = this.getUsageRange();
+    const {startDate, endDate} = this.getRange();
 
-    if (!(balance && balance.loading)) {
-      const balancePromise = this.props.query({
+    if (!(storage && storage.loading)) {
+      const storagePromise = this.props.query({
         query: transactionRangeQuery,
         variables: {
-          startDate: balanceStartDate,
-          endDate: balanceEndDate
+          startDate,
+          endDate
         }
       });
 
-      balancePromise.then(({data: {credits, debits}, loading}) => {
-        const balance = this.calculateBalance(credits, debits);
-        this.props.setBalance(balance);
+      storagePromise.then(({data: {credits, debits}, loading}) => {
+        const storage = this.getSum(debits, 'storage');
+        this.props.setStorage(storage);
       });
     }
 
-    if (!(usage && usage.loading)) {
-      const usagePromise = this.props.query({
+    if (!(bandwidth && bandwidth.loading)) {
+      const bandwidthPromise = this.props.query({
         query: transactionRangeQuery,
         variables: {
-          startDate: usageStartDate,
-          endDate: usageEndDate
+          startDate,
+          endDate
         }
       });
 
-      usagePromise.then(({data: {credits, debits}}) => {
-        const usage = this.calculateBalance(credits, debits);
-        this.props.setUsage(usage);
+      bandwidthPromise.then(({data: {credits, debits}}) => {
+        const bandwidth = this.getSum(debits, 'bandwidth');
+        this.props.setBandwidth(bandwidth);
       });
     }
   }
 
-  getBalanceRange() {
-    return this.getRange(1);
-  }
-
-  getUsageRange() {
-    return this.getRange(0);
-  }
-
-  getRange(offset) {
+  getRange(offset=1) {
     const {loading, paymentProcessor} = this.props.paymentProcessor;
     const billingDate = (loading || !paymentProcessor) ?
       (new Date).getDate() : paymentProcessor.billingDate;
@@ -228,6 +221,12 @@ export default class Billing extends Component {
     }, 0);
     const balance = debitSum - creditSum;
     return balance;
+  }
+
+  getSum(arr, field) {
+    return arr.reduce((acc, i) => {
+      return acc+i[field];
+    }, 0)
   }
 
   getPaymentInfo() {
@@ -351,14 +350,14 @@ export default class Billing extends Component {
           <div className="container">
             <div className="row">
               <div className="col-xs-12 col-sm-6">
-                <BalancePanel
-                  amount={this.props.balance}
-                  addCreditHandler={addCreditHandler}
-                  cardData={this.getPaymentInfo()}
-              />
+                <h2>BalancePanel</h2>
               </div>
               <div className="col-xs-12 col-sm-6">
-                <UsagePanel amount={this.props.usage} linkParams={linkParams}/>
+                <UsagePanel
+                  bandwidth={this.props.bandwidth}
+                  storage={this.props.storage}
+                  linkParams={linkParams}
+                />
               </div>
             </div>
           </div>

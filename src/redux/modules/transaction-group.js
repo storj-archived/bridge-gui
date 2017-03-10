@@ -1,36 +1,36 @@
-const SET_BALANCE = 'stroj/transactionRange/SET_BALANCE';
-const SET_USAGE = 'stroj/transactionRange/SET_USAGE';
+const SET_STORAGE = 'storj/transactionRange/SET_STORAGE';
+const SET_BANDWIDTH = 'storj/transactionRange/SET_BANDWIDTH';
 
 const TransactionGroup = (state = {}, action = {}) => {
   switch (action.type) {
     case '@@INIT':
       return {};
-    case SET_BALANCE:
+    case SET_STORAGE:
       return {
         ...state,
-        balance: action.balance
+        storage: action.storage
       };
-    case  SET_USAGE:
+    case  SET_BANDWIDTH:
       return {
         ...state,
-        usage: action.usage
+        bandwidth: action.bandwidth
       };
     default:
       return state;
   }
 };
 
-export const setBalance = (balance) => {
+export const setStorage = (storage) => {
   return {
-    type: SET_BALANCE,
-    balance
+    type: SET_STORAGE,
+    storage
   };
 };
 
-export const setUsage = (usage) => {
+export const setBandwidth = (bandwidth) => {
   return {
-    type: SET_USAGE,
-    usage
+    type: SET_BANDWIDTH,
+    bandwidth
   };
 };
 
