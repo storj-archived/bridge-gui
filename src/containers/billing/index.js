@@ -323,6 +323,9 @@ export default class Billing extends Component {
 
     removeCard(paymentProcessorId, paymentMethodId)
       .then(() => {
+        // this doesn't work the first time. clicking 'Remove Card' again will
+        // correctly refetch the data
+        // quick hacky fix will be to just do window.location.reload()
         refetch()
       });
   }
