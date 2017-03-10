@@ -6,7 +6,6 @@ import * as billingActions from 'redux/modules/billing';
 import AddCardPanel from 'components/billing/add-card-panel';
 
 const formValidation = function(values) {
-  console.log('validation form');
   const errors = {};
 
   if (!values.ccNumber) {
