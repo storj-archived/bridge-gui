@@ -115,10 +115,16 @@ let globalCounter = 0;
 export default class Billing extends Component {
 
   componentWillMount() {
+    const props = this.props;
     const privkey = window.localStorage.getItem('privkey');
     if (privkey) {
       client.api.getPublicKeys()
         .then(function success() {
+          // NB: Makes sure that Apollo queries are properly refetched
+          // Use this method for any data that needs to be forced to refetch
+          // on container/component load
+          props.paymentProcessor.refetch();
+          props.transactions.refetch();
           return true;
         }, function fail(err) {
           console.log('publickey result', err);

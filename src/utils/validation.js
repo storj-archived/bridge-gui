@@ -1,15 +1,24 @@
-const isEmpty = value => value === undefined || value === null || value === '';
+const isEmpty = (value) => value === undefined || value === null || value === '';
 const join = (rules) => (value, data) => rules.map(rule => rule(value, data)).filter(error => !!error)[0 /* first error */ ];
 
 export function email(value) {
-  if (!isEmpty(value) && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
+  if (!isEmpty(value) && !isValidEmail(value)) {
     return 'Invalid email address';
   }
+  return false;
 }
 
 export function isValidEmail(value) {
-  const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@(([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // jshint ignore:line
-  return regex.test(value);
+  const tester = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@(([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // jshint ignore:line
+
+  if (value && value.length > 254) {
+    return false;
+  }
+
+  if (!tester.test(value)) {
+    return false;
+  }
+  return true;
 }
 
 export function required(value) {

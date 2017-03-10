@@ -85,11 +85,10 @@ const AddCardPanel = ({
                         onClick={handleCardSubmit}
                         type="submit"
                         name="submit"
-                        className="btn btn-block btn-default"
+                        className="btn btn-block btn-green"
                       >
                         {submitting ? 'Submitting . . .' : 'Save Credit Card'}
                       </button>
-
                       <div className="help-block has-error">
                         {submitError ? submitError : ''}
                       </div>

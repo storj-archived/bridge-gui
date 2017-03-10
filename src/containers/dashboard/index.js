@@ -28,7 +28,7 @@ export default class Dashboard extends Component {
       .then(logout, logout)
 
     function logout(){
-      if(window && window.localStorage) {
+      if (window && window.localStorage) {
         window.localStorage.removeItem('privkey');
         window.localStorage.removeItem('email');
       }
