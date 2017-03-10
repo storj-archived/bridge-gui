@@ -46,7 +46,7 @@ const AddCardPanel = ({handleCardSubmit, fields}) => {
                 <div className="row">
                   <div className="col-xs-12">
                     <button onClick={handleCardSubmit}
-                      type="submit" name="submit" className="btn btn-block btn-default" {...fields.submitButton}>Save Credit Card</button>
+                      type="submit" name="submit" className="btn btn-block btn-green" {...fields.submitButton}>Save Credit Card</button>
                   </div>
                 </div>
 
