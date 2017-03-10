@@ -231,14 +231,13 @@ export default class Billing extends Component {
   }
 
   getPaymentInfo() {
-    const {loading} = this.props.paymentProcessor;
+    const {loading, paymentProcessor, refetch} = this.props.paymentProcessor;
 
-    if (loading || !this.props.paymentProcessor.paymentProcessor) {
+    if (loading || !paymentProcessor) {
       return {};
     }
 
-    const {defaultPaymentMethod} = this.props.paymentProcessor.paymentProcessor;
-    return defaultPaymentMethod || {};
+    return paymentProcessor.defaultPaymentMethod || {};
   }
 
   getTransactions() {
@@ -313,16 +312,19 @@ export default class Billing extends Component {
     const {removeCard} = this.props.mutations;
     // TODO: use apollo watchquery correctly so we don't have to call `refetch`
     const {
-      refetch, paymentProcessor: {
-      id: paymentProcessorId,
-      defaultPaymentMethod: {id: paymentMethodId}
-    }
+      refetch,
+      paymentProcessor: {
+        id: paymentProcessorId,
+        defaultPaymentMethod: {
+          id: paymentMethodId
+        }
+      }
     } = this.props.paymentProcessor;
 
-    removeCard(
-      paymentProcessorId,
-      paymentMethodId
-    ).then(() => (refetch()));
+    removeCard(paymentProcessorId, paymentMethodId)
+      .then(() => {
+        refetch()
+      });
   }
 
   render() {
@@ -330,7 +332,6 @@ export default class Billing extends Component {
     };
     const linkParams = '/dashboard/billing/usage';
 
-    console.log('bandwidth', this.props.transactions.debits);
     return (
       <div>
         <section>
@@ -347,30 +348,30 @@ export default class Billing extends Component {
           <div className="container">
             <div className="row">
               <div className="col-xs-12 col-sm-6">
-                <BalancePanel amount={this.props.balance}
-                              addCreditHandler={addCreditHandler}
-                              cardData={this.getPaymentInfo()}/>
+                <BalancePanel
+                  amount={this.props.balance}
+                  addCreditHandler={addCreditHandler}
+                  cardData={this.getPaymentInfo()}
+              />
               </div>
               <div className="col-xs-12 col-sm-6">
                 <UsagePanel amount={this.props.usage} linkParams={linkParams}/>
               </div>
             </div>
-            <div className="row">
-              <div className="col-xs-12">
-                { !this.getPaymentInfo().id ? null :
-                  <PaymentInfoPanel
-                    removeCardHandler={this.removeCard.bind(this)}
-                    paymentInfo={this.getPaymentInfo()}
-                  />
-                }
-              </div>
-            </div>
           </div>
         </section>
         <section>
-          { !!this.getPaymentInfo().id ? null : <AddCardForm
+          {
+            !!this.getPaymentInfo().id
+            ? <PaymentInfoPanel
+                removeCardHandler={this.removeCard.bind(this)}
+                paymentInfo={this.getPaymentInfo()}
+              />
             // TODO: use apollo watchquery correctly so we don't have to call `refetch`
-            updatePaymentInfo={this.props.paymentProcessor.refetch}/> }
+            : <AddCardForm
+                updatePaymentInfo={this.props.paymentProcessor.refetch}
+              />
+          }
         </section>
         <section>
           <TransactionsList transactions={this.getTransactions()}/>
