@@ -10,7 +10,7 @@ import UsagePanel from 'components/billing/usage-panel';
 import AddCardForm from 'containers/billing/add-card-form';
 import TransactionsList from 'components/billing/transactions-list';
 import 'containers/billing/billing.scss';
-import { setBandwidth, setStorage } from 'redux/modules/transaction-group';
+import { setBandwidth, setStorage, setBalance } from 'redux/modules/transaction-group';
 
 const transactionRangeQuery =
   gql`query usageTransactions($startDate: String!, $endDate: String!) {
@@ -98,7 +98,8 @@ const mapMutationsToProps = () => {
 
 const mapDispatchToProps = {
   setStorage,
-  setBandwidth
+  setBandwidth,
+  setBalance
 };
 
 const mapStateToProps = ({transactionGroup: {storage, bandwidth}}) => {
@@ -135,7 +136,7 @@ export default class Billing extends Component {
     globalCounter++;
     if (globalCounter > 50) return;
 
-    const {bandwidth, storage} = nextProps;
+    const {bandwidth, storage, balance} = nextProps;
 
     if (!!bandwidth && !!storage) {
       return;
@@ -155,6 +156,21 @@ export default class Billing extends Component {
       storagePromise.then(({data: {credits, debits}, loading}) => {
         const storage = this.getSum(debits, 'storage');
         this.props.setStorage(storage);
+      });
+    }
+
+    if (!(balance && balance.loading)) {
+      const balancePromise = this.props.query({
+        query: transactionRangeQuery,
+        variables: {
+          startDate,
+          endDate
+        }
+      });
+
+      balancePromise.then(({data: {credits, debits}, loading}) => {
+        const balance = this.getBalance(credits, debits);
+        this.props.setBalance(balance);
       });
     }
 
@@ -212,20 +228,19 @@ export default class Billing extends Component {
     };
   }
 
-  calculateBalance(credits, debits) {
-    const creditSum = credits.reduce((total, item) => {
-      return total + item.paid_amount;
-    }, 0);
-    const debitSum = debits.reduce((total, item) => {
-      return total + item.amount;
-    }, 0);
+  getBalance(credits, debits) {
+    const debitSum = this.getSum(debits, 'amount');
+    const promoCreditSum = this.getSum(credits, 'promo_amount');
+    const paidCreditSum = this.getSum(credits, 'paid_amount');
+    const creditSum = paidCreditSum + promoCreditSum;
     const balance = debitSum - creditSum;
     return balance;
   }
 
   getSum(arr, field) {
     return arr.reduce((acc, i) => {
-      return acc+i[field];
+      const add = typeof i[field] === 'undefined' ? 0 : i[field];
+      return acc + add;
     }, 0)
   }
 
@@ -330,9 +345,7 @@ export default class Billing extends Component {
   }
 
   render() {
-    const addCreditHandler = () => {
-    };
-    const linkParams = '/dashboard/billing/usage';
+    const addCreditHandler = () => {};
 
     return (
       <div>
@@ -350,13 +363,15 @@ export default class Billing extends Component {
           <div className="container">
             <div className="row">
               <div className="col-xs-12 col-sm-6">
-                <h2>BalancePanel</h2>
+                <BalancePanel
+                  addCreditHandler={addCreditHandler()}
+                  balance={this.props.balance}
+                />
               </div>
               <div className="col-xs-12 col-sm-6">
                 <UsagePanel
                   bandwidth={this.props.bandwidth}
                   storage={this.props.storage}
-                  linkParams={linkParams}
                 />
               </div>
             </div>

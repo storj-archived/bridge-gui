@@ -1,5 +1,6 @@
 const SET_STORAGE = 'storj/transactionRange/SET_STORAGE';
 const SET_BANDWIDTH = 'storj/transactionRange/SET_BANDWIDTH';
+const SET_BALANCE = 'storj/transactionRange/SET_BALANCE';
 
 const TransactionGroup = (state = {}, action = {}) => {
   switch (action.type) {
@@ -15,9 +16,21 @@ const TransactionGroup = (state = {}, action = {}) => {
         ...state,
         bandwidth: action.bandwidth
       };
+    case SET_BALANCE:
+      return {
+        ...state,
+        balance: action.balance
+      }
     default:
       return state;
   }
+};
+
+export const setBalance = (balance) => {
+  return {
+    type: SET_BALANCE,
+    balance
+  };
 };
 
 export const setStorage = (storage) => {

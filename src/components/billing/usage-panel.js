@@ -3,7 +3,7 @@ import {Link} from 'react-router';
 import Currency from 'components/billing/currency';
 import './usage-panel.scss';
 
-const UsagePanel = ({storage, bandwidth, linkParams}) => {
+const UsagePanel = ({storage, bandwidth}) => {
   return (
     <div>
       <h2 className="title">Usage This Month</h2>
