@@ -1,6 +1,6 @@
-import React, {Component,PropTypes} from 'react';
-import {connect} from 'react-apollo';
-import {reduxForm} from 'redux-form';
+import React, { Component,PropTypes } from 'react';
+import { connect } from 'react-apollo';
+import { reduxForm } from 'redux-form';
 import gql from 'graphql-tag';
 import * as billingActions from 'redux/modules/billing';
 import AddCardPanel from 'components/billing/add-card-panel';
@@ -19,11 +19,11 @@ const formValidation = function(values) {
   const jcb = /^(?:2131|1800|35\d{3})\d{11}$/.test(values.ccNumber);
   const dinersclub = /^3(?:0[0-5]|[68][0-9])[0-9]{11}$/.test(values.ccNumber);
 
-  if(!visa && !mastercard && !amex && !discover && !jcb && !dinersclub) {
+  if (!visa && !mastercard && !amex && !discover && !jcb && !dinersclub) {
     errors.ccNumber = "Enter a valid credit card number."
   }
 
-  if(!values.cvv){
+  if (!values.cvv) {
     errors.cvv = "No CVV number provided."
   }
 
@@ -32,6 +32,7 @@ const formValidation = function(values) {
   }
 
   const cvv = /^([0-9]{3,4})$/.test(values.cvv);
+
   if (!cvv) {
     errors.cvv = "Please enter a valid CVV."
   }
@@ -97,7 +98,7 @@ const mapMutationsToProps = ({
     'cvv',
     'ccName'
   ],
-  validate: validation
+  validate: formValidation
 })
 
 @connect({
@@ -112,14 +113,33 @@ export default class AddCardForm extends Component {
     addCard: PropTypes.func.isRequired
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      submitting: false,
+      submitError: ''
+    }
+  }
+
   handleCardSubmit(e) {
     e.preventDefault();
 
-    const {
-      ccNumber,
-      ccExp,
-      cvv
-    } = this.props.fields;
+    const { ccNumber, ccExp, cvv } = this.props.fields;
+
+    // NB: Handles never-been-touched CC fields. Redux-form validation does not
+    // run if user doesn't touch fields
+    if (ccNumber.pristine || ccExp.pristine || cvv.pristine) {
+      const msg = 'Please fill out all Credit Card Details';
+      this.setState({ submitError: msg });
+
+      setTimeout(() => {
+        this.setState({ submitError: '' });
+      }, 2000);
+
+      return;
+    }
+
+    this.setState({ submitting: true });
 
     const [
       exp_month,
@@ -160,10 +180,7 @@ export default class AddCardForm extends Component {
         });
     });
 
-    const {
-      fields,
-      addCard
-    } = this.props;
+    const { fields, addCard } = this.props;
 
     const cardData = Object.keys(fields).reduce((result, fieldName) => {
       result[fieldName] = fields[fieldName].value;
@@ -172,16 +189,14 @@ export default class AddCardForm extends Component {
   };
 
   render() {
-    const {
-      fields
-    } = this.props;
-    return ( <
-      AddCardPanel fields = {
-        fields
-      }
-      handleCardSubmit = {
-        this.handleCardSubmit.bind(this)
-      }
+    const { fields } = this.props;
+
+    return (
+      <AddCardPanel
+        fields={fields}
+        handleCardSubmit={this.handleCardSubmit.bind(this)}
+        submitting={this.state.submitting}
+        submitError={this.state.submitError}
       />
     );
   }
