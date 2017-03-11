@@ -153,14 +153,28 @@ export default class AddCardForm extends Component {
       exp_year,
       cvc: cvv.value
     }, (status, response) => {
+      if (response.error) {
+        this.setState({ submitting: false });
+        this.setState({
+          submitError: `Processing error: ${response.error.message}`
+        });
+        return;
+      }
+
       const token = response.id;
-      this.props.mutations.addPaymentMethod(JSON.stringify(token))
-        .then(() => {
+      this.props.mutations.addPaymentMethod(JSON.stringify(token), 'stripe')
+        .then((result) => {
           this.setState({ submitting: false });
+          if (result.errors) {
+            this.setState({
+              submitError: `Error adding payment method: ${result.errors}`
+            });
+            return;
+          }
           this.props.updatePaymentInfo();
         })
         .catch((err) => {
-          console.log('error for user', err.message);
+          console.log('err submitting', err);
           this.setState({ submitting: false });
           this.setState({ submitError: err.message });
         });
