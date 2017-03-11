@@ -336,7 +336,6 @@ export default class Billing extends Component {
     };
     const linkParams = '/dashboard/billing/usage';
 
-    console.log('bandwidth', this.props.transactions.debits);
     return (
       <div>
         <section>
