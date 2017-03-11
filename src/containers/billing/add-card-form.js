@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import * as billingActions from 'redux/modules/billing';
 import AddCardPanel from 'components/billing/add-card-panel';
 
-const validation = function(values) {
+const formValidation = function(values) {
   const errors = {};
 
   if (!values.ccNumber) {
