@@ -315,7 +315,7 @@ export default class Billing extends Component {
   }
 
   removeCard() {
-    const {removeCard} = this.props.mutations;
+    const { removeCard } = this.props.mutations;
     // TODO: use apollo watchquery correctly so we don't have to call `refetch`
     const {
       refetch,
@@ -329,10 +329,7 @@ export default class Billing extends Component {
 
     removeCard(paymentProcessorId, paymentMethodId)
       .then(() => {
-        // this doesn't work the first time. clicking 'Remove Card' again will
-        // correctly refetch the data
-        // quick hacky fix will be to just do window.location.reload()
-        refetch()
+        this.props.paymentProcessor.refetch();
       });
   }
 
