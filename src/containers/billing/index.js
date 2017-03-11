@@ -145,8 +145,15 @@ export default class Billing extends Component {
       return;
     }
 
-    const {startDate: balanceStartDate, endDate: balanceEndDate} = this.getBalanceRange();
-    const {startDate: usageStartDate, endDate: usageEndDate} = this.getUsageRange();
+    const {
+      startDate: balanceStartDate,
+      endDate: balanceEndDate
+    } = this.getBalanceRange();
+
+    const {
+      startDate: usageStartDate,
+      endDate: usageEndDate
+    } = this.getUsageRange();
 
     if (!(balance && balance.loading)) {
       const balancePromise = this.props.query({
@@ -237,7 +244,7 @@ export default class Billing extends Component {
   }
 
   getPaymentInfo() {
-    const {loading, paymentProcessor, refetch} = this.props.paymentProcessor;
+    const { loading, paymentProcessor } = this.props.paymentProcessor;
 
     if (loading || !paymentProcessor) {
       return {};
@@ -329,7 +336,9 @@ export default class Billing extends Component {
 
     removeCard(paymentProcessorId, paymentMethodId)
       .then(() => {
-        this.props.paymentProcessor.refetch();
+        // This does not work. It is a known issue that is fixed in subsequent
+        // releases of react-apollo. Upgrading will require major changes though
+        refetch();
       });
   }
 

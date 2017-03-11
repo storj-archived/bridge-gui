@@ -160,6 +160,7 @@ export default class AddCardForm extends Component {
           this.props.updatePaymentInfo();
         })
         .catch((err) => {
+          console.log('error for user', err.message);
           this.setState({ submitting: false });
           this.setState({ submitError: err.message });
         });
