@@ -86,7 +86,7 @@
     "redux": "^3.0.4",
     "redux-form": "^4.2.2",
     "request": "^2.69.0",
-    "sass-loader": "^3.1.2",
+    "sass-loader": "4.1.1",
     "serve-favicon": "^2.3.0",
     "shebang-loader": "0.0.1",
     "storj": "2.0.0",
