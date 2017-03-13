@@ -113,6 +113,12 @@ let globalCounter = 0;
 })
 
 export default class Billing extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      removingCard: false
+    };
+  };
 
   componentWillMount() {
     const props = this.props;
@@ -322,6 +328,8 @@ export default class Billing extends Component {
   }
 
   removeCard() {
+    this.setState({ removingCard: true });
+
     const { removeCard } = this.props.mutations;
     // TODO: use apollo watchquery correctly so we don't have to call `refetch`
     const {
@@ -336,9 +344,10 @@ export default class Billing extends Component {
 
     removeCard(paymentProcessorId, paymentMethodId)
       .then(() => {
-        // This does not work. It is a known issue that is fixed in subsequent
-        // releases of react-apollo. Upgrading will require major changes though
-        refetch();
+        setTimeout(() => {
+          refetch();
+          this.setState({ removingCard: false });
+        }, 2000);
       });
   }
 
@@ -381,6 +390,7 @@ export default class Billing extends Component {
             ? <PaymentInfoPanel
                 removeCardHandler={this.removeCard.bind(this)}
                 paymentInfo={this.getPaymentInfo()}
+                removingCard={this.state.removingCard}
               />
             // TODO: use apollo watchquery correctly so we don't have to call `refetch`
             : <AddCardForm

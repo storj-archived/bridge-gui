@@ -1,6 +1,7 @@
 import React from 'react';
 
 const PaymentInfoPanel = ({
+  removingCard,
   removeCardHandler,
   paymentInfo: {merchant, lastFour}
 }) => {
@@ -21,9 +22,13 @@ const PaymentInfoPanel = ({
                   <h2>**** **** **** {lastFour}</h2>
                 </div>
                 <div className="col-xs-4 text-right">
-                  <button onClick={removeCardHandler}
-                    className="btn btn-action btn-red">
-                      Remove Card
+                  <button
+                    disabled={removingCard}
+                    onClick={removeCardHandler}
+                    className="btn btn-action btn-red"
+                    type="submit"
+                  >
+                    {removingCard ? 'Submitting . . .' : 'Remove Card'}
                   </button>
                 </div>
               </div>
