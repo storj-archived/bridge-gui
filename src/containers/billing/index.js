@@ -113,12 +113,6 @@ let globalCounter = 0;
 })
 
 export default class Billing extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      removingCard: false
-    };
-  };
 
   componentWillMount() {
     const props = this.props;
@@ -151,15 +145,8 @@ export default class Billing extends Component {
       return;
     }
 
-    const {
-      startDate: balanceStartDate,
-      endDate: balanceEndDate
-    } = this.getBalanceRange();
-
-    const {
-      startDate: usageStartDate,
-      endDate: usageEndDate
-    } = this.getUsageRange();
+    const {startDate: balanceStartDate, endDate: balanceEndDate} = this.getBalanceRange();
+    const {startDate: usageStartDate, endDate: usageEndDate} = this.getUsageRange();
 
     if (!(balance && balance.loading)) {
       const balancePromise = this.props.query({
@@ -250,13 +237,14 @@ export default class Billing extends Component {
   }
 
   getPaymentInfo() {
-    const { loading, paymentProcessor } = this.props.paymentProcessor;
+    const {loading} = this.props.paymentProcessor;
 
-    if (loading || !paymentProcessor) {
+    if (loading || !this.props.paymentProcessor.paymentProcessor) {
       return {};
     }
 
-    return paymentProcessor.defaultPaymentMethod || {};
+    const {defaultPaymentMethod} = this.props.paymentProcessor.paymentProcessor;
+    return defaultPaymentMethod || {};
   }
 
   getTransactions() {
@@ -328,27 +316,19 @@ export default class Billing extends Component {
   }
 
   removeCard() {
-    this.setState({ removingCard: true });
-
-    const { removeCard } = this.props.mutations;
+    const {removeCard} = this.props.mutations;
     // TODO: use apollo watchquery correctly so we don't have to call `refetch`
     const {
-      refetch,
-      paymentProcessor: {
-        id: paymentProcessorId,
-        defaultPaymentMethod: {
-          id: paymentMethodId
-        }
-      }
+      refetch, paymentProcessor: {
+      id: paymentProcessorId,
+      defaultPaymentMethod: {id: paymentMethodId}
+    }
     } = this.props.paymentProcessor;
 
-    removeCard(paymentProcessorId, paymentMethodId)
-      .then(() => {
-        setTimeout(() => {
-          refetch();
-          this.setState({ removingCard: false });
-        }, 2000);
-      });
+    removeCard(
+      paymentProcessorId,
+      paymentMethodId
+    ).then(() => (refetch()));
   }
 
   render() {
@@ -372,31 +352,30 @@ export default class Billing extends Component {
           <div className="container">
             <div className="row">
               <div className="col-xs-12 col-sm-6">
-                <BalancePanel
-                  amount={this.props.balance}
-                  addCreditHandler={addCreditHandler}
-                  cardData={this.getPaymentInfo()}
-              />
+                <BalancePanel amount={this.props.balance}
+                              addCreditHandler={addCreditHandler}
+                              cardData={this.getPaymentInfo()}/>
               </div>
               <div className="col-xs-12 col-sm-6">
                 <UsagePanel amount={this.props.usage} linkParams={linkParams}/>
               </div>
             </div>
+            <div className="row">
+              <div className="col-xs-12">
+                { !this.getPaymentInfo().id ? null :
+                  <PaymentInfoPanel
+                    removeCardHandler={this.removeCard.bind(this)}
+                    paymentInfo={this.getPaymentInfo()}
+                  />
+                }
+              </div>
+            </div>
           </div>
         </section>
         <section>
-          {
-            !!this.getPaymentInfo().id
-            ? <PaymentInfoPanel
-                removeCardHandler={this.removeCard.bind(this)}
-                paymentInfo={this.getPaymentInfo()}
-                removingCard={this.state.removingCard}
-              />
+          { !!this.getPaymentInfo().id ? null : <AddCardForm
             // TODO: use apollo watchquery correctly so we don't have to call `refetch`
-            : <AddCardForm
-                updatePaymentInfo={this.props.paymentProcessor.refetch}
-              />
-          }
+            updatePaymentInfo={this.props.paymentProcessor.refetch}/> }
         </section>
         <section>
           <TransactionsList transactions={this.getTransactions()}/>
