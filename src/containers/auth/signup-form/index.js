@@ -6,6 +6,8 @@ import client from 'utils/api-client';
 import signupValidation from 'containers/auth/signup-form/signup-validation';
 import formLabelError from 'components/error-views/form-label-error';
 import TermsOfService from 'components/copy/terms-of-service';
+import NewReferralUserBanner from 'components/auth/new-referral-user-banner';
+import NewUserBanner from 'components/auth/new-user-banner';
 import { connect } from 'react-apollo';
 import gql from 'graphql-tag';
 import Promise from 'bluebird';
@@ -30,10 +32,20 @@ export default class SignUpForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showEula: false
+      showEula: false,
+      showReferralBanner: false
     };
     this.submit = this.submit.bind(this);
-  }
+  };
+
+  componentWillMount() {
+    console.log('this prooooops', this.props);
+    if (this.props.location.query.referralLink) {
+      this.setState({ showReferralBanner: true });
+    } else {
+      this.setState({ showReferralBanner: false });
+    }
+   };
 
   openEula(event) {
     event.preventDefault();
@@ -103,6 +115,12 @@ export default class SignUpForm extends Component {
                 <div className="content">
 
                   <h1 className="title text-center form-group">Sign Up</h1>
+
+                  {
+                    this.state.showReferralBanner
+                    ? <NewReferralUserBanner></NewReferralUserBanner>
+                    : <NewUserBanner></NewUserBanner>
+                  }
 
                   <form>
 
