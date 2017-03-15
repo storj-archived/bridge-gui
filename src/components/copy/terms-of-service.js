@@ -8,7 +8,7 @@ export default () => {
           <div className="row">
             <div className="col-xs-12 text-center">
               <h3>Storage Terms of Service</h3>
-              <p className="text-center">Last Updated: July 21, 2016</p>
+              <p className="text-center">Last Updated: March 15, 2017</p>
               <p>
                 <a href="https://storj.io/terms-of-service.html" target="_blank">
                   (a static copy of this document is available here)
@@ -165,6 +165,8 @@ export default () => {
               <p>(b) Promotional Credits must be redeemed within 12 months of issuance unless otherwise stated.
               </p>
               <p>(c) After redemption, Promotional Credits are valid for a period of 12 months. Promotional Credits that have not been used at that time will expire.
+              </p>
+              <p>(d) Promotional offers expressed in Gigabytes of storage or bandwidth will be treated as Promotional Credits in dollar equivalents. For example, a promotional offer of "50 GB free bandwidth" will be reflected on the account statement by a Promotional Credit of $2.50 (50GB bandwidth * $0.05 per GB).
               </p>
             </div>
           </div>
