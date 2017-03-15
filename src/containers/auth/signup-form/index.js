@@ -39,7 +39,6 @@ export default class SignUpForm extends Component {
   };
 
   componentWillMount() {
-    console.log('this prooooops', this.props);
     if (this.props.location.query.referralLink) {
       this.setState({ showReferralBanner: true });
     } else {
