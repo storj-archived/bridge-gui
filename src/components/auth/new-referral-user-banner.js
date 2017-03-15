@@ -12,7 +12,7 @@ export default class NewReferralUserBanner extends Component {
             <p><strong>Referral Bonus!</strong></p>
 
             <p>
-              Your friend has given you <b>$10 of free credits</b>, valid for
+              Your friend has given you a <b>$10 credit</b>, valid for
               the next three months!
             </p>
             <p>
