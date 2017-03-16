@@ -1,7 +1,7 @@
 import React from 'react';
 import Currency from 'components/billing/currency';
 
-const BalancePanel = ({amount, addCreditHandler, cardData}) => {
+const BalancePanel = ({balance, addCreditHandler}) => {
   return (
     <div>
       <h2 className="title">Your Balance</h2>
@@ -10,14 +10,14 @@ const BalancePanel = ({amount, addCreditHandler, cardData}) => {
           <div className="col-xs-6">
             <p className="text-muted">Current Balance</p>
             <h2 className="mb0 blue"><b>
-              <Currency amount={amount} />
+              <Currency balance={balance} />
             </b></h2>
           </div>
           <div className="col-xs-6 text-right">
             <button
-              disabled={!cardData}
+              disabled={balance <= 0}
               onClick={addCreditHandler}
-              className="btn btn-green btn-action display-none" >
+              className="btn btn-green btn-action" >
                 Pay Balance
             </button>
           </div>
