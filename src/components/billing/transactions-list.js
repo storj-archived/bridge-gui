@@ -1,7 +1,7 @@
 import React from 'react';
 import Currency from 'components/billing/currency';
 
-const TransactionsList = ({transactions}) => {
+const TransactionsList = ({ transactions }) => {
   return (
     <section id="TransactionsListSection">
       <div className="container">
