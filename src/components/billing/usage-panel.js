@@ -17,7 +17,7 @@ const UsagePanel = ({ storage, bandwidth }) => {
                 className="text-muted unit-text"
                 style={{ display: 'inline-block' }}
               >
-                <div> / 25GBh</div>
+                <div> / 25GB</div>
                 <div>free</div>
               </div>
             </div>
