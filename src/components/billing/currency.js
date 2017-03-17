@@ -19,19 +19,41 @@ function prettifyAmount(amount) {
   if (typeof(amount) !== 'number') {
     return '0.00';
   }
+
   const modAmount = (amount / 100).toFixed(6);
 
+  // Handles any 0.000000 debits
   if (modAmount.indexOf('0.000000') === 0) {
     return '0.00'
   }
 
-  // check last 6 digits of amount
+  // Trims zeros if all are 6
   if (modAmount.substr(-6) === '000000') {
     const setToTwoPlaces = (amount / 100).toFixed(2);
     return setToTwoPlaces;
   }
 
-  return modAmount;
+  // Return all the decimal places if it's less than $1
+  // Looks weird otherwise
+  if (modAmount.indexOf('0.') === 0) {
+    return modAmount;
+  }
+
+  // Otherwise, if amount is > $1, then trim the zeros
+  const trimmedAmount = trimOffZeros(modAmount);
+
+  return trimmedAmount;
+}
+
+function trimOffZeros(amount) {
+  const trimmed = amount.toString().replace(/0+$/,'');
+
+  if (trimmed.substr(-1) === '.')  {
+    const addTwoZeros = trimmed.concat('00');
+    return addTwoZeros;
+  }
+
+  return trimmed;
 }
 
 export default Currency;
