@@ -11,6 +11,7 @@ import AddCardForm from 'containers/billing/add-card-form';
 import TransactionsList from 'components/billing/transactions-list';
 import 'containers/billing/billing.scss';
 import { setBandwidth, setStorage, setBalance } from 'redux/modules/transaction-group';
+import { roundToGBAmount, setToTwoDecimalPlaces } from 'utils';
 
 const transactionRangeQuery =
   gql`query usageTransactions($startDate: String!, $endDate: String!) {
@@ -102,8 +103,16 @@ const mapDispatchToProps = {
   setBalance
 };
 
-const mapStateToProps = ({transactionGroup: {storage, bandwidth}}) => {
-  return {storage, bandwidth};
+const mapStateToProps = ({
+  transactionGroup: {
+    balance, storage, bandwidth
+  }
+}) => {
+  return {
+    balance,
+    storage,
+    bandwidth
+  };
 };
 
 let globalCounter = 0;
@@ -146,64 +155,37 @@ export default class Billing extends Component {
 
   componentWillReceiveProps(nextProps) {
     globalCounter++;
+
     if (globalCounter > 50) return;
 
-    const {bandwidth, storage, balance} = nextProps;
+    const { transactions } = nextProps;
 
-    if (!!bandwidth && !!storage) {
+    if (!transactions.debits || !transactions.credits) {
       return;
     }
 
-    const { startDate, endDate } = this.getRange();
+    const { debits, credits } = transactions;
 
-    if (!(storage && storage.loading)) {
-      const storagePromise = this.props.query({
-        query: transactionRangeQuery,
-        variables: {
-          startDate,
-          endDate
-        }
-      });
+    if (debits.length > 0 || credits.length > 0) {
+      const balance = this.getBalance(credits, debits);
+      const balanceInDollars = balance / 100;
+      const prettyBalance = setToTwoDecimalPlaces(balanceInDollars);
+      this.props.setBalance(prettyBalance);
 
-      storagePromise.then(({data: {credits, debits}, loading}) => {
-        const storage = this.getSum(debits, 'storage');
-        this.props.setStorage(storage);
-      });
-    }
+      const storage = this.getSum(debits, 'storage');
+      const storageInGB = roundToGBAmount(storage, 'bytes');
+      const averageStorage = this.getAverage(storageInGB, debits.length);
+      const prettyStorage = setToTwoDecimalPlaces(averageStorage);
+      this.props.setStorage(prettyStorage);
 
-    if (!(balance && balance.loading)) {
-      const balancePromise = this.props.query({
-        query: transactionRangeQuery,
-        variables: {
-          startDate,
-          endDate
-        }
-      });
-
-      balancePromise.then(({data: {credits, debits}, loading}) => {
-        const balance = this.getBalance(credits, debits);
-        this.props.setBalance(balance);
-      });
-    }
-
-    if (!(bandwidth && bandwidth.loading)) {
-      const bandwidthPromise = this.props.query({
-        query: transactionRangeQuery,
-        variables: {
-          startDate,
-          endDate
-        }
-      });
-
-      bandwidthPromise.then(({data: {credits, debits}}) => {
-        const bandwidth = this.getSum(debits, 'bandwidth');
-        this.props.setBandwidth(bandwidth);
-      });
+      const bandwidth = this.getSum(debits, 'bandwidth');
+      const bandwidthInGB = roundToGBAmount(bandwidth, 'bytes');
+      this.props.setBandwidth(bandwidthInGB);
     }
   }
 
   getRange(offset=1) {
-    const {loading, paymentProcessor} = this.props.paymentProcessor;
+    const { loading, paymentProcessor } = this.props.paymentProcessor;
     const billingDate = (loading || !paymentProcessor) ?
       (new Date).getDate() : paymentProcessor.billingDate;
 
@@ -233,7 +215,7 @@ export default class Billing extends Component {
     ).subtract(offset, 'month').valueOf();
 
     const endDate = (moment(startDate).add('1', 'month').valueOf());
-
+    console.log('getRange startDate: endDate', startDate, endDate);
     return {
       startDate,
       endDate
@@ -241,6 +223,7 @@ export default class Billing extends Component {
   }
 
   getBalance(credits, debits) {
+    console.log('getBalance', credits, debits);
     const debitSum = this.getSum(debits, 'amount');
     const promoCreditSum = this.getSum(credits, 'promo_amount');
     const paidCreditSum = this.getSum(credits, 'paid_amount');
@@ -250,10 +233,26 @@ export default class Billing extends Component {
   }
 
   getSum(arr, field) {
-    return arr.reduce((acc, i) => {
+    if (!arr || Array.isArray(arr) && arr.length <= 0) {
+      return 0;
+    }
+
+    const sum = arr.reduce((acc, i) => {
       const add = typeof i[field] === 'undefined' ? 0 : i[field];
       return acc + add;
     }, 0)
+
+    return sum;
+  }
+
+  getAverage(sum, numOfItems) {
+    if (!sum) {
+      return 0;
+    }
+
+    const average = sum / numOfItems;
+
+    return average;
   }
 
   getPaymentInfo() {
@@ -267,10 +266,11 @@ export default class Billing extends Component {
   }
 
   getTransactions() {
-    const {loading, credits, debits} = this.props.transactions;
+    console.log('TRANSACTIONS: ', this.props.transactions);
+    const { loading, credits, debits } = this.props.transactions;
     let transactions;
 
-    if (loading || !credits || !debits) {
+    if (loading || !debits || !credits) {
       return [];
     }
 
@@ -287,7 +287,6 @@ export default class Billing extends Component {
     });
 
     const convertedDebits = debits.map((debit) => {
-      const GB = 1000000000; // NB: 9 zeros is 1 GB in bytes
       let amountUsed;
 
       /**
@@ -295,32 +294,14 @@ export default class Billing extends Component {
        * Converts bytes to gigabytes
        */
       if (debit.type === 'storage' || debit.type === 'bandwidth') {
-        const amountInGB = debit[debit.type] / GB;
-        amountUsed = roundedAmount(amountInGB);
-      }
-      /**
-       * Prettifies the amount printed in billing history.
-       * Returns either a string that lets the user know that the amount that
-       * has been used is than 0.01 GB or rounds the amount to two decimal
-       * places.
-       */
-      function roundedAmount(num) {
-        const roundedToTwoPlaces = Math.round(num * 100) / 100;
-        const setToTwoDecimalPlaces = roundedToTwoPlaces.toFixed(2);
-
-        // Checks to see if the amount is less than one cent
-        if (setToTwoDecimalPlaces.indexOf('0.00') === 0) {
-          const lessThanOneCent = '< 0.01 GB';
-          return lessThanOneCent;
-        }
-        return `${setToTwoDecimalPlaces} GB`;
+        amountUsed = roundToGBAmount(debit[debit.type], 'bytes');
       }
 
       const transaction = {...debit};
 
       transaction.description =
         amountUsed
-        ? `${amountUsed} of ${debit.type} used`
+        ? `${amountUsed} GB of ${debit.type} used`
         : `Adjustment of ${debit.amount}`;
       transaction.timestamp = Date.parse(debit.created);
       transaction.created = `${moment.utc((debit.created))
@@ -378,21 +359,16 @@ export default class Billing extends Component {
         <section>
           <div className="container">
             <div className="row">
-              <div className="col-xs-12 col-sm-6">
-                <BalancePanel
-                  amount={this.props.balance}
-                  addCreditHandler={addCreditHandler}
-                  cardData={this.getPaymentInfo()}
-                />
-              </div>
-              <div className="col-xs-12 col-sm-6">
-                <UsagePanel
-                  amount={this.props.usage}
-                  linkParams={linkParams}
-                  bandwidth={this.props.bandwidth}
-                  storage={this.props.storage}
-                />
-              </div>
+              <BalancePanel
+                balance={this.props.balance}
+                addCreditHandler={addCreditHandler}
+                cardData={this.getPaymentInfo()}
+              />
+              <UsagePanel
+                linkParams={linkParams}
+                bandwidth={this.props.bandwidth}
+                storage={this.props.storage}
+              />
             </div>
           </div>
         </section>
