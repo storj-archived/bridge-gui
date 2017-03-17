@@ -25,6 +25,12 @@ function prettifyAmount(amount) {
     return '0.00'
   }
 
+  // check last 6 digits of amount
+  if (modAmount.substr(-6) === '000000') {
+    const setToTwoPlaces = (amount / 100).toFixed(2);
+    return setToTwoPlaces;
+  }
+
   return modAmount;
 }
 
