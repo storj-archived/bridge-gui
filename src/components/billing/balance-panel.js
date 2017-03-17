@@ -10,7 +10,7 @@ const BalancePanel = ({balance, addCreditHandler}) => {
           <div className="col-xs-6">
             <p className="text-muted">Current Balance</p>
             <h2 className="mb0 blue"><b>
-              <Currency amount={balance} />
+              ${balance}
             </b></h2>
           </div>
           {/* <div className="col-xs-6 text-right">
