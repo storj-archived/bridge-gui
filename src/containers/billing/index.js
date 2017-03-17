@@ -167,17 +167,20 @@ export default class Billing extends Component {
     const { debits, credits } = transactions;
 
     if (debits.length > 0 || credits.length > 0) {
+      // Set Balance
       const balance = this.getBalance(credits, debits);
       const balanceInDollars = balance / 100;
       const prettyBalance = setToTwoDecimalPlaces(balanceInDollars);
       this.props.setBalance(prettyBalance);
 
+      // Set Storage
       const storage = this.getSum(debits, 'storage');
       const storageInGB = roundToGBAmount(storage, 'bytes');
       const averageStorage = this.getAverage(storageInGB, debits.length);
       const prettyStorage = setToTwoDecimalPlaces(averageStorage);
-      this.props.setStorage(prettyStorage);
+      this.props.setStorage(prettyStorage !== 'NaN' ? prettyStorage : '0.00');
 
+      // Set Bandwidth
       const bandwidth = this.getSum(debits, 'bandwidth');
       const bandwidthInGB = roundToGBAmount(bandwidth, 'bytes');
       this.props.setBandwidth(bandwidthInGB);
