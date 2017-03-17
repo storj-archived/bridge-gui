@@ -21,6 +21,9 @@ export function roundToGBAmount(num, type) {
 }
 
 export function setToTwoDecimalPlaces(num) {
+  if (typeof(num) !== 'number') {
+    return '0.00';
+  }
   const roundedToTwoPlaces = Math.round(num * 100) / 100;
   const setToTwoPlaces = roundedToTwoPlaces.toFixed(2);
 
