@@ -1,6 +1,16 @@
 #!/bin/bash
 
+# Set some sane defaults for local dev in docker
+APIHOST=localhost
+APIPORT=6382
+APIPROTOCOL=http
+NODE_ENV=development
+STRIPE_PUBLISHABLE_KEY=pk_test_9jNycwEK9kRyCEbKpbMJI1rO
+APOLLO_CLIENT_URL=http://localhost:3000/graphql
+OUTPUT_PUBLIC_PATH_URL=localhost:8080
+OUTPUT_PUBLIC_PATH_PROTOCOL=http
+
 echo "Injecting secrets into Statically generated content"
-./build/inject_static_secrets.sh APIHOST APIPORT APIPROTOCOL NODE_ENV STRIPE_PUBLISHABLE_KEY APOLLO_CLIENT_URL OUTPUT_PUBLIC_PATH_URL
+./build/inject_static_secrets.sh APIHOST APIPORT APIPROTOCOL NODE_ENV STRIPE_PUBLISHABLE_KEY APOLLO_CLIENT_URL OUTPUT_PUBLIC_PATH_PROTOCOL OUTPUT_PUBLIC_PATH_URL
 echo "Starting Bridge GUI"
 npm run start-prod

@@ -17,6 +17,7 @@
     "build": "webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
     "lint": "eslint -c .eslintrc src api",
     "start-dev": "better-npm-run start-dev",
+    "start-dev-docker": "docker run storjlabs/bridge-gui:latest scripts/start-bridge-gui",
     "watch-client": "better-npm-run start-dev",
     "dev": "concurrent --kill-others \"npm run start-dev\" \"npm run start-dev-api\"",
     "test": "NODE_ENV=test PORT=4000 node ./bin/test.js",
