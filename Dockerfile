@@ -19,11 +19,11 @@ COPY . /opt/bridge-gui/
 
 # Clean any extra files that got coppied from the host's repo
 # Commenting this so we can build something thats not in the upstream repo
-#RUN git reset --hard
-#RUN git clean -fdx
+RUN git reset --hard
+RUN git clean -fdx
 
 # Install node modules for production (i.e. don't install devdeps)
-#RUN npm i --production
+RUN npm i --production
 
 ARG NODE_ENV=development
 ARG APIHOST=localhost

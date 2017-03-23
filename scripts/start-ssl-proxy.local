@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Pull the nginx-ssl-proxy container
+docker pull storjlabs/nginx-ssl-proxy:latest
+
+# Run the container with self signed certificates
+# Need to remove the path and static IP from this command to make it useful elsewhere
+docker run -e ENABLE_SSL=true -e TARGET_SERVICE=172.17.0.2:8080 -v /Users/philip/github/bridge-gui/scripts/files/cert.pem:/etc/secrets/tls.crt -v /Users/philip/github/bridge-gui/scripts/files/key.pem:/etc/secrets/tls.key -v /Users/philip/github/bridge-gui/scripts/files/dhparams.pem:/etc/secrets/tls.dhparam -p 443:443 nginx-ssl-proxy
