@@ -47,7 +47,7 @@ export default class Html extends Component {
         </head>
         <body>
           <div id="content" dangerouslySetInnerHTML={{__html: content}}/>
-          <script src={assets.js} type="text/javascript" charSet="UTF-8"/>
+          <script src={assets.js} charSet="UTF-8"/>
         </body>
       </html>
     );
