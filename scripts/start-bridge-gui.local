@@ -1,4 +1,6 @@
 #!/bin/bash
 
-# Run bridge gui locally
-docker run -e NODE_ENV=production -e OUTPUT_PUBLIC_PATH_URL=localhost:443 -p 8080:8080 storjlabs/bridge-gui:74 ./scripts/start-bridge-gui
+docker stop bridge-gui
+docker rm bridge-gui
+
+docker run -d --env-file ./scripts/local.env --name bridge-gui -p 8080:8080 storjlabs/bridge-gui:latest ./scripts/start-bridge-gui
