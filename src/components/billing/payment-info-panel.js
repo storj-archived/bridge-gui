@@ -9,7 +9,8 @@ const PaymentInfoPanel = ({
     <div className="container">
       <div className="row">
         <div className="col-xs-12">
-          <h2 className="title">Default Payment Method</h2>
+          <h2 className="title pull-left">Default Payment Method</h2>
+          <h4 className="pull-right">Add credit with <a href="https://bitpay.com/cart?id=PHXWWfqpq7kwuyATYWSJ96" target="_blank" className="btn btn-transparent btn-payment"><img className="btn-payment-icon-bitcoin" src="img/icon-bitcoin.svg" alt="bitcoin" />bitcoin</a></h4>
           <div className="content">
             <div className="row">
               <div className="col-xs-4">
