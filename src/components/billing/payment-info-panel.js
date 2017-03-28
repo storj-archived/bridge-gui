@@ -9,7 +9,10 @@ const PaymentInfoPanel = ({
     <div className="container">
       <div className="row">
         <div className="col-xs-12">
-          <h2 className="title">Default Payment Method</h2>
+          <h2 className="title pull-left">Default Payment Method</h2>
+          <h4 className="pull-right" style={{ marginTop: 1.5em }}>
+            Interested in paying in BTC or SJCX? Contact us at sales@storj.io!
+          </h4>
           <div className="content">
             <div className="row">
               <div className="col-xs-4">
