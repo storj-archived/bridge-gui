@@ -61,60 +61,61 @@ class WrappedClient extends Client {
   }
 
   resolveFileFromPointers(pointers) {
-    const chunks = [];
-    return new Promise(function(resolve, reject) {
-      async.forEachOfLimit(pointers, 6,
-        function iteratee(pointer, key, callback) {
-          const uri = pointer.channel;
-          const client = new WebSocket(uri);
-
-          client.onopen = function() {
-            client.send(JSON.stringify({
-              token: pointer.token,
-              hash: pointer.hash,
-              operation: pointer.operation
-            }));
-          };
-
-          client.onmessage = function(event) {
-            const data = event.data;
-            let json = null;
-            // create a multidimensional Array if Array not found at index
-            chunks[key] = Array.isArray(chunks[key]) ? chunks[key] : [];
-            if (typeof Blob !== 'undefined' && event.data instanceof Blob) {
-              chunks[key].push(data);
-            } else {
-              try {
-                json = JSON.parse(data);
-              } catch (err) {
-                return callback(err);
-              }
-              if (json.code && json.code !== 200) {
-                return callback(new Error(json.message));
-              }
-            }
-          };
-
-          client.onclose = function(event) {
-            if (event.code > 1000) {
-              return callback(new Error('Error Connecting to Farmer'));
-            }
-            return callback();
-          };
-
-          client.onerror = function(err) {
-            callback(err);
-          };
-        },
-        function end(err) {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(Array.prototype.concat.apply([], chunks));
-          }
-        }
-      );
-    });
+    return true;
+    // const chunks = [];
+    // return new Promise(function(resolve, reject) {
+    //   async.forEachOfLimit(pointers, 6,
+    //     function iteratee(pointer, key, callback) {
+    //       const uri = pointer.channel;
+    //       const client = new WebSocket(uri);
+    //
+    //       client.onopen = function() {
+    //         client.send(JSON.stringify({
+    //           token: pointer.token,
+    //           hash: pointer.hash,
+    //           operation: pointer.operation
+    //         }));
+    //       };
+    //
+    //       client.onmessage = function(event) {
+    //         const data = event.data;
+    //         let json = null;
+    //         // create a multidimensional Array if Array not found at index
+    //         chunks[key] = Array.isArray(chunks[key]) ? chunks[key] : [];
+    //         if (typeof Blob !== 'undefined' && event.data instanceof Blob) {
+    //           chunks[key].push(data);
+    //         } else {
+    //           try {
+    //             json = JSON.parse(data);
+    //           } catch (err) {
+    //             return callback(err);
+    //           }
+    //           if (json.code && json.code !== 200) {
+    //             return callback(new Error(json.message));
+    //           }
+    //         }
+    //       };
+    //
+    //       client.onclose = function(event) {
+    //         if (event.code > 1000) {
+    //           return callback(new Error('Error Connecting to Farmer'));
+    //         }
+    //         return callback();
+    //       };
+    //
+    //       client.onerror = function(err) {
+    //         callback(err);
+    //       };
+    //     },
+    //     function end(err) {
+    //       if (err) {
+    //         reject(err);
+    //       } else {
+    //         resolve(Array.prototype.concat.apply([], chunks));
+    //       }
+    //     }
+    //   );
+    // });
   }
 }
 
