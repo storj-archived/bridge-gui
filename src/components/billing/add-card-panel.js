@@ -10,8 +10,11 @@ const AddCardPanel = ({
         <div className="row">
           <div className="col-xs-12">
             <h2 className="title pull-left">Add Credit Card</h2>
-            <h4 className="pull-right" style={{ marginTop: 1.5em }}>
-              Interested in paying in BTC or SJCX? Contact us at sales@storj.io!
+            <h4 className="pull-right" style={{ 'marginTop': '1.5em' }}>
+              Interested in paying in BTC or SJCX? Contact us at
+              <a
+                href="mailto:sales@storj.io?Subject=Paying%20With%20BTC%20or%20SJCX"> sales@storj.io!
+              </a>
             </h4>
           </div>
         </div>
