@@ -12,7 +12,7 @@ const UsagePanel = ({ storage, bandwidth }) => {
           <div className="col-xs-6">
             <div className="">
               <h4>Storage</h4>
-              <span className="mb0 blue">{storage}</span>
+              <span className="mb0 blue">{storage || '0.00'}</span>
               <div
                 className="text-muted unit-text"
                 style={{ display: 'inline-block' }}
@@ -25,7 +25,7 @@ const UsagePanel = ({ storage, bandwidth }) => {
           <div className="col-xs-6">
             <div className="mb0">
               <h4>Bandwidth</h4>
-              <span className="mb0 blue">{bandwidth}</span>
+              <span className="mb0 blue">{bandwidth || '0.00'}</span>
               <div
                 className="text-muted unit-text"
                 style={{ display: 'inline-block' }}
