@@ -97,7 +97,9 @@
     "stripe": "^4.9.0",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",
-    "webpack": "^1.12.9"
+    "utf-8-validate": "^3.0.1",
+    "webpack": "^1.12.9",
+    "ws": "^2.2.2"
   },
   "devDependencies": {
     "apollo-server": "^0.2.1",
