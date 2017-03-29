@@ -9,7 +9,6 @@ const FileList = (props) => {
       return files.map((file) => {
         return (
           <FileListItem
-            fileSelectAction = {props.fileSelectAction}
             key     = {file.id}
             {...file}
           />
