@@ -14,6 +14,10 @@ const PaymentInfoPanel = ({
             Interested in paying in BTC or SJCX? Contact us at
             <a href="mailto:sales@storj.io"> sales@storj.io</a>!
           </h4>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-xs-12">
           <div className="content">
             <div className="row">
               <div className="col-xs-4">
