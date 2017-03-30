@@ -29,7 +29,6 @@ echo "Injecting secrets into Statically generated content"
   OUTPUT_PUBLIC_PATH_URL
 
 # Hack to fix build until refactor has been completed
-npm install utf-8-validate
 sed -i -E 's/isValidUTF8.Validation.isValidUTF8/isValidUTF8/g' static/dist/main-*.js
 
 # Start the Bridge GUI

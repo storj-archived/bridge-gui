@@ -11,6 +11,8 @@ WORKDIR /opt/bridge-gui
 ADD package.json .
 RUN npm install --production
 
+RUN rm -rf node_modules/bitcore-lib && mv node_modules/bitcore-ecies/node_modules/bitcore-lib node_modules/
+
 # Copy over the app and install
 COPY . /opt/bridge-gui/
 
