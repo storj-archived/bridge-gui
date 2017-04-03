@@ -13,3 +13,4 @@ gems/
 .env
 .vagrant
 package.box
+yarn.lock

@@ -17,6 +17,9 @@
     "build": "webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
     "lint": "eslint -c .eslintrc src api",
     "start-dev": "better-npm-run start-dev",
+    "start-dev-docker": "./scripts/start-bridge-gui",
+    "build-docker": "./scripts/build-bridge-gui",
+    "start-ssl-proxy": "./scripts/start-ssl-proxy",
     "watch-client": "better-npm-run start-dev",
     "dev": "concurrent --kill-others \"npm run start-dev\" \"npm run start-dev-api\"",
     "test": "NODE_ENV=test PORT=4000 node ./bin/test.js",
@@ -94,7 +97,9 @@
     "stripe": "^4.9.0",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",
-    "webpack": "^1.12.9"
+    "utf-8-validate": "^3.0.1",
+    "webpack": "^1.12.9",
+    "ws": "^2.2.2"
   },
   "devDependencies": {
     "apollo-server": "^0.2.1",

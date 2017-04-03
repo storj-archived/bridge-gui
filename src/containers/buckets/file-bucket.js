@@ -102,7 +102,7 @@ export default class FileBucket extends Component {
                   <div className="content table-responsive files-container" style={{overflow:'hidden'}}>
                     <div className="form-group">
                       <Loader loaded={!this.props.bucket.listFilePending && !this.props.bucket.storing}>
-                        <FileList files={this.props.bucket.files} fileSelectAction={this.getFile.bind(this)}/>
+                        <FileList files={this.props.bucket.files}/>
                       </Loader>
                     </div>
                   </div>
