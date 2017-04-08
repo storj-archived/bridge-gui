@@ -5,7 +5,7 @@ import './usage-panel.scss';
 
 const UsagePanel = ({ storage, bandwidth }) => {
   return (
-    <div className="col-xs-12 col-sm-6">
+    <div className="col-xs-12 col-sm-12 col-md-6">
       <h2 className="title">Usage This Month</h2>
       <div className="content">
         <div className="row">

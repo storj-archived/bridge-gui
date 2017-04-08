@@ -3,7 +3,7 @@ import Currency from 'components/billing/currency';
 
 const BalancePanel = ({balance, addCreditHandler}) => {
   return (
-    <div className="col-xs-12 col-sm-6">
+    <div className="col-xs-12 col-sm-12 col-md-6">
       <h2 className="title">Your Balance</h2>
       <div className="content">
         <div className="row">
