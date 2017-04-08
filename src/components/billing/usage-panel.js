@@ -11,28 +11,26 @@ const UsagePanel = ({ storage, bandwidth }) => {
         <div className="row">
           <div className="col-xs-6">
             <div className="">
-              <h4>Storage</h4>
-              <span className="mb0 blue">{storage || '0.00'}</span>
-              <div
-                className="text-muted unit-text"
-                style={{ display: 'inline-block' }}
-              >
-                <div> / 25GB</div>
-                <div>free</div>
-              </div>
+              <p>Storage</p>
+              <h2 className="mb0 blue unit-numbers">
+                <b>{storage || '0.00'}</b>
+                <div className="text-muted unit-text">
+                  <div> / 25GB</div>
+                  <div>free</div>
+                </div>
+              </h2>
             </div>
           </div>
           <div className="col-xs-6">
             <div className="mb0">
-              <h4>Bandwidth</h4>
-              <span className="mb0 blue">{bandwidth || '0.00'}</span>
-              <div
-                className="text-muted unit-text"
-                style={{ display: 'inline-block' }}
-              >
-                <div> / 25GB</div>
-                <div>free</div>
-              </div>
+              <p>Bandwidth</p>
+              <h2 className="mb0 blue">
+                <b>{bandwidth || '0.00'}</b>
+                <div className="text-muted unit-text">
+                  <div> / 25GB</div>
+                  <div>free</div>
+                </div>
+              </h2>
             </div>
           </div>
         </div>

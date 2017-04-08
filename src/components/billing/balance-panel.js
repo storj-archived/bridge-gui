@@ -8,8 +8,8 @@ const BalancePanel = ({balance, addCreditHandler}) => {
       <div className="content">
         <div className="row">
           <div className="col-xs-6">
-            <p className="text-muted">Current Balance</p>
-            <h2 className="mb0 blue"><b>
+            <p>Current Balance</p>
+            <h2 className="mb0 blue unit-numbers"><b>
               ${balance || '0.00'}
             </b></h2>
           </div>
