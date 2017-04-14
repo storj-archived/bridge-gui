@@ -374,11 +374,10 @@ export default class Billing extends Component {
         </section>
 
         <section>
-          <div class="text-center"><h2>Loading Payment Info. . . </h2></div>
-          {/* {
+          {
             loading
             // NB: We can replace this with a loading indicator later
-            ?  <div class="text-center"><h2>Loading Payment Info. . . </h2></div>
+            ?  <div style={{ textAlign: 'center' }}><h3>Loading Payment Info. . . </h3></div>
             : !this.getPaymentInfo().id
             // TODO: use apollo watchquery correctly so we don't have
             // to call `refetch`
@@ -388,7 +387,7 @@ export default class Billing extends Component {
                   removeCardHandler={this.removeCard.bind(this)}
                   paymentInfo={this.getPaymentInfo()}
                 />
-          } */}
+          }
         </section>
 
         <section>
