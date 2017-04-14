@@ -61,6 +61,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "../core", "/home/vagrant/core"
   config.vm.synced_folder "../mongodb-adapter", "/home/vagrant/mongodb-adapter"
   config.vm.synced_folder "../service-mailer", "/home/vagrant/service-mailer"
+  config.vm.synced_folder "../bridge-gui-vue", "/home/vagrant/bridge-gui-vue"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
