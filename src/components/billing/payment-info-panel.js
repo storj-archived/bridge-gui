@@ -10,10 +10,7 @@ const PaymentInfoPanel = ({
       <div className="row">
         <div className="col-xs-12">
           <h2 className="title pull-left">Default Payment Method</h2>
-          <p className="pull-right" style={{ 'marginTop': '1.5em' }}>
-            Interested in paying in BTC or SJCX? Contact us at 
-            <a href="mailto:sales@storj.io">sales@storj.io</a>
-          </p>
+          <h4 className="pull-right">Add credit with <a href="https://bitpay.com/cart?id=PHXWWfqpq7kwuyATYWSJ96" target="_blank" className="btn btn-transparent btn-payment"><img className="btn-payment-icon-bitcoin" src="img/icon-bitcoin.svg" alt="bitcoin" />bitcoin</a></h4>
         </div>
       </div>
       <div className="row">
