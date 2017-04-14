@@ -10,7 +10,7 @@ const UsagePanel = ({ storage, bandwidth }) => {
       <div className="content">
         <div className="row">
           <div className="col-xs-6">
-            <div className="">
+            <div className="mb0">
               <p>Storage</p>
               <h2 className="mb0 blue unit-numbers">
                 <b>{storage || '0.00'}</b>
@@ -24,7 +24,7 @@ const UsagePanel = ({ storage, bandwidth }) => {
           <div className="col-xs-6">
             <div className="mb0">
               <p>Bandwidth</p>
-              <h2 className="mb0 blue">
+              <h2 className="mb0 blue unit-numbers">
                 <b>{bandwidth || '0.00'}</b>
                 <div className="text-muted unit-text">
                   <div> / 25GB</div>
