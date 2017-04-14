@@ -18,3 +18,14 @@ $brand-success: #91D127;
   color: darken($brand-warning, 40%);
   background-color: $brand-warning;
 }
+
+.btn-payment {
+  background: #fff;
+  padding: 0.4em 0.6em;
+  letter-spacing: 0;
+}
+.btn-payment-icon-bitcoin {
+  width: 24px;
+  height: 24px;
+  margin-right: 0.4em;
+}

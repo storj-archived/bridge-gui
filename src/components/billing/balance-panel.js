@@ -3,13 +3,13 @@ import Currency from 'components/billing/currency';
 
 const BalancePanel = ({balance, addCreditHandler}) => {
   return (
-    <div className="col-xs-12 col-sm-6">
+    <div className="col-xs-12 col-sm-12 col-md-6">
       <h2 className="title">Your Balance</h2>
       <div className="content">
         <div className="row">
           <div className="col-xs-6">
-            <p className="text-muted">Current Balance</p>
-            <h2 className="mb0 blue"><b>
+            <p>Current Balance</p>
+            <h2 className="mb0 blue unit-numbers"><b>
               ${balance || '0.00'}
             </b></h2>
           </div>
