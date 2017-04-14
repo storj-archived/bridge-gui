@@ -145,7 +145,6 @@ export default class Billing extends Component {
           props.transactions.refetch();
           return true;
         }, function fail(err) {
-          console.log('publickey result', err);
           hashHistory.push('/');
         });
     } else {
@@ -218,7 +217,7 @@ export default class Billing extends Component {
     ).subtract(offset, 'month').valueOf();
 
     const endDate = (moment(startDate).add('1', 'month').valueOf());
-    console.log('getRange startDate: endDate', startDate, endDate);
+
     return {
       startDate,
       endDate
@@ -226,7 +225,6 @@ export default class Billing extends Component {
   }
 
   getBalance(credits, debits) {
-    console.log('getBalance', credits, debits);
     const debitSum = this.getSum(debits, 'amount');
     const promoCreditSum = this.getSum(credits, 'promo_amount');
     const paidCreditSum = this.getSum(credits, 'paid_amount');
@@ -269,7 +267,6 @@ export default class Billing extends Component {
   }
 
   getTransactions() {
-    console.log('TRANSACTIONS: ', this.props.transactions);
     const { loading, credits, debits } = this.props.transactions;
     let transactions;
 
@@ -377,10 +374,11 @@ export default class Billing extends Component {
         </section>
 
         <section>
-          {
+          <div class="text-center"><h2>Loading Payment Info. . . </h2></div>
+          {/* {
             loading
             // NB: We can replace this with a loading indicator later
-            ? <h4>Loading . . . </h4>
+            ?  <div class="text-center"><h2>Loading Payment Info. . . </h2></div>
             : !this.getPaymentInfo().id
             // TODO: use apollo watchquery correctly so we don't have
             // to call `refetch`
@@ -390,7 +388,7 @@ export default class Billing extends Component {
                   removeCardHandler={this.removeCard.bind(this)}
                   paymentInfo={this.getPaymentInfo()}
                 />
-          }
+          } */}
         </section>
 
         <section>
