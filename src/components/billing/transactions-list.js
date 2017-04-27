@@ -32,6 +32,12 @@ const TransactionsList = ({ transactions }) => {
                             </td>
                             <td>
                               {transaction.description}
+                              {!transaction.descriptionSub ? <span></span> :
+                                <span>
+                                  <br />
+                                  <sub>{transaction.descriptionSub}</sub>
+                                </span>
+                              }
                             </td>
                             <td>
                               <span className={isNegative ? 'text-success' : ''}>

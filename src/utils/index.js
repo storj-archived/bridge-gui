@@ -13,9 +13,8 @@ export function roundToGBAmount(num, type) {
   const modNum = setToTwoDecimalPlaces(numInGB);
 
   // Checks to see if the amount is less than one cent
-  if (modNum.indexOf('0.00') === 0) {
-    const lessThanOneCent = '< 0.01';
-    return lessThanOneCent;
+  if (String(modNum).indexOf('0.00') === 0) {
+    return '< 0.01';
   }
   return `${modNum}`;
 }

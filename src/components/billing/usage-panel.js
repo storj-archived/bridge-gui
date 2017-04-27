@@ -15,7 +15,7 @@ const UsagePanel = ({ storage, bandwidth }) => {
               <h2 className="mb0 blue unit-numbers">
                 <b>{storage || '0.00'}</b>
                 <div className="text-muted unit-text">
-                  <div> / 25GB</div>
+                  <div> / 25GB<sub>/mo.</sub></div>
                   <div>free</div>
                 </div>
               </h2>
