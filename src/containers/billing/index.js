@@ -294,14 +294,16 @@ export default class Billing extends Component {
        * Converts bytes to gigabytes
        */
       if (debit.type === 'storage' || debit.type === 'bandwidth') {
-        amountUsed = roundToGBAmount(debit[debit.type], 'bytes');
+        const amount = debit[debit.type];
+        amountUsed = debit.type === 'bandwidth' ? roundToGBAmount(amount, 'bytes') : amount;
       }
 
       const transaction = {...debit};
+      const unit = debit.type === 'bandwidth' ? 'GB' : 'GBhr';
 
       transaction.description =
         amountUsed
-        ? `${amountUsed} GB of ${debit.type} used`
+        ? `${amountUsed} ${unit} of ${debit.type} used`
         : `Adjustment of ${debit.amount}`;
       transaction.timestamp = Date.parse(debit.created);
       transaction.created = `${moment.utc((debit.created))
