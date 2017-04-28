@@ -300,7 +300,7 @@ export default class Billing extends Component {
       const unit = debit.type === 'bandwidth' ? 'GB' : 'GBhr';
 
       if (debit.type === 'storage' && amountUsed > 0) {
-        // NB: `703` is the average number of hours in a year
+        // NB: `703` is the average number of hours in a month
         const sizeGbPerMo = amountUsed / 703;
         transaction.descriptionSub = `(${roundToGBAmount(sizeGbPerMo)}GB/month)`
       }
