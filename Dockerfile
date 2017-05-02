@@ -9,6 +9,7 @@ RUN mkdir -p /opt/bridge-gui
 WORKDIR /opt/bridge-gui
 
 ADD package.json .
+# Install node modules for production (i.e. don't install devdeps)
 RUN npm install --production
 
 RUN rm -rf node_modules/bitcore-lib && mv node_modules/bitcore-ecies/node_modules/bitcore-lib node_modules/
@@ -21,8 +22,6 @@ COPY . /opt/bridge-gui/
 #RUN git reset --hard
 #RUN git clean -fdx
 
-# Install node modules for production (i.e. don't install devdeps)
-#RUN npm i --production
 
 ARG NODE_ENV=NODE_ENV_ENV
 ARG APIHOST=APIHOST_ENV
