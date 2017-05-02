@@ -1,5 +1,7 @@
 #!/bin/bash
 
+next_command="$@"
+
 # On build, variables are set to contain [VAR_NAME]_ENV
 # The dist build happens and the bridge-gui app puts the "[VAR_NAME]_ENV" values in the compiled source
 # On run, the inject script (scripts/inject_static_secrets.sh) replaces "[VAR_NAME]_ENV" with
@@ -35,4 +37,4 @@ sed -i -E 's/isValidUTF8.Validation.isValidUTF8/isValidUTF8/g' static/dist/main-
 
 # Start the Bridge GUI
 echo "Starting Bridge GUI"
-npm run start-prod
+bash -c -- "$next_command"

@@ -49,7 +49,8 @@ RUN npm run build
 EXPOSE 8080
 
 # Start the app
-CMD [ "./dockerfiles/scripts/start-bridge-gui" ]
+ENTRYPOINT ["./dockerfiles/scripts/start-bridge-gui"]
+CMD ["npm", "run", "start-prod"]
 
 # Use for testing
 #CMD [ "/bin/sleep", "5000" ]
