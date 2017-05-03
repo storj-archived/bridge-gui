@@ -32,6 +32,9 @@ const environment = {
   }
 }[process.env.NODE_ENV || 'development'];
 
+console.log('HOST IS :', process.env.HOST);
+console.log('HOST IS :', process.env.HOST);
+console.log('HOST IS :', process.env.HOST);
 module.exports = Object.assign({
   host: process.env.HOST || '127.0.0.1',
   port: Number(process.env.PORT) || 8080,
