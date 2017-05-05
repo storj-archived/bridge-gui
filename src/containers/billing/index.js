@@ -174,9 +174,7 @@ export default class Billing extends Component {
 
       // Set Storage
       const storage = this.getSum(debits, 'storage');
-      const storageInGB = roundToGBAmount(storage, 'bytes');
-      const averageStorage = this.getAverage(storageInGB, debits.length);
-      const prettyStorage = setToTwoDecimalPlaces(averageStorage);
+      const prettyStorage = setToTwoDecimalPlaces(storage / 703);
       this.props.setStorage(prettyStorage !== 'NaN' ? prettyStorage : '0.00');
 
       // Set Bandwidth
@@ -294,12 +292,18 @@ export default class Billing extends Component {
        * Converts bytes to gigabytes
        */
       if (debit.type === 'storage' || debit.type === 'bandwidth') {
-        const amount = debit[debit.type];
-        amountUsed = debit.type === 'bandwidth' ? roundToGBAmount(amount, 'bytes') : amount;
+        const size = debit[debit.type];
+        amountUsed = debit.type === 'bandwidth' ? roundToGBAmount(size, 'bytes') : size;
       }
 
       const transaction = {...debit};
       const unit = debit.type === 'bandwidth' ? 'GB' : 'GBhr';
+
+      if (debit.type === 'storage' && amountUsed > 0) {
+        // NB: `703` is the average number of hours in a month
+        const sizeGbPerMo = amountUsed / 703;
+        transaction.descriptionSub = `(${roundToGBAmount(sizeGbPerMo)}GB/month)`
+      }
 
       transaction.description =
         amountUsed
