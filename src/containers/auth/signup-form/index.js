@@ -63,6 +63,14 @@ export default class SignUpForm extends Component {
         redirect: 'https://app.storj.io/'
       };
 
+      const referralPartner = this.props.location.query.referralPartner;
+
+      if (referralPartner) {
+        credentials.opts = {
+          referralPartner: referralPartner.toLowerCase()
+        };
+      }
+
       const referral = {
         referralLink: this.props.location.query.referralLink,
         email: this.props.fields.email.value
