@@ -1,5 +1,10 @@
-Storj Bridge GUI
+Storj Bridge GUI - *DEPRECATED*
 ================
+
+## This repo is deprecated. 
+### Please use [bridge-gui-vue](https://github.com/Storj/bridge-gui.vue.git) instead. 
+
+### This repo will not be maintained or updated. 
 
 Client application for interacting with Storj Bridge.
 
