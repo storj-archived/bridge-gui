@@ -67,6 +67,12 @@ app.get('*', (req, res) => {
     res.status(404).redirect('/#/404');
   });
 
+console.log(`PORT: ${port}`);
+console.log(`PORT: ${port}`);
+console.log(`PORT: ${port}`);
+console.log(`HOST: ${host}`);
+console.log(`HOST: ${host}`);
+console.log(`HOST: ${host}`);
 WDS.listen(port, host, function (err) {
   if (err) {
     return console.log(err);

@@ -9,6 +9,7 @@ RUN mkdir -p /opt/bridge-gui
 WORKDIR /opt/bridge-gui
 
 ADD package.json .
+# Install node modules for production (i.e. don't install devdeps)
 RUN npm install --production
 
 RUN rm -rf node_modules/bitcore-lib && mv node_modules/bitcore-ecies/node_modules/bitcore-lib node_modules/
@@ -21,13 +22,13 @@ COPY . /opt/bridge-gui/
 #RUN git reset --hard
 #RUN git clean -fdx
 
-# Install node modules for production (i.e. don't install devdeps)
-#RUN npm i --production
 
 ARG NODE_ENV=NODE_ENV_ENV
 ARG APIHOST=APIHOST_ENV
 ARG APIPORT=APIPORT_ENV
 ARG APIPROTOCOL=APIPROTOCOL_ENV
+#ARG PORT=PORT_ENV
+#ARG HOST=HOST_ENV
 ARG APOLLO_CLIENT_URL=APOLLO_CLIENT_URL_ENV
 ARG STRIPE_PUBLISHABLE_KEY=STRIPE_PUBLISHABLE_KEY_ENV
 ARG OUTPUT_PUBLIC_PATH_PROTOCOL=OUTPUT_PUBLIC_PATH_PROTOCOL_ENV
@@ -37,6 +38,8 @@ ENV NODE_ENV $NODE_ENV
 ENV APIHOST $APIHOST
 ENV APIPORT $APIPORT
 ENV APIPROTOCOL $APIPROTOCOL
+#ENV PORT $PORT
+#ENV HOST $HOST
 ENV APOLLO_CLIENT_URL $APOLLO_CLIENT_URL
 ENV STRIPE_PUBLISHABLE_KEY $STRIPE_PUBLISHABLE_KEY
 ENV OUTPUT_PUBLIC_PATH_PROTOCOL $OUTPUT_PUBLIC_PATH_PROTOCOL
@@ -50,7 +53,8 @@ RUN npm run build
 EXPOSE 8080
 
 # Start the app
-CMD [ "./dockerfiles/scripts/start-bridge-gui" ]
+ENTRYPOINT ["./dockerfiles/scripts/start-bridge-gui"]
+CMD ["npm", "run", "start-prod"]
 
 # Use for testing
 #CMD [ "/bin/sleep", "5000" ]
